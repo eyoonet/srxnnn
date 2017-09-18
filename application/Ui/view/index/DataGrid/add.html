@@ -1,0 +1,276 @@
+<style>
+    .input_text {
+        width:210px;
+    }
+    .input_text label{
+        float: left;
+        width: 60px;
+        height:22px;
+        padding-top: 5px;
+    }
+    form{margin:0px}
+    .input_text input{
+        width: 130px;
+    }
+    .input_text div{
+        margin-bottom: 10px;
+    }
+</style>
+<!-- 添加数据开始 -->
+<div id="add_user_data_ui">
+    <form id="form_user_data" method="post">
+        <div class="input_text" style="float:left">
+            <div>
+                <label>姓名</label>
+                <input id='name' class="easyui-textbox" name="name" />
+            </div>
+            <div>
+                <label>身份证</label>
+                <input id='card' class="easyui-textbox" name="card"
+                       data-options="validType:'validcard',
+		                             required:true,"/>
+            </div>
+            <div>
+                <label>电话</label>
+                <input id="tel" class="easyui-numberbox" type="text" name="tel"/>
+            </div>
+            <div>
+                <label>旺旺号</label>
+                <input class="easyui-textbox" id="wangwang" type="text" name="wangwang" />
+            </div>
+            <div>
+                <label>人保账号</label>
+                <input class="easyui-textbox" id="renbao_user" type="text" name="renbao_user" />
+            </div>
+            <div>
+                <label>人保密码</label>
+                <input class="easyui-textbox" id="renbao_password" type="text" name="renbao_password" />
+            </div>
+            <div>
+                <label>价格</label>
+                <input id="price" type="text" class="easyui-numberbox"
+                       data-options="min:0,precision:2,prefix:'$'"
+                       name="price" />
+            </div>
+            <div>
+                <label>订金</label>
+                <input id="deposit" class="easyui-numberbox"
+                       data-options="min:0,precision:2,prefix:'$'"
+                       type="text" name="deposit" />
+            </div>
+            <div>
+                <label>标签</label>
+                <input id='Tag' class="easyui-textbox" type="text" name="Tag" />
+            </div>
+            <div>
+                <label>毕业学校</label>
+                <input id='schoolName' class="easyui-textbox" type="text" name="schoolName"  />
+            </div>
+            <div>
+                <label>专业</label>
+                <input id='major' class="easyui-textbox" type="text" name="major"  />
+            </div>
+            <div>
+                <label>毕业日期</label>
+                <input id='graduateDate' class="easyui-textbox" type="text" name="graduateDate" />
+            </div>
+            <div>
+                <label>通讯地址</label>
+                <input id='txadderss' class="easyui-textbox" type="text" name="txadderss"/>
+            </div>
+        </div>
+
+        <div class="input_text" style="float:right;">
+            {$Think.session.user.group=='管理员'? "
+            <div>
+                <label>操作人</label>
+                <select id='user' class='easyui-combobox'
+                        data-options='panelHeight:105,editable:false'
+                        name='user' style='width:130px;'>
+                    <option>杜清玲</option>
+                    <option>叶艳萍</option>
+                    <option>王桂参</option>
+                    <option>龙艳</option>
+                    <option>谭艳</option>
+                    <option>马青丽</option>
+                </select>
+            </div>
+            ":""}
+            <div>
+                <label>店铺</label>
+                <select id='shop' class="easyui-combobox"
+                        data-options="panelHeight:'auto',editable:false"
+                        name="shop" style="width:130px;">
+                    <option>无</option>
+                    <option>三人行</option>
+                    <option>永安</option>
+                    <option>t7</option>
+                    <option>48g</option>
+                    <option>马</option>
+                </select>
+            </div>
+            <div>
+                <label>服务窗口</label>
+                <input id="service_add" name="service" style="width: 130px;"/>
+                <script type="text/javascript">
+                    $('#service_add').combobox({
+                        panelHeight:"auto",
+                        url:'/ui/home/getServiceList',
+                        valueField:'text',
+                        textField:'text'
+                    })
+                </script>
+            </div>
+            <div>
+                <label>学历</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false,required:true"
+                         name="education" style="width:130px;">
+                    <option>大专</option>
+                    <option>本科</option>
+                    <option>硕士</option>
+                    <option>博士</option>
+                </select>
+            </div>
+            <div>
+                <label>社保</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="shebao" style="width:130px;">
+                    <option value="6+">6个月及以上</option>
+                    <option value="6-">6个月以下</option>
+                    <option value="0">无</option>
+                </select>
+            </div>
+            <div>
+                <label>审核方式</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false,required:true"
+                         name="mode" style="width:130px;">
+                    <option>应届生</option>
+                    <option>留学生</option>
+                    <option>核准制</option>
+                    <option>积分制</option>
+                </select>
+            </div>
+            <div>
+                <label>迁入地</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="adderss" style="width:130px;">
+                    <option>窗口集体户</option>
+                    <option>自己</option>
+                    <option>挂靠朋友</option>
+                    <option>单位集体</option>
+                </select>
+            </div>
+            <div>
+                <label>申报方式</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false,required:true"
+                         name="sbtype" style="width:130px;">
+                    <option>个人申报</option>
+                    <option>单位申报</option>
+                </select>
+            </div>
+            <div>
+                <label>招调类型</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="zdtype" style="width:130px;">
+                    <option>招工</option>
+                    <option>调干</option>
+                </select>
+            </div>
+            <div>
+                <script type="text/javascript">
+                    $(function(){
+                        $("#marrDate").hide()
+                        $('#marriage').combobox({
+                            onSelect: function(param){
+                                //console.log(param);
+                                if(param.text=='已婚'){
+                                    $("#marrDate").show();
+                                }else{
+                                    $("#marrDate").hide();
+                                }
+                            }
+                        });
+                    });
+                </script>
+                <label>婚姻状况</label>
+                <select id='marriage' class="easyui-combobox"
+                        data-options="panelHeight:'auto',editable:false,required:true"
+                        name="marriage" style="width:130px;">
+                    <option>未婚</option>
+                    <option>已婚</option>
+                    <option>复婚</option>
+                    <option>再婚</option>
+                    <option>离异</option>
+                    <option>丧偶</option>
+                </select>
+                <div id='marrDate' style='display:inline-block;'>
+                    <label>结婚日期</label>
+                    <input id='marrDate' class="easyui-textbox" type="text" name="marrDate" />
+                </div>
+            </div>
+            <div>
+                <label>调档案</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="dangan" style="width:130px;">
+                    <option>是</option>
+                    <option>否</option>
+                </select>
+            </div>
+            <div>
+                <label>小孩信息</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="child" style="width:130px;">
+                    <option>无</option>
+                    <option>一孩</option>
+                    <option>二孩</option>
+                    <option>怀孕</option>
+                </select>
+            </div>
+            <div>
+                <label>优选级</label>
+                <select  class="easyui-combobox"
+                         data-options="panelHeight:'auto',editable:false"
+                         name="level" style="width:130px;">
+                    <option value="3">3级</option>
+                    <option value="2">2级</option>
+                    <option value="1">1级</option>
+                </select>
+            </div>
+            <div>
+                <label>小孩随迁</label>
+                <input style="width:20px" type="radio" value="是" name="childad">是
+                <input style="width:20px" type="radio" value="否" name="childad">否
+            </div>
+        </div>
+
+        <div style="float:left;">
+
+            <p style="margin-top: 0px;margin-bottom:0px;">备注:</p>
+            <textarea style="" name=comment rows=6 cols=25></textarea>
+        </div>
+        <div class="input_text" style="float:right;margin:10px 0 10px">
+            <a id="image_up_btn" href="#">上传图片</a>
+            <a id="image_del_btn" href="#">清空图片</a>
+        </div>
+    </form>
+</div>
+<div id="bb">
+    <a id="save" data-options="iconCls:'icon-save'" >保 存</a>
+    <a id="close" data-options="iconCls:'icon-clear'">关 闭</a>
+</div>
+
+<div id="dd_image" class="easyui-dialog" title="图片上传" style="width:700px;height:550px;"
+     data-options="iconCls:'icon-save',
+        			  resizable:true,
+        			  modal:true,
+        			  closed:true">
+</div>
+<!-- 添加数据结束 -->

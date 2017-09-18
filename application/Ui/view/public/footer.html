@@ -1,0 +1,53 @@
+<input id='msg' class="" data-options="iconCls:'icon-ok'" style="width:300px"> 
+版权所有：深圳市三人行教育信息有限公司
+办公地址：深圳市光明新区公明镇柏溪路豪轩大厦10B       电话：0755-29102253
+<input id="session_id" type=hidden value='{/*$session_id*/}'>
+<script type="text/javascript">
+   var m = $('#msg'); 
+    m.textbox({    
+        buttonText:'发送',    
+        iconCls:'icon-man', 
+        iconAlign:'left',
+        label: '发送广播消息:',
+        onClickButton:function(){
+           sender_msg();
+        }
+    })
+    m.textbox('textbox').bind('keydown', function(e){
+        if (e.keyCode == 13){	// 当按下回车键时接受输入的值。$(this).val()
+           sender_msg();
+        }
+    });
+    function sender_msg(){
+        var text = $('#msg').textbox('getText');
+        var user = $('#username').html();
+        $.ajax({
+            type: "POST",
+            url: "/api/msg/add",
+            data: {text:text,sender_use:user},
+            success: function(msg){
+                if(msg==1)$.messager.alert('服务器消息','发送消息成功');
+            }
+        });  
+    }	
+</script>
+
+<script type="text/javascript">
+ link();//服务器消息
+ function link(){	
+	var link={  　　　　　　　　　　//jQuery的AJAX执行的配置对象
+		  type:"GET",　　　　　　//设置请求方式，默认为GET，
+		  async:true,　　　　　　//设置是否异步，默认为异步
+		  url:"/api/msg/getmsg?session_id="+$('#session_id').val(),
+		  dataType:"json",　　　　//设置期望的返回格式，因服务器返回json格式，这里将数据作为json格式对待
+		  success:function (msg){
+				 if(0 != msg){
+					if($('#username').html()!=msg.sender_use)
+					   $.messager.alert('来自 ['+msg.sender_use+'] 的消息消息',msg.text);
+				 }  
+				 setTimeout("link()",300);
+		  }　　　　　　　　　　　　　　//成功时的回调函数，处理返回数据，并且延时建立新的请求连接
+	}
+	$.ajax(link);　　　　　　　　　　//执行ajax请求。
+}
+</script>	

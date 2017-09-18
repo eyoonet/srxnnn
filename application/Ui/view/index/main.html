@@ -1,0 +1,62 @@
+{layout name="layout" /}
+<input id="dg_type" type="hidden">
+<!-- tabs start -->
+<script type="text/javascript">
+	load();
+</script>
+
+
+<div id="tabs">
+	{include file="index/datagrid/select" /}
+	{include file="index/datagrid/table" /}
+	<!-- 意向客户开始 -->
+	<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px"></div>
+	<!-- 意向客户结束 -->		
+	
+	<!-- 统计页开始 -->
+	<div title="统计" style="padding:20px;display:none;">   
+		<h1 class="f-l" style="color:#000000">  
+			状态：
+			未办[<span id="weiban"></span>]
+			一审[<span id="yishen"></span>] 
+			二审[<span id="ershen"></span>] 
+			完结[<span id="wanjie"></span>] 
+			总计[<span id="zong"></span>]											
+			进度：
+			新进[<span id="new"></span>]
+			待录[<span id="dailu"></span>]
+			提交[<span id="tijiao"></span>]
+			问题[<span id="wenti"></span>]
+			
+			出调令[<span id="diaoling"></span>]
+		</h1>
+		<script type="text/javascript">
+
+		</script>			
+	</div> 	
+	<!-- 统计页结束 -->
+
+	<!-- 人才网开始 -->
+	<div title="人才网" style="padding:20px;display:none;">
+	    <iframe src='http://aux.szhr.com/pasr/login-person.jsp'  width='32%' height=520></iframe>
+		<iframe src='http://info.szhr.com:9001/public/docRcvQuery.jsp'  width='32%' height=520></iframe>
+		<iframe src='http://info.szhr.com:9001/public/agentProgQuery.jsp'  width='32%' height=520></iframe>    
+		<script type="text/javascript"></script>
+	</div> 	
+	<!-- 人才网结束 -->	
+</div>
+<!--tabs end-->
+
+
+{include file="index/datagrid/add" /}
+ <!-- 右键菜单开始 -->
+<div id="mm" class="easyui-menu" style="width:120px;">   
+    <div>没有社保</div>
+    <div>问题打回</div>
+    <div>待录人保</div>
+	<div>提交人保</div>	
+	<div>可以二审</div>	
+	<div>已约号</div>	
+</div>  
+<!-- 右键菜单结束 -->
+{include file="index/windows/paidan" /}

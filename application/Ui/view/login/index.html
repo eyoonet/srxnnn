@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="/static/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/static/themes/icon.css">
+	<script type="text/javascript" src="/static/framework/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/framework/jquery.easyui.min.js"></script>
+	<style>
+		#login{
+			padding: 10px 10px 10px 20px; 
+		}
+	</style>
+</head>
+<body class="easyui-layout">
+	<div id="login" class="easyui-dialog" title="用户登录" style="width:300px;height:180px"   
+			data-options="iconCls:'icon-save',modal:true,buttons:'#btn'">   
+		<form id="ff" method="post">   
+				<p>用户名:<input name = "user" class="easyui-textbox" style="width:180px;padding:10px"></p>   
+				<p style = "margin-left:5px">密  码:<input name = "password" class="easyui-passwordbox" prompt="Password" iconWidth="28" style="width:180px;padding:10px"> </p>   
+		</form>  
+	</div>  
+	<div id="btn" style="text-align:center;" class="dialog-button">
+	    <a  class="easyui-linkbutton l-btn l-btn-small" group="" id="">
+			<span class="l-btn-left"><span class="l-btn-text">登  录</span></span>
+		</a>
+	</div>
+	<script type="text/javascript">
+		$(function(){    
+			$('#btn').bind('click', function(){    
+				login();
+			});    
+		});  		
+		$(document).keyup(function(event){
+		  if(event.keyCode ==13){
+			login();
+		  }
+		});
+		function login(){
+			$.ajax({
+			   type: "POST",
+			   async: false,
+			   dataType: "json",
+			   url:  "/api/user/login",
+			   data: $("#ff").serialize(),
+			   success: function(obj){
+					if (obj.code==200) {
+						window.location.href="/ui/home/index.html"; 
+					}else{
+						alert(obj.msg);
+					}	
+			   }
+			});			
+		}		
+	</script>
+</body>
+</html>

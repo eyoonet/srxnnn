@@ -1,0 +1,24 @@
+<ul id="tt" class="easyui-tree">   
+</ul>
+<script type="text/javascript">
+ $('#tt').tree({
+    //url:'/ui/home/get_menu',
+	//onLoadSuccess:function(node, data){
+	//	console.log(data);
+	//},
+	onClick: function(node){
+		console.log(node);
+        select_index = null;
+        id = node.Id;//parseInt(id)
+        if (id == 7 || id == 1 )return;
+        $('#tabs').tabs('select','查询页');
+        //var param = node.text;    
+        console.log(id);
+        
+		var str = node.json;
+	    //var map = JSON.parse(str)
+		//$('#dg').datagrid('load', {map} ); 
+		$('#dg').datagrid('load', JSON.parse(str) ); 
+    }
+ });
+</script>  

@@ -1,0 +1,125 @@
+<!-- 详情页开始 -->
+<div title="详情页" style="padding:20px;display:none;">
+    <div id="ccc" class="easyui-layout" style="width:100%;height:500px;">
+        <div data-options="region:'east',title:'图片'" style="width:180px;">
+            <ul id="dowebok2" style="padding-left: 0px;"></ul>
+        </div>
+        <div data-options="region:'center'" style="padding:5px;">
+            <table  style="border-bottom-width: 0px;" width="100%" border="1" cellspacing="0" cellpadding="0">
+                <tr>
+                    <th height="40" colspan="2" align="center" scope="row">基本信息</th>
+                    <th colspan="4" align="center">订单信息 [ <span id='t-user'></span> ] </th>
+                </tr>
+                <tr>
+                    <th width="14%" align="left" scope="row">姓名</th>
+                    <td id="t-name" width="23%" height="25" nowrap="nowrap">&nbsp;</td>
+                    <th width="11%" align="left">签约价</th>
+                    <td id='t-price' width="17%">&nbsp;</td>
+                    <th id='t-price' width="12%">优先级</th>
+                    <td id='t-level' width="23%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">身份证</th>
+                    <td id="t-card" height="25">&nbsp;</td>
+                    <th align="left">定金</th>
+                    <td id="t-deposit">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">电话</th>
+                    <td id="t-tel" height="25">&nbsp;</td>
+                    <th align="left">尾款</th>
+                    <td>&nbsp;</td>
+                    <th>店铺</th>
+                    <td id="t-shop">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">办理进度</th>
+                    <td id="t-speed" height="25">&nbsp;</td>
+                    <th align="left">旺旺号</th>
+                    <td id="t-wangwang">&nbsp;</td>
+                    <th id="t-wangwang">添加时间</th>
+                    <td id="t-add_time">&nbsp;</td>
+                </tr>
+            </table>
+            <table  style="border-top-width: 0px;border-bottom-width: 0px;" width="100%" border="1" align="left" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th height="35" align="center" colspan="6" valign="middle" scope="row">其他信息</th>
+                </tr>
+                <tr>
+                    <th height="26" align="left" scope="row">人保账户密码</th>
+                    <td  width="13%" align="left" id="t-renbao" scope="row">账号</td>
+                    <td width="14%" align="left" id="t-renbao-pw" scope="row">密码</td>
+                    <th scope="row">申报类型</th>
+                    <td height="26" align="left" id="t-sbtype" scope="row">&nbsp;</td>
+                    <th height="26" align="center" scope="row">备注</th>
+                </tr>
+                <tr>
+                    <th width="19%" align="left" scope="row">学历</th>
+                    <td colspan="2" id="t-education">&nbsp;</td>
+                    <th id="t-education" width="13%">招调类型</th>
+                    <td id="t-zdtype" width="17%" height="25">&nbsp;</td>
+                    <td id="" width="24%" rowspan="7" align="left" valign="top">
+                        <!--  <textarea style="width:98%;height:100%;overflow:auto;word-break:break-all;" id="t-comment" ></textarea> -->
+                        <input id="t-comment" class="easyui-textbox"  style="width:100%;height:100%" data-options="multiline:true">
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">社保</th>
+                    <td colspan="2" id="t-shebao">&nbsp;</td>
+                    <th>约号日期</th>
+                    <td id="t-rcdate" height="25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">入户方式</th>
+                    <td colspan="2" id="t-mode">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td height="25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">婚姻状态</th>
+                    <td colspan="2" id="t-marriage">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td height="25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">小孩信息</th>
+                    <td colspan="2" id="t-child">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td height="25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">是否随迁</th>
+                    <td colspan="2" id="t-childad">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td height="25">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">迁入地</th>
+                    <td colspan="2" id="t-adderss">&nbsp;</td>
+                    <th id="t-adderss">工作进度</th>
+                    <td id="t-status" height="25">&nbsp;</td>
+                </tr>
+            </table>
+            <table  style="border-top-width: 0px; float: left;" width="100%" border="1" align="left" cellpadding="0" cellspacing="0" >
+                <tr>
+                    <th id="t-Tag" height="32" colspan="4" scope="col">工作经历</th>
+                </tr>
+                <tr>
+                    <th width="13%" scope="col">夫/妻</th>
+                    <th width="23%" scope="col">起始时间</th>
+                    <th width="23%" scope="col">结束时间</th>
+                    <th width="41%" scope="col">单位或学校名称</th>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- 详情页结束 -->
