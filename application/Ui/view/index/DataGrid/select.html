@@ -1,6 +1,9 @@
 <!-- 查询页开始 -->
 <div title="查询页" style="width:'100%';padding:5px;display:none;">
+
     <table id="dg" style="height:480px;"></table>
+
+
     <div id="dgtoobar" style="padding:5px;height:auto">
         <div>
             <div style="display:inline">
@@ -39,7 +42,8 @@
                     prompt:'请输入值'
                 });
             </script>
-            <a class="" id="genduo" href="#" class="" onclick="genduo();">多条件</a>
+            <a  id="genduo" href="javascript:" class="" onclick="genduo();">多条件</a>
+
             <script type="text/javascript">
                 function genduo(){
                     if($('#genduo').html()=="多条件"){
@@ -48,7 +52,7 @@
                     }else{
                         $("#date_input").hide();
                         $('.souWhere').hide();
-                        $('#genduo').html("展开");
+                        $('#genduo').html("多条件");
                     }
                 }
             </script>
@@ -113,6 +117,7 @@
                     <input id='start_date' name="start_date" style="width:120px" type= "text"  class= "easyui-datebox"
                            data-options="formatter:myformatter,parser:myparser"
                     >
+                    TO
                     <input id='end_date' name="end_date" style="width:120px" type= "text"
                            class= "easyui-datebox "
                            data-options="formatter:myformatter,parser:myparser"
@@ -138,7 +143,7 @@
                     })
                 </script>
 
-                工作流：
+                工 作 流：
                 <select  class="easyui-combobox"
                          data-options="panelHeight:'auto',editable:false"
                          name="status" style="width:80px;">
@@ -170,11 +175,24 @@
             </form>
             <hr>
             <div style="margin-bottom:5px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"></a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+                <a href="javascript:add()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
+                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-save" plain="true">删除</a>
+                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-cut" plain="true">退款</a>
+                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-remove" plain="true">退回</a>
+                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-edit" plain="true">无社保</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">问题</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">待录</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">提交</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">约号</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">一审</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">审核</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">可以二审</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">二审</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">拿调令</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">完结</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">爽约</a>
+                <a href="javascript:" class="easyui-linkbutton"  plain="true">派单</a>
             </div>
         </div>
     </div>
