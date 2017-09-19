@@ -60,7 +60,7 @@
                 <hr>
                 审核方式：
                 <select id="mode" name="mode" id="cc" class="easyui-combobox"
-                        data-options="panelHeight:'auto'" style="width:80px;">
+                        data-options="panelHeight:'auto',value:''" style="width:80px;">
                     <option value='核准制'>核准制</option>
                     <option value='留学生'>留学生</option>
                     <option value='应届生'>应届生</option>
@@ -68,7 +68,7 @@
                 </select>
                 进度：
                 <select name="speed" id="speed" class="easyui-combobox"
-                        data-options="panelHeight:'auto'" style="width:82px;">
+                        data-options="panelHeight:'auto',value:''" style="width:82px;">
                     <option>未办</option>
                     <option>一审</option>
                     <option>二审</option>
@@ -88,7 +88,7 @@
                 <!--福田区佳兆业中心大厦B座1408房  /api/gdata/getUserNameList-->
                 日期条件：
                 <select  class="easyui-combobox"
-                         data-options="panelHeight:'auto',editable:false"
+                         data-options="panelHeight:'auto',editable:false,value:''"
                          id='date_type' name="date_type" style="width:80px;">
                     <option>一审日期</option>
                     <option>二审日期</option>
@@ -101,7 +101,7 @@
                         $('#date_type').combobox({
                             onSelect: function(param){
                                 //console.log(param);
-                                if(param.text!='选择日期'){
+                                if(param.text!=''){
                                     $("#date_input").show();
                                 }else{
                                     $("#date_input").hide();
@@ -126,7 +126,7 @@
                 <hr>
                 申报方式：
                 <select  class="easyui-combobox"
-                         data-options="panelHeight:'auto',editable:false"
+                         data-options="panelHeight:'auto',editable:false,value:''"
                          name="sbtype" style="width:80px;">
                     <option>个人申报</option>
                     <option>单位申报</option>
@@ -139,13 +139,14 @@
                         panelHeight:"auto",
                         url:'/ui/home/getServiceList',
                         valueField:'text',
-                        textField:'text'
+                        textField:'text',
+                        value:''
                     })
                 </script>
 
                 工 作 流：
                 <select  class="easyui-combobox"
-                         data-options="panelHeight:'auto',editable:false"
+                         data-options="panelHeight:'auto',editable:false,value:''"
                          name="status" style="width:80px;">
                     <option>新进客户</option>
                     <option>没有社保</option>
