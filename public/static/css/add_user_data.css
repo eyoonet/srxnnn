@@ -1,0 +1,31 @@
+#add_user_data_ui {
+	padding-left: 20px;
+    padding-top: 20px;
+}
+#add_user_data_ui td input {
+	 margin-right: 10px;
+}
+.imagebox div{
+	float:left;
+	margin:0 10px 10px 0;
+}
+.imagebox img{
+    width:120px;
+	height:120px;
+}
+.table {
+	color: #000000;
+	//background-color: #999;
+	height: auto;
+	width: 50%;
+}
+.f-l{
+	float: left;
+}
+.f-r{
+	float: right;
+}
+
+#dowebok2 { width:auto; margin: 0 auto; font-size: 16;}
+#dowebok2 li { display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%;}
+#dowebok2 li img { width: 150px; height: 150px}
