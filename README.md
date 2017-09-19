@@ -1,6 +1,6 @@
 ThinkPHP 5.1RC1
 ===============
-
+Mindjet MindManager 2016 
 ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特性包括：
 
  + 采用容器统一管理对象
