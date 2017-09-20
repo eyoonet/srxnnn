@@ -6,7 +6,7 @@
         width: 100px;
     }
     .col-text-3{
-        width: 100px;
+        width: 130px;
     }
     .col-box-1{
         width: 141px;
@@ -15,19 +15,19 @@
         width: 103px;
     }
     .col-box-3{
-        width: 103px;
+        width: 133px;
     }
 </style>
 <!-- 添加数据开始 -->
-<div id="add_user_data_ui">
-    <form id="form_user_data" method="post">
-        <table width="630" border="0" cellpadding="0" cellspacing="0"  >
+<div id="add">
+    <form id="add-form" method="post">
+        <table width="625" border="0" cellpadding="0" cellspacing="0"  >
             <tr>
                 <td width="5%"><pre>姓名</pre></td>
                 <td width="10%"><input id='name' class="easyui-textbox col-text-1" name="name"/></td>
                 <td width="7%">毕业日期</td>
                 <td width="10%"><input id='graduateDate' class="easyui-textbox col-text-2" type="text" name="graduateDate" /></td>
-                <td width="7%">招调列席</td>
+                <td width="4%">招调</td>
                 <td width="10%"><select  class="easyui-combobox col-box-3" data-options="panelHeight:'auto',editable:false" name="zdtype">
                     <option>招工</option>
                     <option>调干</option>
@@ -99,14 +99,8 @@
                     <option>博士</option>
                 </select>
                 </td>
-                <td>小孩信息</td>
-                <td><select  class="easyui-combobox col-box-3" data-options="panelHeight:'auto',editable:false,multiple:true" name="child">
-                    <option>无</option>
-                    <option>一孩</option>
-                    <option>二孩</option>
-                    <option>怀孕</option>
-                    <option>随迁</option>
-                </select></td>
+                <td>保管地</td>
+                <td><input id='txadderss3' class="easyui-textbox col-text-3" type="text" name="danan_ads"/></td>
             </tr>
             <tr>
                 <td><pre>人保密码</pre></td>
@@ -117,8 +111,14 @@
                     <option value="6-">6个月以下</option>
                     <option value="0">无</option>
                 </select></td>
-                <td>标签</td>
-                <td><input id='Tag' class="easyui-textbox col-text-3" type="text" name="Tag" /></td>
+                <td>小孩信息</td>
+                <td><select  class="easyui-combobox col-box-3" data-options="panelHeight:'auto',editable:false,multiple:true" name="child">
+                    <option>无</option>
+                    <option>一孩</option>
+                    <option>二孩</option>
+                    <option>怀孕</option>
+                    <option>随迁</option>
+                </select></td>
             </tr>
             <tr>
                 <td><pre>价格</pre></td>
@@ -129,8 +129,8 @@
                     <option value="6-">6个月以下</option>
                     <option value="0">无</option>
                 </select></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td>标签</td>
+                <td><input id='Tag' class="easyui-textbox col-text-3" type="text" name="Tag" /></td>
             </tr>
             <tr>
                 <td><pre>订金</pre></td>
@@ -142,8 +142,9 @@
                     <option>核准制</option>
                     <option>积分制</option>
                 </select></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
+                <td colspan="2" rowspan="3" valign="top">
+                    <input id="t-comment" class="easyui-textbox"  style="width:200px;height:115px;" data-options="multiline:true">
+                </td>
             </tr>
             <tr>
                 <td><pre>毕业学校</pre></td>
@@ -155,8 +156,6 @@
                     <option>挂靠朋友</option>
                     <option>单位集体</option>
                 </select></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
             </tr>
             <tr>
                 <td><pre>专业</pre></td>
@@ -166,22 +165,20 @@
                     <option>个人申报</option>
                     <option>单位申报</option>
                 </select></td>
-                <td colspan="2">
-                    <a id="image_up_btn" href="#">上传图片</a>
-                    <a id="image_del_btn" href="#">清空图片</a>
-                </td>
             </tr>
         </table>
     </form>
 </div>
 
 
-<div id="bb">
-    <a id="save" data-options="iconCls:'icon-save'" >保 存</a>
-    <a id="close" data-options="iconCls:'icon-clear'">关 闭</a>
+<div id="add-buttons">
+    <a id="add-buttons-imageup" href="#">上传图片</a>
+    <a id="add-buttons-imagedel" href="#">清空图片</a>
+    <a id="add-buttons-save" data-options="iconCls:'icon-save'" >保 存</a>
+    <a id="add-buttons-close" data-options="iconCls:'icon-clear'">关 闭</a>
 </div>
 
-<div id="dd_image" class="easyui-dialog" title="图片上传" style="width:700px;height:550px;"
+<div id="dd_image" class="easyui-dialog" title="图片上传" style="width:695px;height:550px;"
      data-options="iconCls:'icon-save',
         			  resizable:true,
         			  modal:true,

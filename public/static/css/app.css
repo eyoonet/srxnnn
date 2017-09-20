@@ -1,8 +1,8 @@
-#add_user_data_ui {
+#add {
 	padding-left: 20px;
     padding-top: 20px;
 }
-#add_user_data_ui td input {
+#add td input {
 	 margin-right: 10px;
 }
 .imagebox div{

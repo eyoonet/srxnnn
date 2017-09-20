@@ -9,7 +9,7 @@ $(function($){
         fitColumns: true, //自动调整各列，用了这个属性，下面各列的宽度值就只是一个比例。
         striped: true, //奇偶行颜色不同
         collapsible:false,//可折叠
-        url:"user/queryList", //数据来源
+        url:"static/js/data.json", //数据来源
         sortName: 'user.id', //排序的列
         sortOrder: 'desc', //倒序
         remoteSort: true, //服务器端排序
@@ -19,7 +19,7 @@ $(function($){
         rownumbers:true, //显示行号
 		pageSize:15,
 		pageList:[15,30,45,60,75],
-		toolbar:"#dgtoobar",
+		toolbar:"#Dg-toobar",
 		columns:[[    
 			{field:'name',title:'姓名',width:"5%"},    
 			{field:'card',title:'身份证号',width:'11%'},

@@ -1,10 +1,9 @@
 <!-- 查询页开始 -->
 <div title="查询页" style="width:'100%';padding:5px;display:none;">
-
+    <!-- SELECT -->
     <table id="dg" style="height:480px;"></table>
-
-
-    <div id="dgtoobar" style="padding:5px;height:auto">
+    <!-- TABLE -->
+    <div id="Dg-toobar" style="padding:5px;height:auto">
         <div>
             <div style="display:inline">
                 <input id="ss"></input>
@@ -43,7 +42,6 @@
                 });
             </script>
             <a  id="genduo" href="javascript:" class="" onclick="genduo();">多条件</a>
-
             <script type="text/javascript">
                 function genduo(){
                     if($('#genduo').html()=="多条件"){
@@ -166,36 +164,55 @@
                     <option>已拿调令</option>
                     <option>完结</option>
                 </select>
-
-
-                <a id="search"  class="easyui-linkbutton"
-                   data-options="iconCls:'icon-search'">查 找</a>
+                <a id="search"  class="easyui-linkbutton" data-options="iconCls:'icon-search'">查 找</a>
                 <a id="dow" class="easyui-linkbutton">下载</a>
-                <!-- <a class="easyui-linkbutton" onclick="$('#dg').datagrid('reload')">刷新</a>-->
                 <a class="easyui-linkbutton" onclick="$('#form_search').form('clear')">清空</a>
             </form>
             <hr>
-            <div style="margin-bottom:5px">
-                <a href="javascript:add()" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加</a>
-                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
-                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-save" plain="true">删除</a>
-                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-cut" plain="true">退款</a>
-                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-remove" plain="true">退回</a>
-                <a href="javascript:" class="easyui-linkbutton" iconCls="icon-edit" plain="true">无社保</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">问题</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">待录</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">提交</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">约号</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">一审</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">审核</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">可以二审</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">二审</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">拿调令</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">完结</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">爽约</a>
-                <a href="javascript:" class="easyui-linkbutton"  plain="true">派单</a>
+            <!-- DATA表  按钮组 -->
+            <div id="dg-buttions-Group" style="margin-bottom:5px">
+                <a href="javascript:add();"  class="easyui-linkbutton"  plain="true">添加</a>
+                <a href="javascript:void(0);"  class="easyui-linkbutton"  plain="true">修改</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="refund" class="easyui-linkbutton"  plain="true">退款</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="back" class="easyui-linkbutton"  plain="true">退回</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="shebao" class="easyui-linkbutton"  plain="true">无社保</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="error" class="easyui-linkbutton"  plain="true">问题</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="etcinput" class="easyui-linkbutton"  plain="true">待录</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="commit" class="easyui-linkbutton"  plain="true">提交</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="rcyuehao" class="easyui-linkbutton"  plain="true">约号</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="sign" class="easyui-linkbutton"  plain="true">一审</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="fileCheck" class="easyui-linkbutton"  plain="true">审核</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="soreSubmit" class="easyui-linkbutton"  plain="true">可以二审</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="submit" class="easyui-linkbutton"  plain="true">二审</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="takeDiaol" class="easyui-linkbutton"  plain="true">拿调令</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="success" class="easyui-linkbutton"  plain="true">完结</a>
+                <a href="javascript:void(0);" onclick="run(this)" action="miss" class="easyui-linkbutton"  plain="true">爽约</a>
+                <a href="javascript:void(0)" onclick="showDialog('task');"  class="easyui-linkbutton"  plain="true">任务</a>
+                <a href="javascript:void(0)" onclick="showDialog('comment');"  class="easyui-linkbutton"  plain="true">备注</a>
             </div>
         </div>
     </div>
 </div>
 <!-- 查询页结束 -->
+<script type="text/javascript">
+    function run(options){
+        var row = getSingleSelectRow("dg");
+        var key =  $(options).attr("action");
+        var text =  $(options).context.innerText;
+        //console.log();
+        if (row != null ){
+            var url = config[key] + row.Id;
+            console.log(url);
+            showConfirm("您好","执行命令为: [" + text + "] 是否确认 ? ",function(){
+                jsonAjax('post',url,{a:1},function(ret){
+                    if (ret.code == Success){
+                        showMsg("完成","提交成功",true);
+                    }else{
+                        showMsg("错误",ret.msg,true);
+                    }
+                })
+            });
+        }
+    }
+</script>

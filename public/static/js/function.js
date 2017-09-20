@@ -1,4 +1,12 @@
-﻿//计算指定时间字符串到当前时间的天
+﻿//弹出窗口
+function showDialog(id){
+    var row = getSingleSelectRow("dg");
+    if (row != null ){
+        $("#"+id).dialog('open');
+        return row;
+    }
+}
+//计算指定时间字符串到当前时间的天
 function diffTime(end_str) {  
 	//end_str = ("2016-15-02 10:15:00").replace(/-/g,"/");
 	//一般得到的时间的格式都是：yyyy-MM-dd hh24:mi:ss，所以我就用了这个做例子，是/的格式，就不用replace了。  
@@ -31,29 +39,53 @@ function myparser(s){
     }
 };
 
+function my2formatter(date){
+    var y = date.getFullYear();
+    var m = date.getMonth()+1;
+    var d = date.getDate();
+    var h = date.getHours();
+    var min = date.getMinutes();
+    //var sec = date.getSeconds();
 
+    var str = y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d)+' '+(h<10?('0'+h):h)+':'+(min<10?('0'+min):min);//+':'+(sec<10?('0'+sec):sec);
+    return str;
+};
+function my2parser(s){
+    if (!s) return new Date();
+    var y = s.substring(0,4);
+    var m = s.substring(5,7);
+    var d = s.substring(8,10);
+    var h = s.substring(11,13);
+    var min = s.substring(14,16);
+    //2017-08-07 14:00
+    //console.log(min);
+    //var sec = s.substring(18,20);
+    if (!isNaN(y) && !isNaN(m) && !isNaN(d) && !isNaN(h) && !isNaN(min) ){
+        return new Date(y,m-1,d,h,min);
+    } else {
+        return new Date();
+    }
+};
 
 /**  
-* ajax post提交  
+* ajax post提交
 * @param url  
 * @param param  
 * @param datat 为html,json,text  
 * @param callback回调函数  
 * @return  
 */  
-function jsonAjax(url, param, callback) {  
-	$.ajax({  
-		type: "post",  
-		url: url,  
-		data: param,  
-		dataType: 'json',  
-		success: callback,  
-		error: function () {  
-			jQuery.fn.mBox({  
-				message: '恢复失败'  
-			});  
-		}  
-	});  
+function jsonAjax(type,url, param, callback) {
+	$.ajax({
+		type: type,
+		url: url,
+		data: param,
+		dataType: 'json',
+		success: callback,
+		error: function () {
+
+		}
+	});
 }  
 //confirm   
 function Confirm(msg, control) {  
@@ -234,13 +266,13 @@ function fillsize(percent) {
 * @return 所选记录行对象，如果返回值为null,或者"null"(有时浏览器将null转换成了字符串"null")说明没有 
 *选择一行记录。 
 */  
-function getSingleSelectRow(dataTableId, errorMessage) {  
+function getSingleSelectRow(dataTableId,ico="info") {
     var rows = $('#' + dataTableId).datagrid('getSelections');  
     var num = rows.length;  
     if (num == 1) {  
         return rows[0];  
     } else {  
-        $.messager.alert('提示消息', errorMessage, 'info');  
+        $.messager.alert('错误', "你至少要选择一条数据吧!", 'error');
         return null;  
     }  
 }  

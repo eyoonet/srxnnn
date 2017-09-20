@@ -1,9 +1,9 @@
 ﻿
 function add(){
-	$("#add_user_data_ui").dialog("open");//弹出窗口
-	$('#form_user_data').form('clear');//清空表单
+	$("#add").dialog("open");//弹出窗口
+	$('#add-form').form('clear');//清空表单
 	$('#card').textbox('readonly',false);
-	$('#form_user_data').form({url:'/api/gdata/add'});//设置提交地址		
+	$('#add').form({url:'/api/gdata/add'});//设置提交地址
 };
 
 
@@ -21,17 +21,17 @@ $(function($){
 	}); 
 	/*Clss UI*/
 	  //窗口
-	$('#add_user_data_ui').dialog({    
+	$('#add').dialog({
 		title: '客户资料采集',    
 		width: 670,
 		height: 'auto',    
 		closed: true,    
 		cache: false,      
 		modal: false,
-        buttons:"#bb",	
+        buttons:"#add-buttons",
 	});   
 	  //保存按钮
-	$('#save').linkbutton({
+	$('#add-buttons-save').linkbutton({
 		onClick:function(){	
 			$.messager.confirm('确认','仔细检查无误后点击确定！',function(r){    
 			    if (r){    
@@ -41,13 +41,13 @@ $(function($){
 		}
 	})
 	  //关闭按钮
-	$('#close').linkbutton({
+	$('#add-buttons-close').linkbutton({
 		onClick:function(){
-			$("#add_user_data_ui").dialog("close");
+			$("#add").dialog("close");
 		}
 	})
 	  //图片上传按钮
-	$('#image_up_btn').linkbutton({    
+	$('#add-buttons-imageup').linkbutton({
 		onClick: function(){
 			var card = $("#card").val();
 			if (card == ""){
@@ -59,14 +59,14 @@ $(function($){
 		},
 	});  
 	  //清空图片按钮
-	$('#image_del_btn').linkbutton({    
+	$('#add-buttons-imagedel').linkbutton({
 		onClick: function(){
 			alert("图片清空按钮事件");
 		},
 	}); 	  
 
 	//数据采集表单提交
-	$('#form_user_data').form({    
+	$('#add-form').form({
 	    onSubmit: function(){ 
 	        return $(this).form('validate');   
 	    },    
@@ -74,7 +74,7 @@ $(function($){
 	       var obj = $.parseJSON(data);
 	       if (obj.code > 0) {
 	       		$.messager.alert('服务器消息',obj.msg,"info"); 
-	       		$("#add_user_data_ui").dialog("close"); 
+	       		$("#add").dialog("close");
 	       }else{
 	      	 	$.messager.alert('服务器消息',obj.msg,"error");
 	      	 	return;
