@@ -14,11 +14,18 @@
     <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
 
     <label>时间：</label>
-    <input name='rcdate' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
+    <input name='task.task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
 </div>
 
 <div id="task-buttons">
-    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="alert('提交')">提交</a>
+    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="tasksubmit()">提交</a>
     <a  class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('task')">关闭</a>
 </div>
 <!-- 任务窗口结束 -->
+<script type="text/javascript">
+    function tasksubmit(){
+        var row = getSingleSelectRow("dg");
+        alert();
+        console.log(row);
+    }
+</script>

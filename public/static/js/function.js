@@ -3,7 +3,6 @@ function showDialog(id){
     var row = getSingleSelectRow("dg");
     if (row != null ){
         $("#"+id).dialog('open');
-        return row;
     }
 }
 //计算指定时间字符串到当前时间的天
