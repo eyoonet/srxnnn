@@ -153,6 +153,7 @@ function searchUser(){
     var fields =$('#queryForm').serializeArray(); //自动序列化表单元素为JSON对象
     $.each( fields, function(i, field){
         params[field.name] = field.value; //设置查询参数
+
     });
     $('#userTable').datagrid('reload'); //设置好查询参数 reload 一下就可以了
 }

@@ -1,0 +1,28 @@
+[{
+  "Id":1,
+  "text":"父节点1",
+  "iconCls":"icon-save",
+  "type":1,
+  "json":[{"name:":"ced","value":"Hello"}]
+},{
+  "Id":1,
+  "text":"父节点2",
+  "iconCls":"icon-save",
+  "type":2
+
+},{
+  "Id":1,
+  "text":"父节点3",
+  "iconCls":"icon-save",
+  "type":3
+
+},{
+  "Id":1,
+  "text":"父节点4",
+  "iconCls":"icon-save",
+  "type":0,
+  "children":[{
+    "text":"File1",
+    "checked":true
+  }]
+}]

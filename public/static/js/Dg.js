@@ -1,4 +1,5 @@
 var select_index;
+var click = false;
 $(function($){
 	$('#dg').datagrid({
         //title:'用户列表', //标题
@@ -54,10 +55,7 @@ $(function($){
 			{field:'wuser',title:'外勤',width:'5%'},
 			{field:'up_log',title:'日志',width:'25%'},
 		]],
-		//用户双击事件
-		onDblClickRow:function(index,obj){
-			$('#tabs').tabs('select','详情页');
-		},
+
 		//右键
 		onRowContextMenu:function(e,index,row){
 			e.preventDefault();//屏蔽浏览器右击事件
@@ -66,8 +64,7 @@ $(function($){
 			$('#mm').menu('show', {    
 			  left: e.clientX,    
 			  top: e.clientY    
-			});   			
-			//updata(row);
+			});
 		},
 		//用户选择时保存索引
 		onSelect:function(index){
@@ -81,21 +78,29 @@ $(function($){
 		},
         //大于2天的高亮显示
  		rowStyler:function(index,row){
-			if(row.rcdate!=null){
+			if(row.rcdate != null){
 				if(diffTime(row.rcdate) < 2){
-				   //console.log(diffTime(row.rcdate));
-				   //console.log(row.name);
 				   return 'color:blue;';
 				}
 			}
-		}
+		},
+		//双击单元格
+		onDblClickCell: function(index,field,value){
+			console.log(index+field+value);
+            if (field == "comment") {
+                showDialog('comment');
+                click = true;
+            } else if (field == "Tag") {
+                showDialog('tag');
+                click = true;
+            } else {
+                click = false;
+            }
+		},
+        //用户双击事件
+        onDblClickRow:function(index,obj){
+            if (click) return;//解决冲突
+            $('#tabs').tabs('select','详情页');
+        }
 	});
-
-	//表格右键菜单
-	$('#mm').menu({    
-	    onClick:function(item){    
-			//console.log(item);
-
-	    }   
-	});  
 })

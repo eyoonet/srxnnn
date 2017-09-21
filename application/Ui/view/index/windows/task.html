@@ -6,26 +6,58 @@
 </style>
 <div id="task" class="easyui-dialog" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
           data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
-    <input name="task.type"  class="easyui-combobox"  style="width:100%;"
-           data-options="valueField:'id',
-                            textField:'text',
-                            url:'/static/js/combobox.json',
-                            panelHeight:'auto'"/>
-    <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
+   <form id="task-form" action="task">
+        <input name="task.type"  class="easyui-combobox"  style="width:100%;"
+               data-options="valueField:'id',
+                                textField:'text',
+                                url:'/static/js/combobox.json',
+                                panelHeight:'auto'"/>
+        <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
 
-    <label>时间：</label>
-    <input name='task.task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
+        <label>时间：</label>
+        <input name='task.task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
+   </form>
 </div>
 
 <div id="task-buttons">
-    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="tasksubmit()">提交</a>
+    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="formSubmit('task,task-form',true)">提交</a>
     <a  class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('task')">关闭</a>
 </div>
 <!-- 任务窗口结束 -->
 <script type="text/javascript">
-    function tasksubmit(){
-        var row = getSingleSelectRow("dg");
-        alert();
-        console.log(row);
+    /* 带窗口的表单提交
+    * @pram dialogid string 窗口ID
+    * @pram formid string  表单ID
+    * @pram getrow bool  获取选中行
+    * */
+    function formSubmit(dialogid,formid,getRow = false){
+        var url = null;
+        var row = getRow ? getSingleSelectRow("dg"):null;
+        var formParam = $('#' + formid).serialize();
+        var key = $('#' + formid).attr('action');
+        if (row != null ) {
+            url = config[key] + row.Id;
+            console.log(url);
+            showConfirm("系统", "执行命令是否确认 ? ", function () {
+                jsonAjax('post', url, formParam, function (ret) {
+                    if (ret.code == Success) {
+                        showMsg("完成", "提交成功", true);
+                        closeDialog("#"+dialogid);
+                    } else {
+                        showMsg("错误", ret.msg, true,'error');
+                    }
+                })
+            });
+        } else {
+            url = config[key];
+            jsonAjax('post',url,formParam,function(){
+                if (ret.code == Success ) {
+                    showMsg("完成", "提交成功", true);
+                    closeDialog("#"+dialogid);
+                } else {
+                    showMsg("错误", ret.msg, true,'error');
+                }
+            })
+        }
     }
 </script>

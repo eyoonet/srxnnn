@@ -2,23 +2,49 @@
 </ul>
 <script type="text/javascript">
  $('#tt').tree({
-    //url:'/ui/home/get_menu',
-	//onLoadSuccess:function(node, data){
-	//	console.log(data);
-	//},
-	onClick: function(node){
-		console.log(node);
-        select_index = null;
-        id = node.Id;//parseInt(id)
-        if (id == 7 || id == 1 )return;
-        $('#tabs').tabs('select','查询页');
-        //var param = node.text;    
-        console.log(id);
-        
-		var str = node.json;
+     url:'/static/js/menu.json',
+	 onLoadSuccess:function(node, data){
+		console.log(data);
+	 },
+     //0 直接返回  1 json     2 url    3  code    4 Tsb add
+     onClick: function(node){
+         //console.log(node);
+         select_index = null;
+         if (node.type == 0 )return;
+         if(node.type == 1 ){
+             $('#dg').datagrid('load',{
+                 code: '01',
+                 abcc: 'name01'
+             });
+
+
+             $('#tabs').tabs('select','查询页');//选中查询页
+
+             var params = $('#dg').datagrid('options').queryParams; //先取得 datagrid 的查询参数
+             var fields  = node.json; //JSON.parse(node.json); //json字符串转到对象
+
+
+
+             //console.log(params);
+
+             $.each( fields, function(i, field){
+                 console.log(field.name);
+                 console.log(field.value);
+                 params[field.name] = field.value; //设置查询参数
+             });
+             console.log(params);
+             //$('#dg').datagrid('reload'); //设置好查询参数 reload 一下就可以了
+
+         }
+
+
+
+        //var param = node.text;
+
+
 	    //var map = JSON.parse(str)
 		//$('#dg').datagrid('load', {map} ); 
-		$('#dg').datagrid('load', JSON.parse(str) ); 
+		//$('#dg').datagrid('load', JSON.parse(str) );
     }
  });
 </script>  
