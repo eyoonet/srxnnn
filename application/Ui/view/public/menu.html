@@ -8,43 +8,41 @@
 	 },
      //0 直接返回  1 json     2 url    3  code    4 Tsb add
      onClick: function(node){
-         //console.log(node);
          select_index = null;
-         if (node.type == 0 )return;
-         if(node.type == 1 ){
-             $('#dg').datagrid('load',{
-                 code: '01',
-                 abcc: 'name01'
-             });
-
-
+         console.log(node.text);
+         // 0 是不做操作
+         if  (node.type == 0 )return;
+         // 1 Dg 条件设置
+         if (node.type == 1 ) {
              $('#tabs').tabs('select','查询页');//选中查询页
-
              var params = $('#dg').datagrid('options').queryParams; //先取得 datagrid 的查询参数
              var fields  = node.json; //JSON.parse(node.json); //json字符串转到对象
-
-
-
-             //console.log(params);
-
              $.each( fields, function(i, field){
-                 console.log(field.name);
-                 console.log(field.value);
-                 params[field.name] = field.value; //设置查询参数
+                 params[field.key] = field.value; //设置查询参数
              });
              console.log(params);
-             //$('#dg').datagrid('reload'); //设置好查询参数 reload 一下就可以了
-
+             $('#dg').datagrid('reload'); //设置好查询参数 reload 一下就可以了
          }
-
-
-
-        //var param = node.text;
-
-
-	    //var map = JSON.parse(str)
-		//$('#dg').datagrid('load', {map} ); 
-		//$('#dg').datagrid('load', JSON.parse(str) );
+         // 2 URL ajax 加载 add 到 tabs 选项卡
+         if (node.type == 2 ) {
+             var isdisply = $('#tabs').tabs('exists',node.text);
+             if (!isdisply) {
+                 $('#tabs').tabs('add',{
+                     title: node.text,
+                     selected: true,
+                     closable: true,
+                     href : node.url,
+                     fit : true
+                 })
+             } else {
+                 $('#tabs').tabs('select',node.text);//选中
+             }
+         }
+         // 3 执行server js 代码
+         if (node.type == 3 ) {
+             mfun = new Function(node.script)();
+             mfun();
+         }
     }
  });
 </script>  

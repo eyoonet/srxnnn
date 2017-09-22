@@ -88,7 +88,9 @@ $(function($){
 		onDblClickCell: function(index,field,value){
 			console.log(index+field+value);
             if (field == "comment") {
-                showDialog('comment');
+                showDialog('comment','备注2!',function(){
+					formSubmit('comment','comment-form',true);
+				});
                 click = true;
             } else if (field == "Tag") {
                 showDialog('tag');

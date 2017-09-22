@@ -1,11 +1,45 @@
 ﻿//弹出窗口
-function showDialog(id){
+/**
+ * 显示带表单的提交窗口
+ * @param id       窗口id
+ * @param title    窗口标题
+ * @param funSave  提交回调函数
+ */
+function showDialog(id , title = null ,funSave = function(){} ){
     var row = getSingleSelectRow("dg");
-    if (row != null ){
+    if ( row != null ){
+        //console.log(row);
+        $("#"+id+"-form").form('load',row);
+        console.log(title);
+        if ( title != null ){
+            //先保存 dom onclick函数
+            //$('a').attr('onclick','recommend(1082418,1,"%u7F51%u9177%u7535%u5F71",this)');
+            $("#"+id).dialog({
+                title: title,
+                width: 300,
+                height: "auto",
+                cache: false,
+                closed:true,
+                modal:false,
+                buttons:[{
+                    text:'提交',
+                    handler: funSave
+                },{
+                    text:'关闭',
+                    handler:function(){
+                        $("#"+id).dialog('close');
+                    }
+                }]
+            });
+        }
         $("#"+id).dialog('open');
     }
 }
-//计算指定时间字符串到当前时间的天
+/**
+ * 计算指定时间字符串到当前时间的天
+ * @param end_str
+ * @returns {number}
+ */
 function diffTime(end_str) {  
 	//end_str = ("2016-15-02 10:15:00").replace(/-/g,"/");
 	//一般得到的时间的格式都是：yyyy-MM-dd hh24:mi:ss，所以我就用了这个做例子，是/的格式，就不用replace了。  

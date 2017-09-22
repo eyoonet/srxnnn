@@ -19,6 +19,9 @@
 	height: auto;
 	width: 50%;
 }
+.dialog-form-style span{
+	margin-bottom: 7px;
+}
 .f-l{
 	float: left;
 }

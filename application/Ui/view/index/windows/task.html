@@ -1,10 +1,5 @@
 <!-- 任务窗口开始 -->
-<style>
-    #task span{
-        margin-bottom: 7px;
-    }
-</style>
-<div id="task" class="easyui-dialog" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
+<div id="task" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
           data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
    <form id="task-form" action="task">
         <input name="task.type"  class="easyui-combobox"  style="width:100%;"
@@ -20,21 +15,23 @@
 </div>
 
 <div id="task-buttons">
-    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="formSubmit('task,task-form',true)">提交</a>
+    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="formSubmit('task','task-form',true)">提交</a>
     <a  class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('task')">关闭</a>
 </div>
 <!-- 任务窗口结束 -->
 <script type="text/javascript">
     /* 带窗口的表单提交
-    * @pram dialogid string 窗口ID
-    * @pram formid string  表单ID
-    * @pram getrow bool  获取选中行
+    * @param dialogid string 窗口ID
+    * @param formid string  表单ID
+    * @param getrow bool  获取选中行
+    * @param action seting URL
     * */
-    function formSubmit(dialogid,formid,getRow = false){
+    function formSubmit(dialogid,formid,getRow = false, action = false ){
         var url = null;
+        //获取dg row
         var row = getRow ? getSingleSelectRow("dg"):null;
         var formParam = $('#' + formid).serialize();
-        var key = $('#' + formid).attr('action');
+        var key = action ? action : $('#' + formid).attr('action');
         if (row != null ) {
             url = config[key] + row.Id;
             console.log(url);
@@ -50,6 +47,7 @@
             });
         } else {
             url = config[key];
+            console.log(key);
             jsonAjax('post',url,formParam,function(){
                 if (ret.code == Success ) {
                     showMsg("完成", "提交成功", true);

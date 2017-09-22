@@ -3,19 +3,20 @@
   "text":"父节点1",
   "iconCls":"icon-save",
   "type":1,
-  "json":[{"name:":"ced","value":"Hello"}]
+  "json":[{"key":"ced","value":"Hello"}]
 },{
   "Id":1,
   "text":"父节点2",
   "iconCls":"icon-save",
-  "type":2
-
+  "url":"/ui/task/index",
+  "type":2,
+  "script":"alert()"
 },{
   "Id":1,
   "text":"父节点3",
   "iconCls":"icon-save",
-  "type":3
-
+  "type":3,
+  "script":"alert('你好')"
 },{
   "Id":1,
   "text":"父节点4",
