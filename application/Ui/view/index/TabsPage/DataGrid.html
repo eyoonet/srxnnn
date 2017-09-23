@@ -170,16 +170,16 @@
             </form>
             <hr>
             <!-- DATA表  按钮组 -->
-            <div id="dg-buttions-Group" style="margin-bottom:5px">
+            <div id="dg-buttions-Group" dg="dg" style="margin-bottom:5px">
                 <a href="javascript:showDataAdd();"  class="easyui-linkbutton"  plain="true">添加</a>
                 <a href="javascript:showDataEdit();"  class="easyui-linkbutton"  plain="true">修改</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>
                 <a href="javascript:void(0);" onclick="refund()" action="refund" class="easyui-linkbutton"  plain="true">退款</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="back" class="easyui-linkbutton"  plain="true">退回</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="shebao" class="easyui-linkbutton"  plain="true">无社保</a>
-                <a href="javascript:void(0)" onclick="showDialog('error');"  class="easyui-linkbutton"  plain="true">问题</a>
+                <a href="javascript:void(0)" onclick="showDialog('error','dg');"  class="easyui-linkbutton"  plain="true">问题</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="etcinput" class="easyui-linkbutton"  plain="true">待录</a>
-                <a href="javascript:void(0)" onclick="showDialog('commit');"  class="easyui-linkbutton"  plain="true">提交</a>
+                <a href="javascript:void(0)" onclick="showDialog('commit','dg');"  class="easyui-linkbutton"  plain="true">提交</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="rcyuehao" class="easyui-linkbutton"  plain="true">约号</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="sign" class="easyui-linkbutton"  plain="true">一审</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="fileCheck" class="easyui-linkbutton"  plain="true">审核</a>
@@ -188,9 +188,9 @@
                 <a href="javascript:void(0);" onclick="run(this)" action="takeDiaol" class="easyui-linkbutton"  plain="true">拿调令</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="success" class="easyui-linkbutton"  plain="true">完结</a>
                 <a href="javascript:void(0);" onclick="run(this)" action="miss" class="easyui-linkbutton"  plain="true">爽约</a>
-                <a href="javascript:void(0)" onclick="showDialog('task');"  class="easyui-linkbutton"  plain="true">任务</a>
+                <a href="javascript:void(0)" onclick="showDialog('task','dg');"  class="easyui-linkbutton"  plain="true">任务</a>
                 <a href="javascript:void(0)" onclick="comment();"  class="easyui-linkbutton"  plain="true">备注</a>
-                <a href="javascript:void(0)" onclick="showDialog('tag');"  class="easyui-linkbutton"  plain="true">标记</a>
+                <a href="javascript:void(0)" onclick="showDialog('tag','dg');"  class="easyui-linkbutton"  plain="true">标记</a>
             </div>
         </div>
     </div>
@@ -199,13 +199,13 @@
 <script type="text/javascript">
     //退款
     function refund(){
-        showDialog('comment','退款原因?',function(){
+        showDialog('comment','dg','退款原因?',function(){
             formSubmit('comment','comment-form',true,'refund');
         });
     }
     //备注
     function comment(){
-        showDialog('comment','备注?',function(){
+        showDialog('comment','dg','备注?',function(){
             formSubmit('comment','comment-form',true,'comment');
         });
     }
@@ -216,7 +216,11 @@
      * @param options html DOW action = url
      */
     function run(options){
-        var row = getSingleSelectRow("dg");
+        var dg = $(options).parent().attr("dg");
+        if(dg == "undefined"){
+            alert("未设置butSdg属性");
+        }
+        var row = getSingleSelectRow(dg);
         var key =  $(options).attr("action");
         var text =  $(options).context.innerText;
         //console.log();

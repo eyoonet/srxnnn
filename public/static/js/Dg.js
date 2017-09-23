@@ -14,7 +14,7 @@ $(function($){
         sortName: 'user.id', //排序的列
         sortOrder: 'desc', //倒序
         remoteSort: true, //服务器端排序
-        idField:'uid', //主键字段
+        idField:'id', //主键字段
         queryParams:{}, //查询条件
         pagination:true, //显示分页
         rownumbers:true, //显示行号
@@ -88,7 +88,7 @@ $(function($){
 		onDblClickCell: function(index,field,value){
 			console.log(index+field+value);
             if (field == "comment") {
-                showDialog('comment','备注2!',function(){
+                showDialog('comment','dg','备注2!',function(){
 					formSubmit('comment','comment-form',true);
 				});
                 click = true;

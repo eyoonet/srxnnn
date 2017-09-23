@@ -1,27 +1,33 @@
 [{
   "Id":1,
-  "text":"父节点1",
-  "iconCls":"icon-save",
+  "title":"查询页",
+  "text":"表格",
+  "iconCls":"icon-tip",
   "type":1,
+  "tag":"shelect",
   "json":[{"key":"ced","value":"Hello"}]
 },{
   "Id":1,
-  "text":"父节点2",
-  "iconCls":"icon-save",
+  "title":"任务页",
+  "text":"任务",
+  "iconCls":"",
   "url":"/ui/task/index",
   "type":2,
-  "script":"alert()"
+  "script":"console.log('这是服务器的J脚本')"
 },{
   "Id":1,
   "text":"父节点3",
-  "iconCls":"icon-save",
+  "iconCls":"",
   "type":3,
-  "script":"alert('你好')"
+  "script":"console.log('这是服务器的JS脚本')"
 },{
   "Id":1,
-  "text":"父节点4",
-  "iconCls":"icon-save",
-  "type":0,
+  "text":"日志",
+  "iconCls":"",
+  "type":2,
+  "title":"日志",
+  "url":"/ui/log/index",
+
   "children":[{
     "text":"File1",
     "checked":true

@@ -2,39 +2,58 @@
 /**
  * 显示带表单的提交窗口
  * @param id       窗口id
- * @param title    窗口标题
- * @param funSave  提交回调函数
+ * @param dgid     数据表ID
+ * @param funSave  提交回调函
+ * @param getrow   是否获取ROW
  */
-function showDialog(id , title = null ,funSave = function(){} ){
-    var row = getSingleSelectRow("dg");
-    if ( row != null ){
-        //console.log(row);
-        $("#"+id+"-form").form('load',row);
-        console.log(title);
-        if ( title != null ){
-            //先保存 dom onclick函数
-            //$('a').attr('onclick','recommend(1082418,1,"%u7F51%u9177%u7535%u5F71",this)');
-            $("#"+id).dialog({
-                title: title,
-                width: 300,
-                height: "auto",
-                cache: false,
-                closed:true,
-                modal:false,
-                buttons:[{
-                    text:'提交',
-                    handler: funSave
-                },{
-                    text:'关闭',
-                    handler:function(){
-                        $("#"+id).dialog('close');
-                    }
-                }]
-            });
-        }
-        $("#"+id).dialog('open');
+function showDialog(id, Dgid = null, title = null ,funSave = null   )
+{
+    if (title != null) {
+        $("#" + id).dialog({
+            title: title
+        });
     }
+    if (funSave != null) {
+        $("#" + id).dialog({
+            buttons:[{
+                text:'提交',
+                handler: funSave
+            },{
+                text:'关闭',
+                handler:function(){
+                    $("#"+id).dialog('close');
+                }
+            }]
+        });
+    }
+    if (Dgid != null ){
+        var row = getSingleSelectRow(Dgid);
+        if( row == null ){
+            return;
+        } else {
+            $("#" + id + "-form").form('load', row);
+        }
+    }
+    $("#"+id).dialog('open');
 }
+
+function showDialog2(id,funSave)
+{
+    $("#" + id).dialog({
+        buttons:[{
+            text:'提交',
+            handler: funSave
+        },{
+            text:'关闭',
+            handler:function(){
+                $("#"+id).dialog('close');
+            }
+        }]
+    });
+    $("#"+id).dialog('open');
+}
+
+
 /**
  * 计算指定时间字符串到当前时间的天
  * @param end_str

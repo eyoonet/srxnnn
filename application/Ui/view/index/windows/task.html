@@ -2,12 +2,19 @@
 <div id="task" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
           data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
    <form id="task-form" action="task">
-        <input name="task.type"  class="easyui-combobox"  style="width:100%;"
+       <label>类型:</label>
+       <input name="task.type"  class="easyui-combobox"  style="width:35%;"
                data-options="valueField:'id',
                                 textField:'text',
                                 url:'/static/js/combobox.json',
                                 panelHeight:'auto'"/>
-        <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
+       <label>用户:</label>
+       <input name="user"  class="easyui-combobox"  style="width:35%;"
+               data-options="valueField:'id',
+                                textField:'text',
+                                url:'/static/js/combobox.json',
+                                panelHeight:'auto'"/>
+       <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
 
         <label>时间：</label>
         <input name='task.task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">

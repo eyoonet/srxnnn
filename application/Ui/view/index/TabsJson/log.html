@@ -1,0 +1,46 @@
+
+<table id="log-dg" class="easyui-datagrid" style="width:100%;"
+       data-options="url:'static/js/data.json',
+                    fitColumns:false,
+                    singleSelect:true,
+                    striped:true,
+                    fit:true,
+                    pagination:true,
+                    rownumbers:true,
+                    toolbar:'#log-dg-buttions'">
+    <thead>
+    <tr>
+        <th data-options="field:'Id'" style="width: 5%" >编码</th>
+        <th data-options="field:'card'" style="width: 10%">类型</th>
+        <th data-options="field:'name'" style="width: 10%">用户名</th>
+        <th data-options="field:'price'" style="width: 10%">用户组</th>
+        <th data-options="field:'price'" style="width: 10%">客户名</th>
+        <th data-options="field:'price'" style="width: 10%">内容</th>
+        <th data-options="field:'price'" style="width: 18%">URL</th>
+        <th data-options="field:'price'" style="width: 10%">时间</th>
+        <th data-options="field:'action',formatter:task_action" style="width:26%">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="log-dg-buttions" style="padding:5px;height:auto">
+    <div>
+        执行日: <input class="easyui-datebox" style="width:80px">
+        发布日: <input class="easyui-datebox" style="width:80px">
+        类型:
+        <select class="easyui-combobox" panelHeight="auto" style="width:100px">
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="basic">Basic</option>
+            <option value="perl">Perl</option>
+            <option value="python">Python</option>
+        </select>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+</script>
