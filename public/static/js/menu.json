@@ -1,35 +1,49 @@
-[{
-  "Id":1,
-  "title":"查询页",
-  "text":"表格",
-  "iconCls":"icon-tip",
-  "type":1,
-  "tag":"shelect",
-  "json":[{"key":"ced","value":"Hello"}]
-},{
-  "Id":1,
-  "title":"任务页",
-  "text":"任务",
-  "iconCls":"",
-  "url":"/ui/task/index",
-  "type":2,
-  "script":"console.log('这是服务器的J脚本')"
-},{
-  "Id":1,
-  "text":"父节点3",
-  "iconCls":"",
-  "type":3,
-  "script":"console.log('这是服务器的JS脚本')"
-},{
-  "Id":1,
-  "text":"日志",
-  "iconCls":"",
-  "type":2,
-  "title":"日志",
-  "url":"/ui/log/index",
+[
+  {
+    "Id": 1,
 
-  "children":[{
-    "text":"File1",
-    "checked":true
-  }]
-}]
+
+    "tag": "CLENTS",
+    "text": "工作流",
+    "title": "菜单管理",
+    "state": "open",
+    "url": null,
+    "script": null,
+    "json": [
+      {
+        "key": "ced",
+        "value": "Hello"
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "title": "任务页",
+    "text": "任务",
+    "iconCls": "",
+    "url": "/ui/task/index",
+    "type": 2,
+    "script": "console.log('这是服务器的J脚本')"
+  },
+  {
+    "Id": 3,
+    "text": "父节点3",
+    "iconCls": "",
+    "type": 3,
+    "script": "console.log('这是服务器的JS脚本')"
+  },
+  {
+    "Id": 4,
+    "text": "日志",
+    "iconCls": "",
+    "type": 2,
+    "title": "日志页",
+    "url": "/ui/log/index",
+    "children": [
+      {
+        "text": "File1",
+        "checked": true
+      }
+    ]
+  }
+]

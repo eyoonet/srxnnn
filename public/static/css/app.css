@@ -19,6 +19,8 @@
 	height: auto;
 	width: 50%;
 }
+
+/* dialog窗口 */
 .dialog-form-style span{
 	margin-bottom: 7px;
 }
@@ -29,6 +31,18 @@
 	float: right;
 }
 
+.button {
+	margin: 0px 0px 0px 0px;
+	background-color: #4CAF50; /* Green */
+	border: none;
+	color: white;
+	padding: 5px 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+}
+/* 图片容器 */
 #dowebok2 { width:auto; margin: 0 auto; font-size: 16;}
 #dowebok2 li { display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%;}
 #dowebok2 li img { width: 150px; height: 150px}

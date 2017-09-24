@@ -1,8 +1,8 @@
 <ul id="tt" class="easyui-tree">
 </ul>
 <script type="text/javascript">
-    onClickMenu("tt","dg","/static/js/menu.json");
-
+    onClickMenu("tt","dg","getSidebar/CLENTS");
+   //onClickMenu("tt","dg","/static/js/menu.json");
 function onClickMenu(treeid,dgid,url){
     $('#'+treeid).tree({
         url:url,
@@ -32,6 +32,11 @@ function onClickMenu(treeid,dgid,url){
                 } else {
                     $('#tabs').tabs('select',node.title);//选中
                 }
+                if (typeof node.json == "string"){
+                    node.json = $.parseJSON(node.json);
+                }
+                console.info(node.json);
+
                 // dg 从新加载dg参数
                 var params = $('#'+dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
                 var fields  = node.json; //JSON.parse(node.json); //json字符串转到对象

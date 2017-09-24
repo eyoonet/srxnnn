@@ -1,0 +1,64 @@
+<table id="set-treegrid" style="width:100%px;height:100%px"></table>
+<script type="text/javascript">
+    $(function () {
+        var lastIndex
+        $('#set-treegrid').treegrid({
+            url: 'getSidebarAll',
+            //method:'post',          //请求方式
+            idField: 'id',           //定义标识树节点的键名字段
+            treeField: 'text',       //定义树节点的字段
+            fit: true,               //网格自动撑满
+            fitColumns: true,        //设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
+            columns: [[
+                {field: 'id', title: 'ID', width: '3%', align: 'right'},
+                {field: 'text', title: '显示内容', width: '25%'},
+                {field: 'fid', title: '父ID', width: '3%', align: 'right'},
+                {field: 'group_id', title: '角色', width: '5%'},
+                {field: 'status', title: '禁用', width: '3%', align: 'right'},
+                {field: 'sort', title: '排序', width: '5%', align: 'right', editor: 'numberbox'},
+                {field: 'type', title: '类型', width: '3%', align: 'right'},
+                {field: 'tag', title: '所属', width: '5%'},
+                {field: 'title', title: 'tabs标题', width: '10%'},
+                {field: 'state', title: '展开', width: '5%'},
+                {field: 'checked', title: '选择', width: '5%'},
+                //{field:'attributes',title:'',width:'3%'},
+                // {field:'iconCls',title:'编码',width:'3%'},
+                {field: 'dgid', title: '数据表ID', width: '5%'},
+                {field: 'json', title: 'JSON', width: '7%'},
+                {field: 'url', title: 'URL', width: '7%'},
+                {field: 'script', title: 'JS', width: '7%'}
+            ]],
+            onBeforeEdit: function (index, row) {
+
+            },
+            onAfterEdit: function (row,changes) {
+                console.log(changes);
+            },
+            onCancelEdit: function (index, row) {
+
+            },
+            /**
+             *  用户双击单元格
+             * @param index
+             * @param field
+             * @param value
+             */
+            onDblClickCell:function(field, row, value  ){
+
+            },
+            /**
+             *  在用户点击单元格的时候触发
+             * @param field
+             * @param row
+             */
+            onClickCell:function(field,row){
+                $('#set-treegrid').treegrid('endEdit', lastIndex);
+                if (field == 'sort'){
+                    $('#set-treegrid').treegrid('beginEdit', row.id);
+                    lastIndex = row.id;
+                }
+            }
+        });
+    });
+
+</script>

@@ -22,4 +22,6 @@ return [
     //'ui/[:name]'=>'ui/Index/index',
     '/'=>'ui/Index/index',
     'login'=>'ui/Index/login',
+    'getSidebarAll'=>'api/menu/getSidebarAll',
+    'getSidebar/:tag'=>'api/menu/getSidebar'
 ];
