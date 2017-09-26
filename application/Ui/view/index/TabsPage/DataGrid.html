@@ -223,10 +223,9 @@
         var row = getSingleSelectRow(dg);
         var key =  $(options).attr("action");
         var text =  $(options).context.innerText;
-        //console.log();
         if (row != null ){
             var url = config[key] + row.Id;
-            //console.log(url);
+            console.info("URL:"+url);
             showConfirm("您好","执行命令为: [" + text + "] 是否确认 ? ",function(){
                 jsonAjax('post',url,{a:1},function(ret){
                     if (ret.code == Success){

@@ -18,10 +18,12 @@ Route::get('think', function () {
 //Route::rule('test', 'api/Index/test');
 
 return [
-    //'test/:name'=>'api/Index/test',
+    'test/:name'=>'api/Index/test',
     //'ui/[:name]'=>'ui/Index/index',
-    '/'=>'ui/Index/index',
-    'login'=>'ui/Index/login',
-    'getSidebarAll'=>'api/menu/getSidebarAll',
-    'getSidebar/:tag'=>'api/menu/getSidebar'
+    '/'                  => 'ui/Index/index',
+    'login'              => 'ui/Index/login',
+    'getSidebarAll'      => 'api/menu/getSidebarAll',
+    'getSidebar/:tag'    => 'api/menu/getSidebar',
+    'menu-add'           => 'api/menu/create',
+    'menu-del/:id'       => 'api/menu/delete'
 ];

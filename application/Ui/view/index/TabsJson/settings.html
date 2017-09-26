@@ -1,13 +1,154 @@
-<table id="set-treegrid"></table>
-<div class="easyui-window" style="width:600px;height:400px" data-options="
-    border:'thin',
-    modal:false,
-">
+<style>
+    .my-ul {
+        list-style-type: none;
+    }
+
+    .my-ul li {
+        margin: 5px 5px 5px 5px;
+    }
+
+    .my-ul li label {
+        float: left;
+        width: 70px;
+        line-height: 25px;
+    }
+
+    .my-ul li input, select {
+        width: 80px;
+    }
+</style>
+<table id="set-menu-treegrid"></table>
+<div id="set-menu-dialog" class="easyui-dialog" style="width:450px;height:auto;" data-options="closed:true,border:'thin',modal:false,">
+    <form id="set-menu-dialog-form" action="menu">
+        <div style="float: left">
+            <ul class="my-ul" style="">
+                <li>
+                    <label>菜单类型</label>
+                    <input name="type" class="easyui-combobox">
+                </li>
+                <li>
+                    <label>显示名称</label>
+                    <input name="text" class="easyui-textbox">
+                </li>
+                <li>
+                    <label>角色</label>
+                    <input name="group_id" class="easyui-textbox" data-options="">
+                </li>
+                <li>
+                    <label>所属模块</label>
+                    <input name="tag" class="easyui-combobox">
+                </li>
+            </ul>
+        </div>
+        <div style="float: left">
+            <ul class="my-ul">
+                <li>
+                    <label>上级菜单</label>
+                    <input name="fid" class="easyui-combotree" data-options="url:'get_data.php'"></input>
+                </li>
+                <li>
+                    <label>排序</label>
+                    <input name="sort" class="easyui-textbox">
+                </li>
+                <li>
+                    <label>面板标题</label>
+                    <input name="title" class="easyui-textbox">
+                </li>
+                <li>
+                    <label>关联表格</label>
+                    <input name="dgid" class="easyui-textbox">
+                </li>
+            </ul>
+        </div>
+        <div style="clear: left">
+            <ul class="my-ul">
+                <li>
+                    <label>链接</label>
+                    <input name="url" class="easyui-textbox" style="width: 288px">
+                </li>
+                <li >
+                    <label>json = </label>
+                    <input name="json" class="easyui-textbox" style="width: 288px;height: 100px;" data-options="multiline:true">
+                </li>
+                <li >
+                    <label>script = </label>
+                    <input name="script" class="easyui-textbox" style="width: 288px;height: 100px;" data-options="multiline:true">
+                </li>
+            </ul>
+        </div>
+    </form>
 </div>
+
+
 <script type="text/javascript">
+    function edit_menu(id = null){
+        var menu_dg = $("#set-menu-treegrid")
+        if (id == null){
+            var row = menu_dg.treegrid("getSelected");
+            if(row == null){
+                showMsg("错误","请选择一个菜单来编辑",true,"error");return;
+            }else {
+                $("#set-menu-dialog-form").form('load', row);
+            }
+        }
+        $("#set-menu-dialog").dialog({
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    formSubmit('set-menu-dialog','set-menu-dialog-form',false,'menu-edit/id/'+row.id);
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $("#set-menu-dialog").dialog("close");
+                }
+            }]
+        }).dialog("open");
+    }
+
+    function new_menu(fid = 0){
+        $("#set-menu-dialog-form").form('clear');
+        $("#set-menu-dialog").dialog({
+            buttons:[{
+                text:'保存',
+                handler:function(){
+                    formSubmit('set-menu-dialog','set-menu-dialog-form',false,'menu-add/fid/'+fid);
+                }
+            },{
+                text:'关闭',
+                handler:function(){
+                    $("#set-menu-dialog").dialog("close");
+                }
+            }]
+        }).dialog("open");
+    }
+
+    function remove_menu(id = 0){
+        if (id == 0 ){
+            var row = $("#set-menu-treegrid").treegrid("getSelected");
+            if (row == null ){
+                showMsg("错误","请选择一个菜单来编辑",true,"error");return;
+            } else {
+                id = row.id
+            }
+        }
+        var url = "menu-del/" + id;
+        //console.log(url);
+        showConfirm("您好", "是否确认 ? ", function () {
+            jsonAjax('post', url, {remov: 1}, function (ret) {
+                if (ret.code == Success) {
+                    showMsg("完成", "提交成功", true);
+                } else {
+                    showMsg("错误", ret.msg, true, "error");
+                }
+            })
+        });
+    }
+
+    /* dim */
     $(function () {
         var lastIndex
-        $('#set-treegrid').treegrid({
+        $('#set-menu-treegrid').treegrid({
             url: 'getSidebarAll',
             //method:'post',          //请求方式
             idField: 'id',           //定义标识树节点的键名字段
@@ -16,7 +157,7 @@
             fitColumns: true,        //设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
             columns: [[
                 {field: 'id', title: 'ID', width: '3%', align: 'right'},
-                {field: 'text', title: '显示内容', width: '25%'},
+                {field: 'text', title: '显示内容', width: '20%'},
                 {field: 'fid', title: '父ID', width: '3%', align: 'right'},
                 {field: 'group_id', title: '角色', width: '5%'},
                 {field: 'status', title: '禁用', width: '3%', align: 'right'},
@@ -28,15 +169,20 @@
                 {field: 'checked', title: '选择', width: '5%'},
                 //{field:'attributes',title:'',width:'3%'},
                 // {field:'iconCls',title:'编码',width:'3%'},
-                {field: 'dgid', title: '数据表ID', width: '5%'},
-                {field: 'json', title: 'JSON', width: '7%'},
-                {field: 'url', title: 'URL', width: '7%'},
-                {field: 'script', title: 'JS', width: '7%'}
+                {field: 'dgid', title: '数据表关联', width: '5%'},
+                //{field: 'json', title: 'JSON', width: '7%'},
+                {field: 'url', title: 'URL', width: '10%'},
+                //{field: 'script', title: 'JS', width: '7%'},
+                {
+                    field: 'action', title: '操作', formatter: function (value, row, index) {
+                    return '<a href="#">添加</a> <a href="#">编辑</a>';
+                }
+                }
             ]],
             onBeforeEdit: function (index, row) {
 
             },
-            onAfterEdit: function (row,changes) {
+            onAfterEdit: function (row, changes) {
                 console.log(changes);
             },
             onCancelEdit: function (index, row) {
@@ -48,7 +194,7 @@
              * @param field
              * @param value
              */
-            onDblClickCell:function(field, row, value  ){
+            onDblClickCell: function (field, row, value) {
 
             },
             /**
@@ -56,14 +202,25 @@
              * @param field
              * @param row
              */
-            onClickCell:function(field,row){
-                $('#set-treegrid').treegrid('endEdit', lastIndex);
-                if (field == 'sort'){
-                    $('#set-treegrid').treegrid('beginEdit', row.id);
+            onClickCell: function (field, row) {
+                $('#set-menu-treegrid').treegrid('endEdit', lastIndex);
+                if (field == 'sort') {
+                    $('#set-menu-treegrid').treegrid('beginEdit', row.id);
                     lastIndex = row.id;
                 }
-            }
+            },
+            toolbar:[{
+                text:'添加',
+                iconCls:'icon-add',
+                handler:function(){new_menu();}
+            },{
+                iconCls:'icon-edit',
+                text:'编辑',
+                handler:function(){edit_menu();}
+            },{
+                text:'删除',
+                handler:function(){remove_menu();}
+            }]
         });
     });
-
 </script>

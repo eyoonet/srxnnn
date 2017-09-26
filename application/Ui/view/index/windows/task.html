@@ -39,9 +39,9 @@
         var row = getRow ? getSingleSelectRow("dg"):null;
         var formParam = $('#' + formid).serialize();
         var key = action ? action : $('#' + formid).attr('action');
+        if (config[key] == undefined ) config[key] = action;
         if (row != null ) {
             url = config[key] + row.Id;
-            console.log(url);
             showConfirm("系统", "执行命令是否确认 ? ", function () {
                 jsonAjax('post', url, formParam, function (ret) {
                     if (ret.code == Success) {
@@ -54,7 +54,7 @@
             });
         } else {
             url = config[key];
-            console.log(key);
+            //console.log(config);
             jsonAjax('post',url,formParam,function(){
                 if (ret.code == Success ) {
                     showMsg("完成", "提交成功", true);
@@ -64,5 +64,10 @@
                 }
             })
         }
+        if( url == undefined ) {
+            alert("URL错误");
+            console.info("key:"+key+" action:" + action);
+        }
+        console.info("URL:"+url);
     }
 </script>

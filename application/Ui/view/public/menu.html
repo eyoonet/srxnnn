@@ -50,16 +50,16 @@ function onClickMenu(treeid,dgid,url){
 
             // 2 URL ajax 加载 add 到 tabs 选项卡
             if (node.type == 2 ) {
-                var isdisply = $('#tabs').tabs('exists',node.title);
+                var isdisply = $('#tabs').tabs('exists',node.text);
                 if (!isdisply) {
                     $('#tabs').tabs('add',{
-                        title: node.title,
+                        title: node.text,
                         selected: true,
                         closable: true,
                         href : node.url
                     })
                 } else {
-                    $('#tabs').tabs('select',node.title);//选中
+                    $('#tabs').tabs('select',node.text);//选中
                 }
             }
 

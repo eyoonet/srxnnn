@@ -48,6 +48,21 @@ config.miss = "/miss/id/";
 config.error = "/error/id/";
 //备注
 config.comment = "/comment/id/";
+
+/**
+ * 菜单编辑URL配置
+ * @type {string}
+ */
+//编辑菜单
+config.editmenu = "/menu/edit/id/";
+//添加菜单
+config.addmenu = "/menu/create";
+//删除菜单
+config.delmenu = "/menu/delete/id/";
+/**
+ *  静态变量
+ * @type {number}
+ */
 //静态变量
 const Success = 200;
 const Error   = 400;
