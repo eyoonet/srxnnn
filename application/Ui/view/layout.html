@@ -3,6 +3,12 @@
 	{include file="public/header" /}
 <body id="cc" class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:80px;background:#0081C2;padding:10px">
+		<input id="token" type="hidden" name="token" value="{$token}">
+
+		<script type="text/javascript">
+		  alert($('#token').val());
+		</script>
+
 		<h1 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h1>
 		<p class="f-r" style="color:#FFF3F3;margin-top: 30px;
                                             margin-right: 90px;">当前用户 

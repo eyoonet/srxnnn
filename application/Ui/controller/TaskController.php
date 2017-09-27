@@ -2,16 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2017/9/23
- * Time: 19:28
+ * Date: 2017/9/22
+ * Time: 20:42
  */
 
 namespace app\ui\controller;
 use think\Controller;
 
-class Log extends Controller
+class TaskController extends  Controller
 {
     function index(){
-        return response($this->fetch("/index/TabsJson/log"));
+       return response($this->fetch('/index/TabsJson/task'));
     }
 }

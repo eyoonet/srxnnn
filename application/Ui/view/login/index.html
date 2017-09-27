@@ -42,11 +42,12 @@
 			   type: "POST",
 			   async: false,
 			   dataType: "json",
-			   url:  "/api/user/login",
+			   url:  "doLogin",
 			   data: $("#ff").serialize(),
 			   success: function(obj){
-					if (obj.code==200) {
-						window.location.href="/ui/home/index.html"; 
+					if (obj.code==100) {
+						console.log(obj);
+						window.location.href="/";
 					}else{
 						alert(obj.msg);
 					}	

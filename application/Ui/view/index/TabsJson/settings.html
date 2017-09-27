@@ -14,12 +14,14 @@
     }
 
     .my-ul li input, select {
-        width: 80px;
+        width: 130px;
     }
 </style>
 <table id="set-menu-treegrid"></table>
-<div id="set-menu-dialog" class="easyui-dialog" style="width:450px;height:auto;" data-options="closed:true,border:'thin',modal:false,">
-    <form id="set-menu-dialog-form" action="menu">
+<div id="set-menu-dialog" class="easyui-dialog" dg="set-menu-treegrid" form="set-menu-dialog-form"
+     style="width:450px;height:auto;" data-options="closed:true,border:'thin',modal:false,">
+
+    <form id="set-menu-dialog-form" action="auto">
         <div style="float: left">
             <ul class="my-ul" style="">
                 <li>
@@ -81,6 +83,9 @@
 
 
 <script type="text/javascript">
+
+
+     //编辑
     function edit_menu(id = null){
         var menu_dg = $("#set-menu-treegrid")
         if (id == null){
@@ -95,7 +100,7 @@
             buttons:[{
                 text:'保存',
                 handler:function(){
-                    formSubmit('set-menu-dialog','set-menu-dialog-form',false,'menu-edit/id/'+row.id);
+                    dialogSubmit( 'set-menu-dialog' , 'menu-edit/id/'+row.id );
                 }
             },{
                 text:'关闭',
@@ -106,13 +111,17 @@
         }).dialog("open");
     }
 
+
+
+
+    //创建
     function new_menu(fid = 0){
         $("#set-menu-dialog-form").form('clear');
         $("#set-menu-dialog").dialog({
             buttons:[{
                 text:'保存',
                 handler:function(){
-                    formSubmit('set-menu-dialog','set-menu-dialog-form',false,'menu-add/fid/'+fid);
+                    dialogSubmit( 'set-menu-dialog' , 'menu-add/fid/'+fid );
                 }
             },{
                 text:'关闭',
@@ -123,6 +132,8 @@
         }).dialog("open");
     }
 
+
+    //删除
     function remove_menu(id = 0){
         if (id == 0 ){
             var row = $("#set-menu-treegrid").treegrid("getSelected");
@@ -137,7 +148,8 @@
         showConfirm("您好", "是否确认 ? ", function () {
             jsonAjax('post', url, {remov: 1}, function (ret) {
                 if (ret.code == Success) {
-                    showMsg("完成", "提交成功", true);
+                    showMsg("完成", "删除成功!");
+                    $("#set-menu-treegrid").treegrid('reload');
                 } else {
                     showMsg("错误", ret.msg, true, "error");
                 }

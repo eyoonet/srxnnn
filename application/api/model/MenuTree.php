@@ -13,6 +13,11 @@ use think\Model;
 
 class MenuTree extends Model
 {
+    /*public function getTypeAttr($value)
+    {
+        $status = [0=>'父级菜单',1=>'DG查询菜单',2=>'TBS菜单'];
+        return $status[$value];
+    }*/
     /**
      * 取菜单
      * @param $groupId
@@ -40,6 +45,12 @@ class MenuTree extends Model
         return $this->formatSidebar($arr);
     }
 
+    /**
+     *  菜单排序
+     * @param $id
+     * @param $value
+     * @return false|int
+     */
     public static function  setSort($id,$value)
     {
        return self::get($id)->data('sort',$value)->save();
