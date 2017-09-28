@@ -3,12 +3,12 @@
      data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
     <form id="error-form" action="error">
         <input name="Tag[]"  class="easyui-combobox"  style="width:100%;"
-               data-options="valueField:'id',
-                                value:'',
-                                multiple:true,
-                                textField:'text',
-                                url:'/static/js/combobox.json',
-                                panelHeight:'auto'"/>
+               data-options="multiple:true,
+                             panelHeight:'auto',
+                             url:'getCombobox/TAG',
+                             valueField:'value',
+                             textField:'text',
+                             editable:true"/>
         <input name="comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
     </form>
 </div>

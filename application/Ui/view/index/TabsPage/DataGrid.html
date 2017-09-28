@@ -131,16 +131,12 @@
                 </select>
                 <!-- 服务窗口 -->
                 窗口：
-                <input id="service" name="service" style="width: 80px;"/>
-                <script type="text/javascript">
-                    $('#service').combobox({
-                        panelHeight:"auto",
-                        url:'/ui/home/getServiceList',
-                        valueField:'text',
-                        textField:'text',
-                        value:''
-                    })
-                </script>
+                <input name="service" class="easyui-combobox col-box-2"
+                       data-options="panelHeight:'auto',
+                                          url:'getCombobox/SERVICE',
+                                          valueField:'value',
+                                          textField:'text',
+                                          editable:true"/>
 
                 工 作 流：
                 <select  class="easyui-combobox"

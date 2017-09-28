@@ -26,5 +26,6 @@ return [
     'getSidebarAll'      => 'api/menu/getSidebarAll',
     'getSidebar/:tag'    => 'api/menu/getSidebar',
     'menu-add'           => 'api/menu/create',
-    'menu-del/:id'       => 'api/menu/delete'
+    'menu-del/:id'       => 'api/menu/delete',
+    'getCombobox/:tag'        => 'api/combobox/get'
 ];
