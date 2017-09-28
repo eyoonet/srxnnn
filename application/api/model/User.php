@@ -5,7 +5,6 @@ use think\Model;
 
 class User extends Model
 {
-
     /**
      * 注册一个新用户
      * @param  array $data 用户注册信息
@@ -49,12 +48,32 @@ class User extends Model
             return false;
         }
     }
+
+    /**
+     *  获取 tokgen
+     * @param $uid
+     * @return bool|mixed
+     */
     public function getToken($uid){
         $user = $this->where('id',$uid)->field('token')->find();
         if ($user){
             return $user->token;
         }else{
             $this->error = '用户不存在或被禁用';
+            return false;
+        }
+    }
+
+    /**
+     *  Token 效验证
+     * @param $Token
+     * @return bool
+     */
+    public static function checkToken($Token){
+        $user = self::where('token',$Token)->find();
+        if($user){
+            return $user->id;
+        }else{
             return false;
         }
     }
@@ -65,15 +84,22 @@ class User extends Model
      */
     public function info($uid)
     {
-        $user = $this->where('id', $uid)->field('id,username,email,mobile,status')->find();
-        if ($user && 1 == $user->status) {
+        $user = $this->where('id', $uid)->field('name,client_ip,login_time')->find();
+        if ($user) {
             // 返回用户数据
-            return $user->hidden('status')->toArray();
+            $auth_group = $this->table('auth_group')->where('id',$this->getUserGroupId($uid))->field('id,title')->find();
+            if(!$auth_group){
+                $this->error = '用户未授权';
+                return false;
+            }
+            $user['group'] = $auth_group;
+            return $user;
         } else {
-            $this->error = '用户不存在或被禁用';
-            return -1;
+            $this->error = '用户不存在';
+            return false;
         }
     }
+
 
     /**
      * 获取用户角色
@@ -83,7 +109,7 @@ class User extends Model
     {
         $uid = $this->getData('id');
         if ($uid) {
-            $role = $this->getUserRole($uid);
+            $role = $this->getUserGroupId($uid);
             if ($role) {
                 return $role;
             } else {
@@ -96,8 +122,11 @@ class User extends Model
         }
     }
 
-    protected function getUserRole($uid)
+    public static function getUserGroupId($uid)
     {
-        return $this->table('role')->where('uid', $uid)->find();
+        $sqldata =  self::table('auth_group_access')->where('uid', $uid)->find();
+        if( $sqldata ){
+            return $sqldata->group_id;
+        }
     }
 }
