@@ -1,24 +1,24 @@
 
 <table id="log-dg" class="easyui-datagrid" style="width:100%;"
-       data-options="url:'static/js/data.json',
+       data-options="url:'getAllLog',
                     fitColumns:false,
                     singleSelect:true,
                     striped:true,
                     fit:true,
+                    pageSize:15,
+                    pageList:[15,30,45,60,75],
                     pagination:true,
-                    rownumbers:true,
                     toolbar:'#log-dg-buttions'">
     <thead>
     <tr>
-        <th data-options="field:'Id'" style="width: 5%" >编码</th>
-        <th data-options="field:'card'" style="width: 10%">类型</th>
-        <th data-options="field:'name'" style="width: 10%">用户名</th>
-        <th data-options="field:'price'" style="width: 10%">用户组</th>
-        <th data-options="field:'price'" style="width: 10%">客户名</th>
-        <th data-options="field:'price'" style="width: 10%">内容</th>
-        <th data-options="field:'price'" style="width: 18%">URL</th>
-        <th data-options="field:'price'" style="width: 10%">时间</th>
-        <th data-options="field:'action',formatter:log_action" style="width:26%">操作</th>
+        <th data-options="field:'id'" style="width: 5%" >编码</th>
+        <th data-options="field:'type'" style="width: 10%">类型</th>
+        <th data-options="field:'name'" style="width: 10%">操作人</th>
+        <th data-options="field:'title'" style="width: 10%">用户组</th>
+        <th data-options="field:'action'" style="width: 10%">控制器</th>
+        <th data-options="field:'rule_url'" style="width: 18%">URL</th>
+        <th data-options="field:'action_ip'" style="width: 18%">IP地址</th>
+        <th data-options="field:'create_time'" style="width: 18%">时间</th>
     </tr>
     </thead>
 </table>
@@ -41,9 +41,5 @@
 
 
 <script type="text/javascript">
-    function log_action(){
-        return '<a href="#" >成功</a> ' +
-                '<a href="#" >失败</a>';
-    }
 
 </script>

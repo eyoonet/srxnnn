@@ -45,7 +45,7 @@ class Base extends Controller
         $module     = $this->request->module();
         $controller = $this->request->controller();
         $action     = $this->request->action();
-        $this->url  = $this->request->routeInfo()['route']; //"{$module}/{$controller}/{$action}";
+        $this->url  = "{$module}/{$controller}/{$action}"; //$this->request->routeInfo()['route'];
         $auth       = new Auth();
         $this->auth = $auth->check( $this->url, $this->uid );
     }

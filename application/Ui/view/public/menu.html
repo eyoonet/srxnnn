@@ -2,7 +2,6 @@
 </ul>
 <script type="text/javascript">
     onClickMenu("tt","dg","getSidebar/CLENTS");
-   //onClickMenu("tt","dg","/static/js/menu.json");
 function onClickMenu(treeid,dgid,url){
     $('#'+treeid).tree({
         url:url,
@@ -12,14 +11,13 @@ function onClickMenu(treeid,dgid,url){
         //0 直接返回  1 json     2 url    3  code    4 Tsb add
         onClick: function(node){
             select_index = null;
-            console.log(node.text);
 
             // 0 是不做操作
             if  (node.type == 0 )return;
 
-
             // 1 Dg 条件设置
             if (node.type == 1 ) {
+
                 //先判断面板不存在就添加存在就选中
                 var isdisply = $('#tabs').tabs('exists',node.title);
                 if (!isdisply) {
@@ -27,24 +25,43 @@ function onClickMenu(treeid,dgid,url){
                         title: node.title,
                         selected: true,
                         closable: true,
-                        href : node.url
+                        href : node.url,
+                        onLoad: function (){
+
+                        }
                     })
                 } else {
-                    $('#tabs').tabs('select',node.title);//选中
-                }
-                if (typeof node.json == "string"){
-                    node.json = $.parseJSON(node.json);
-                }
-                console.info(node.json);
 
-                // dg 从新加载dg参数
-                var params = $('#'+dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
-                var fields  = node.json; //JSON.parse(node.json); //json字符串转到对象
-                $.each( fields, function(i, field){
-                    params[field.key] = field.value; //设置查询参数
-                });
-                console.log(params);
-                $('#'+dgid).datagrid('reload'); //设置好查询参数 reload 一下就可以了
+                    $('#tabs').tabs('select',node.title);//选中
+
+                }
+
+                if (typeof node.json == "string"){
+
+                    node.json = $.parseJSON(node.json);
+
+                }
+
+
+                console.log("menu-json:" + node.json);
+
+                // dg 从新加载dg参数   这里通过AJAX 会有问题...估计是加载没完成吧, JS会报错
+                var params = $('#'+node.dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
+                // var params = $('#' + node.dgid).datagrid().queryParams;
+
+                if(node.json != null ) {
+                    var fields = node.json; //JSON.parse(node.json); //json字符串转到对象
+
+                    $.each(fields, function (i, field) {
+
+                        params[field.key] = field.value; //设置查询参数
+
+                    });
+                }
+
+                console.log("DG : " + node.dgid );
+                $('#'+node.dgid).datagrid('reload'); //设置好查询参数 reload 一下就可以了
+
             }
 
 
@@ -67,7 +84,6 @@ function onClickMenu(treeid,dgid,url){
             // 3 执行server js 代码
             if (node.type == 3 ) {
                 mfun = new Function(node.script)();
-                //mfun();
             }
         }
 

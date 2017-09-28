@@ -14,25 +14,27 @@ class Log extends Model
 {
     protected $autoWriteTimestamp = true;
 
-    public function getUserActionLog()
+    public function getUserActionLog($page,$rows)
     {
         $sqldata = $this->view('User', 'name', 'user.id = log.user_id ')
             ->view('auth_group', 'title', 'auth_group.id = log.group_id')
             ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url')
             ->view('Data', 'name as uname', 'data.id = log.clents_id')
-            ->view('Log', 'rule_url,type,create_time,action_ip')
+            ->view('Log', 'id,rule_url,type,create_time,action_ip')
             ->order('create_time desc')
+            ->page($page,$rows)
             ->select();
         return $sqldata;
     }
 
-    public function getSysActionLog()
+    public function getSysActionLog($page,$rows)
     {
         $sqldata = $this->view('User', 'name', 'user.id = log.user_id ')
             ->view('auth_group', 'title', 'auth_group.id = log.group_id')
             ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url')
-            ->view('Log', 'rule_url,type,create_time,action_ip')
+            ->view('Log', 'id,rule_url,type,create_time,action_ip')
             ->order('create_time desc')
+            ->page($page,$rows)
             ->select();
         return $sqldata;
     }
