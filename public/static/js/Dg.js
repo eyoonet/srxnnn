@@ -91,12 +91,10 @@ $(function($){
 		onDblClickCell: function(index,field,value){
 			console.log(index+field+value);
             if (field == "comment") {
-                showDialog('comment','dg','备注2!',function(){
-					formSubmit('comment','comment-form',true);
-				});
+				$("#comm-but").trigger("click");
                 click = true;
             } else if (field == "Tag") {
-                showDialog('tag');
+				$("#tag-but").trigger("click");
                 click = true;
             } else {
                 click = false;

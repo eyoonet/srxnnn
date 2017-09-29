@@ -24,13 +24,13 @@
     }
 </style>
 <!-- 添加数据开始 -->
-<div id="add" class="easyui-dialog" title="My Dialog"
+<div id="add" class="easyui-dialog" title="My Dialog" form="add-form" dg="dg"
      data-options="closed:true,
                     cache:false,
                     height:'auto',
                     width:670,
-                    modal:false,
-                    buttons:'#add-buttons'">
+                    modal:false
+                   ">
     <form id="add-form" action="add" method="post">
         <table width="625" border="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -44,8 +44,8 @@
                 <td width="4%">招调</td>
                 <td width="10%"><select class="easyui-combobox col-box-3"
                                         data-options="panelHeight:'auto',editable:false" name="zdtype">
-                    <option>招工</option>
-                    <option>调干</option>
+                    <option value="1">招工</option>
+                    <option value="2">调干</option>
                 </select></td>
             </tr>
             <tr>
@@ -105,8 +105,8 @@
                 <td>调档案</td>
                 <td><select class="easyui-combobox col-box-3" data-options="panelHeight:'auto',editable:false"
                             name="dangan">
-                    <option>是</option>
-                    <option>否</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
                 </select></td>
             </tr>
             <tr>
@@ -142,11 +142,11 @@
                 <td>小孩信息</td>
                 <td><select class="easyui-combobox col-box-3"
                             data-options="panelHeight:'auto',editable:false,multiple:true" name="child">
-                    <option>无</option>
-                    <option>一孩</option>
-                    <option>二孩</option>
-                    <option>怀孕</option>
-                    <option>随迁</option>
+                    <option value="0">无</option>
+                    <option value="1">一孩</option>
+                    <option value="2">二孩</option>
+                    <option value="3">怀孕</option>
+                    <option value="4">随迁</option>
                 </select></td>
             </tr>
             <tr>

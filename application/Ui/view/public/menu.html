@@ -1,8 +1,8 @@
 <ul id="tt" class="easyui-tree">
 </ul>
 <script type="text/javascript">
-    onClickMenu("tt","dg","getSidebar/CLENTS");
-function onClickMenu(treeid,dgid,url){
+    onClickMenu("tt","getSidebar/CLENTS");
+function onClickMenu(treeid,url){
     $('#'+treeid).tree({
         url:url,
         onLoadSuccess:function(node, data){

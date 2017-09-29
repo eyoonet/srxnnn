@@ -18,6 +18,7 @@
     }
 </style>
 <table id="set-menu-treegrid"></table>
+
 <div id="set-menu-dialog" class="easyui-dialog" dg="set-menu-treegrid" form="set-menu-dialog-form"
      style="width:450px;height:auto;" data-options="closed:true,border:'thin',modal:false,">
 
@@ -68,13 +69,15 @@
                     <label>链接</label>
                     <input name="url" class="easyui-textbox" style="width: 288px">
                 </li>
-                <li >
+                <li>
                     <label>json = </label>
-                    <input name="json" class="easyui-textbox" style="width: 288px;height: 100px;" data-options="multiline:true">
+                    <input name="json" class="easyui-textbox" style="width: 288px;height: 100px;"
+                           data-options="multiline:true">
                 </li>
-                <li >
+                <li>
                     <label>script = </label>
-                    <input name="script" class="easyui-textbox" style="width: 288px;height: 100px;" data-options="multiline:true">
+                    <input name="script" class="easyui-textbox" style="width: 288px;height: 100px;"
+                           data-options="multiline:true">
                 </li>
             </ul>
         </div>
@@ -83,62 +86,58 @@
 
 
 <script type="text/javascript">
-
-
-     //编辑
-    function edit_menu(id = null){
+    //编辑
+    function edit_menu(id = null) {
         var menu_dg = $("#set-menu-treegrid")
-        if (id == null){
+        if (id == null) {
             var row = menu_dg.treegrid("getSelected");
-            if(row == null){
-                showMsg("错误","请选择一个菜单来编辑",true,"error");return;
-            }else {
+            if (row == null) {
+                showMsg("错误", "请选择一个菜单来编辑", true, "error");
+                return;
+            } else {
                 $("#set-menu-dialog-form").form('load', row);
             }
         }
         $("#set-menu-dialog").dialog({
-            buttons:[{
-                text:'保存',
-                handler:function(){
-                    dialogSubmit( 'set-menu-dialog' , 'menu-edit/id/'+row.id );
+            buttons: [{
+                text: '保存',
+                handler: function () {
+                    dialogSubmit('set-menu-dialog', 'menu-edit/id/' + row.id);
                 }
-            },{
-                text:'关闭',
-                handler:function(){
+            }, {
+                text: '关闭',
+                handler: function () {
                     $("#set-menu-dialog").dialog("close");
                 }
             }]
         }).dialog("open");
     }
-
-
-
 
     //创建
-    function new_menu(fid = 0){
+    function new_menu(fid = 0) {
         $("#set-menu-dialog-form").form('clear');
         $("#set-menu-dialog").dialog({
-            buttons:[{
-                text:'保存',
-                handler:function(){
-                    dialogSubmit( 'set-menu-dialog' , 'menu-add/fid/'+fid );
+            buttons: [{
+                text: '保存',
+                handler: function () {
+                    dialogSubmit('set-menu-dialog', 'menu-add/fid/' + fid);
                 }
-            },{
-                text:'关闭',
-                handler:function(){
+            }, {
+                text: '关闭',
+                handler: function () {
                     $("#set-menu-dialog").dialog("close");
                 }
             }]
         }).dialog("open");
     }
 
-
     //删除
-    function remove_menu(id = 0){
-        if (id == 0 ){
+    function remove_menu(id = 0) {
+        if (id == 0) {
             var row = $("#set-menu-treegrid").treegrid("getSelected");
-            if (row == null ){
-                showMsg("错误","请选择一个菜单来编辑",true,"error");return;
+            if (row == null) {
+                showMsg("错误", "请选择一个菜单来编辑", true, "error");
+                return;
             } else {
                 id = row.id
             }
@@ -221,17 +220,23 @@
                     lastIndex = row.id;
                 }
             },
-            toolbar:[{
-                text:'添加',
-                iconCls:'icon-add',
-                handler:function(){new_menu();}
-            },{
-                iconCls:'icon-edit',
-                text:'编辑',
-                handler:function(){edit_menu();}
-            },{
-                text:'删除',
-                handler:function(){remove_menu();}
+            toolbar: [{
+                text: '添加',
+                iconCls: 'icon-add',
+                handler: function () {
+                    new_menu();
+                }
+            }, {
+                iconCls: 'icon-edit',
+                text: '编辑',
+                handler: function () {
+                    edit_menu();
+                }
+            }, {
+                text: '删除',
+                handler: function () {
+                    remove_menu();
+                }
             }]
         });
     });

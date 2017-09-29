@@ -1,7 +1,7 @@
 <!-- 任务窗口开始 -->
-<div id="task" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
-          data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
-   <form id="task-form" action="task">
+<div id="task" form="task-form"  dg="dg" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
+          data-options="closed:true,modal:false,resizable:true">
+   <form id="task-form">
        <label>类型:</label>
        <input name="task.type"  class="easyui-combobox"  style="width:35%;"
                data-options="valueField:'id',
@@ -15,17 +15,8 @@
                                 url:'/static/js/combobox.json',
                                 panelHeight:'auto'"/>
        <input name="task.comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
-
         <label>时间：</label>
         <input name='task.task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
    </form>
 </div>
-
-<div id="task-buttons">
-    <a  class="easyui-linkbutton" iconCls="icon-ok" onclick="formSubmit('task','task-form',true)">提交</a>
-    <a  class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('task')">关闭</a>
-</div>
 <!-- 任务窗口结束 -->
-<script type="text/javascript">
-
-</script>

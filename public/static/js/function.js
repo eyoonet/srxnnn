@@ -1,29 +1,139 @@
-﻿function dialogSubmit(dialogid, action = null, edit = false )
-{
+﻿
+/**
+ * DG按钮打开窗口提交
+ * @注意  dg属性是在按钮父级别属性
+ * @示列  <a onclick="ButtonRunDialog(this)"  dialog="" load="true|null" URL="del" class="easyui-linkbutton"></a>
+ * @param options
+ * @constructor
+ */
+function ButtonRunDialog(options) {
+    //提交 URL
+    var url = $(options).attr("URL");
+    //窗口 标题
+    var text = $(options).context.innerText;
+    //窗口 容器id
+    var diaid = $(options).attr("dialog");
+    //按钮方法 edit|add
+    var load = $(options).attr("load");
+    //DG 内容获取 血的教训. 获取不到DG会出错.
+    var dg = $(options).parent().attr("dg");
+    if (dg == undefined || dg == null || dg == "") {
+       return  alert("未设置 dg 属性");
+    }
+    if ( load == 'true') {// 这里是字符串
+        var row = $('#' + dg).datagrid('getSelected');
+        if (row != null) {
+            var url = url +'/'+ row.Id;
+            _Dialog(diaid, text, {
+                url:url,
+                rows:row
+            });
+        }else{
+            showMsg("错误", '未选取数据!', true, 'error');
+        }
+    } else {
+        _Dialog(diaid,text,{
+            url:url,
+            rows:null
+        });
+    }
+    console.info("URL:" + url);
+}
+/**
+ * 创建窗口提交窗口如果 row 有数据就加载显示到表单
+ *
+ * @param id      容器ID
+ * @param title   标题
+ * @param data     数据存储
+ * @private
+ */
+function _Dialog(id,  title = null, data = null ) {
+
+    $("#" + id + "-form").form('clear');
+
+    if (title != null || title != undefined || title != "" ) {
+        $("#" + id).dialog({
+            title: title
+        });
+    }
+
+    $("#" + id).dialog({
+        buttons: [{
+            text: '提交',
+            handler: function(){
+                //做了提交处理
+                dialogSubmit(id, data.url);
+            }
+        }, {
+            text: '关闭',
+            handler: function () {
+                $("#" + id).dialog('close');
+            }
+        }]
+    });
+
+    if (data != null) {
+        if (id=='add')$('#card').textbox('readonly',true);
+        $("#" + id + "-form").form('load', data.rows);
+        //$("#" + id).data('row', row);
+    }
+    $("#" + id).dialog('open');
+}
+
+
+/**
+ * 窗口模式提交表单数据到服务器
+ * @示例  <div class="easyui-dialog" dg="value" form="value"><form action="value" ></form></div>
+ * @param dialogid  窗口ID
+ * @param URL       提交的URL 是NULL的时候自动获取 ACTION 属性
+ */
+function dialogSubmit(dialogid, url = null) {
+    // 取表单ID
     var formid = $('#' + dialogid).attr('form');
+    if (formid == undefined || formid == "") {
+        return alert('请检查 dialogid 的 form 属性是否存在');
+    }
+
+    // 取DGID 刷新用
     var dgid = $('#' + dialogid).attr('dg');
-    var url = $('#' + formid).attr('action');
-    var formParam = $('#' + formid).serialize();
-    if (url == 'auto' || url == undefined || url == '') {
-        if (action == null) {
-            alert('url出错');
-        }else {
-            url = action;
+    if (dgid == undefined || dgid == "") {
+        return alert('检查dialogid 的 dg 属性是否存在');
+    }
+
+    // 取表单提交地址
+    if (url == null) {
+        var url = $('#' + formid).attr('action');
+        if (url == undefined || url == '') {
+            return alert('URL出错 查看是否设置form 的 action属性 或者传入url 参数');
         }
     }
-    showConfirm("系统", "执行命令是否确认 ? ", function () {
-        jsonAjax('post', url, formParam, function (ret) {
-            if (ret.code == Success) {
-                showMsg("完成", "成功", false);
-                closeDialog(dialogid);
-                $('#' + dgid).treegrid('reload');
-                $('#' + dgid).datagrid('reload');
-            } else {
-                showMsg("错误", ret.msg, true, 'error');
-            }
-        })
-    });
+    // 序列化表单数据
+    var formParam = $('#' + formid).serialize();
+
+    //开始提交任务 带验证表单
+    if ( $('#' + formid).form('validate') ) {
+        showConfirm("系统", "执行命令是否确认 ? ", function () {
+            jsonAjax('post', url, formParam, function (ret) {
+                if (ret.code == Success) {
+
+                    showMsg("完成", "成功", false);
+                    closeDialog(dialogid);
+                    //存在DG属性就刷新
+                    if (dgid != undefined || dgid != "") {
+                        $('#' + dgid).treegrid('reload');
+                        $('#' + dgid).datagrid('reload');
+                    }
+                } else {
+                    showMsg("错误", ret.msg, true, 'error');
+                }
+            })
+        });
+    } else {
+        showMsg("错误", '数据验证失败! 请检查数据规则.,', true, 'error');
+    }
 }
+
+
 /**
  *  带窗口的表单提交
  * @param dialogid string 窗口ID
@@ -69,6 +179,8 @@ function formSubmit(dialogid, formid, getRow = false, action = false) {
     }
     console.info("URL:" + url);
 }
+
+
 /**
  * 显示带表单的提交窗口
  * @param id       窗口id
@@ -101,24 +213,9 @@ function showDialog(id, Dgid = null, title = null, funSave = null) {
             return;
         } else {
             $("#" + id + "-form").form('load', row);
-            $("#" + id).data('row',row);
+            $("#" + id).data('row', row);
         }
     }
-    $("#" + id).dialog('open');
-}
-
-function showDialog2(id, funSave) {
-    $("#" + id).dialog({
-        buttons: [{
-            text: '提交',
-            handler: funSave
-        }, {
-            text: '关闭',
-            handler: function () {
-                $("#" + id).dialog('close');
-            }
-        }]
-    });
     $("#" + id).dialog('open');
 }
 
