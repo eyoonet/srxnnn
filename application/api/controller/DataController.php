@@ -38,7 +38,18 @@ class DataController extends Base
             }
         }
     }
+    //page:1
+    //rows:15
+    //sort:rcdate
+    //order:desc
     public function getDglist(Data $sqldata){
-
+        $prams  = $this->request->only(['page','rows','sort','order'], 'post');
+        $rule   = $this->request->post('rule');
+        $fieids = $this->request->post('fieids');
+        $lists  = $sqldata->getDgList($prams['page'],$prams['rows'],$rule,$fieids);
+        return json([
+            'rows'  => $lists,
+            'total' => $sqldata->total()
+        ]);
     }
 }

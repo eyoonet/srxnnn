@@ -30,5 +30,6 @@ return [
     'getCombobox/:tag'   => 'api/combobox/get',
     'getAllLog'          => 'api/log/getAllLog',
     'dataCreate'         => 'api/Data/create',
-    'dataEdit/:id'           => 'api/Data/edit',
+    'dataEdit/:id'       => 'api/Data/edit',
+    'dataDgList'         => 'api/Data/getDglist',
 ];
