@@ -28,5 +28,7 @@ return [
     'menu-add'           => 'api/menu/create',
     'menu-del/:id'       => 'api/menu/delete',
     'getCombobox/:tag'   => 'api/combobox/get',
-    'getAllLog'          => 'api/log/getAllLog'
+    'getAllLog'          => 'api/log/getAllLog',
+    'dataCreate'         => 'api/Data/create',
+    'dataEdit/:id'           => 'api/Data/edit',
 ];

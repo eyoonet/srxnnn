@@ -1,4 +1,94 @@
 ﻿
+function onClickMenu(treeid,url){
+    $('#'+treeid).tree({
+        url:url,
+        onLoadSuccess:function(node, data){
+            //console.log(data);
+        },
+        //0 直接返回  1 json     2 url    3  code    4 Tsb add
+        onClick: function(node){
+            select_index = null;
+            // 0 是不做操作
+            if  (node.type == 0 )return;
+
+            // 1 Dg 条件设置
+            if (node.type == 1 ) {
+
+                //先判断面板不存在就添加存在就选中
+                var isdisply = $('#tabs').tabs('exists',node.title);
+                if (!isdisply) {
+                    $('#tabs').tabs('add',{
+                        title: node.title,
+                        selected: true,
+                        closable: true,
+                        href : node.url,
+                        onLoad: function (){
+
+                        }
+                    })
+                } else {
+
+                    $('#tabs').tabs('select',node.title);//选中
+
+                }
+
+                if (typeof node.json == "string"){
+
+                    node.json = $.parseJSON(node.json);
+
+                }
+
+
+                console.log("menu-json:" + node.json);
+
+                // dg 从新加载dg参数   这里通过AJAX 会有问题...估计是加载没完成吧, JS会报错
+                var params = $('#'+node.dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
+                if(node.json != null ) {
+                    var fields = node.json; //JSON.parse(node.json); //json字符串转到对象
+                    //$.each(fields, function (i, field) {
+
+                        // params[field.key] = field.value; //设置查询参数
+
+                   // });
+
+                    $('#'+node.dgid).datagrid({
+                        queryParams: fields
+                    });
+
+                }
+
+                console.log("DG : " + node.dgid );
+                $('#'+node.dgid).datagrid('reload'); //设置好查询参数 reload 一下就可以了
+
+            }
+
+
+            // 2 URL ajax 加载 add 到 tabs 选项卡
+            if (node.type == 2 ) {
+                var isdisply = $('#tabs').tabs('exists',node.text);
+                if (!isdisply) {
+                    $('#tabs').tabs('add',{
+                        title: node.text,
+                        selected: true,
+                        closable: true,
+                        href : node.url
+                    })
+                } else {
+                    $('#tabs').tabs('select',node.text);//选中
+                }
+            }
+
+
+            // 3 执行server js 代码
+            if (node.type == 3 ) {
+                mfun = new Function(node.script)();
+            }
+        }
+
+    });
+}
+
+
 /**
  * DG按钮打开窗口提交
  * @注意  dg属性是在按钮父级别属性
@@ -26,7 +116,8 @@ function ButtonRunDialog(options) {
             var url = url +'/'+ row.Id;
             _Dialog(diaid, text, {
                 url:url,
-                rows:row
+                rows:row,
+                load:load
             });
         }else{
             showMsg("错误", '未选取数据!', true, 'error');
@@ -73,7 +164,7 @@ function _Dialog(id,  title = null, data = null ) {
     });
 
     if (data != null) {
-        if (id=='add')$('#card').textbox('readonly',true);
+        if (data.load == 'true')$('#card').textbox('readonly',true);
         $("#" + id + "-form").form('load', data.rows);
         //$("#" + id).data('row', row);
     }
@@ -115,7 +206,6 @@ function dialogSubmit(dialogid, url = null) {
         showConfirm("系统", "执行命令是否确认 ? ", function () {
             jsonAjax('post', url, formParam, function (ret) {
                 if (ret.code == Success) {
-
                     showMsg("完成", "成功", false);
                     closeDialog(dialogid);
                     //存在DG属性就刷新

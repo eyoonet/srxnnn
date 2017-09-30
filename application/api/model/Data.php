@@ -11,8 +11,9 @@ class Data extends Model
 {
     protected $autoWriteTimestamp = true;
     protected $createTime = 'add_time';
-
-
+    public function dgList(){
+         $this->where('order',1)->all();
+    }
 
 
 

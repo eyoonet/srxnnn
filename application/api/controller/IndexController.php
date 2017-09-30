@@ -12,11 +12,9 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
+  
 
-
-        $a = [-1=>"aa"];
-        echo $a[-1];
-
+       return json($a);
        // $u = new User();
 
 
