@@ -113,7 +113,7 @@ function ButtonRunDialog(options) {
                         load:load
                     });
                 })
-            }else {
+            }else { //不是编辑Data数据的话就直接用js数据加载就可以了.
                 url = url +'/'+ row.Id;
                 _Dialog(diaid, text, {
                     url:url,
