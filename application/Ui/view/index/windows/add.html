@@ -44,8 +44,8 @@
                 <td width="4%">招调</td>
                 <td width="10%"><select class="easyui-combobox col-box-3"
                                         data-options="panelHeight:'auto',editable:false" name="zdtype">
-                    <option value="1">招工</option>
-                    <option value="2">调干</option>
+                    <option value="01">招工</option>
+                    <option value="02">调干</option>
                 </select></td>
             </tr>
             <tr>
@@ -77,7 +77,7 @@
                 <td>店铺</td>
                 <td>
                     <input name="shop" class="easyui-combobox col-box-2"
-                            data-options="panelHeight:'auto',
+                           data-options="panelHeight:'auto',
                                           url:'getCombobox/SHOP',
                                           valueField:'value',
                                           textField:'text',
@@ -140,14 +140,16 @@
                     <option value="0">无</option>
                 </select></td>
                 <td>小孩信息</td>
-                <td><select class="easyui-combobox col-box-3"
-                            data-options="panelHeight:'auto',editable:false,multiple:true" name="child">
-                    <option value="0">无</option>
-                    <option value="1">一孩</option>
-                    <option value="2">二孩</option>
-                    <option value="3">怀孕</option>
-                    <option value="4">随迁</option>
-                </select></td>
+                <td>
+                    <select name="child" class="easyui-combobox col-box-3"
+                            data-options="panelHeight:'auto',editable:false,multiple:true,multivalue:false">
+                        <option value="0">无</option>
+                        <option value="1">一孩</option>
+                        <option value="2">二孩</option>
+                        <option value="3">怀孕</option>
+                        <option value="4">随迁</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -202,13 +204,15 @@
                 </select></td>
             </tr>
             <tr>
-                <td><pre>专业</pre></td>
+                <td>
+                    <pre>专业</pre>
+                </td>
                 <td><input id='major' class="easyui-textbox col-text-1" type="text" name="major"/></td>
                 <td>申报方式</td>
                 <td><select class="easyui-combobox col-box-2" name="sbtype"
                             data-options="panelHeight:'auto',editable:false,required:true">
-                    <option value="01">个人申报</option>
-                    <option value="02">单位申报</option>
+                    <option value="1">个人申报</option>
+                    <option value="2">单位申报</option>
                 </select></td>
             </tr>
         </table>

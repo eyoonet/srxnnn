@@ -20,8 +20,9 @@
                 $('#ss').searchbox({
                     searcher:function(value,name){
                         var text= "&"+name+"="+encodeURIComponent(value);
-                        var val = $("#form_search").serialize();
+                        var val =$("#form_search").serialize();
                         val = val+text;
+                        val = serializeNotNull(val)
                         $.ajax({
                             type: "POST",
                             url: "/api/gdata/sousou",
@@ -57,8 +58,8 @@
             <form class="souWhere" style="display:inline;display: none;" id="form_search" method="post" action="/ui/home/xls">
                 <hr>
                 审核方式：
-                <select id="mode" name="mode" id="cc" class="easyui-combobox"
-                        data-options="panelHeight:'auto',value:''" style="width:80px;">
+                <select  name="mode" class="easyui-combobox"
+                        data-options="panelHeight:'auto',value:'',multiple:true,multivalue:true" style="width:80px;">
                     <option value='12'>核准制</option>
                     <option value='05'>留学生</option>
                     <option value='03'>应届生</option>

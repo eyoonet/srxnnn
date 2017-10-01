@@ -1,4 +1,6 @@
-﻿
+﻿function serializeNotNull(serStr){
+    return serStr.split("&").filter(function(str){return !str.endsWith("=")}).join("&");
+}
 function onClickMenu(treeid,url){
     $('#'+treeid).tree({
         url:url,
@@ -38,28 +40,18 @@ function onClickMenu(treeid,url){
 
                 }
 
-
                 // dg 从新加载dg参数   这里通过AJAX 会有问题...估计是加载没完成吧, JS会报错
                 //var params = $('#'+node.dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
-                if(node.json != null ) {
+                if(node.json != null || node.json != undefined || node.json != "" ) {
                     var fields = node.json; //JSON.parse(node.json); //json字符串转到对象
-                    //$.each(fields, function (i, field) {
-
-                        // params[field.key] = field.value; //设置查询参数
-
-                   // });
-
                     $('#'+node.dgid).datagrid({
                         queryParams: fields
                     });
-
+                } else {
+                    $('#'+node.dgid).datagrid('reload');
                 }
-
                 console.log("DG : " + node.dgid );
-                $('#'+node.dgid).datagrid('reload'); //设置好查询参数 reload 一下就可以了
-
             }
-
 
             // 2 URL ajax 加载 add 到 tabs 选项卡
             if (node.type == 2 ) {
@@ -75,7 +67,6 @@ function onClickMenu(treeid,url){
                     $('#tabs').tabs('select',node.text);//选中
                 }
             }
-
 
             // 3 执行server js 代码
             if (node.type == 3 ) {
@@ -111,12 +102,14 @@ function ButtonRunDialog(options) {
     if ( load == 'true') {// 这里是字符串
         var row = $('#' + dg).datagrid('getSelected');
         if (row != null) {
-            var url = url +'/'+ row.Id;
-            _Dialog(diaid, text, {
-                url:url,
-                rows:row,
-                load:load
-            });
+            $.getJSON(url+"One/"+row.Id,function(row){
+                 url = url +'/'+ row.Id;
+                _Dialog(diaid, text, {
+                    url:url,
+                    rows:row,
+                    load:load
+                });
+            })
         }else{
             showMsg("错误", '未选取数据!', true, 'error');
         }
@@ -162,7 +155,11 @@ function _Dialog(id,  title = null, data = null ) {
     });
 
     if (data != null) {
-        if (data.load == 'true')$('#card').textbox('readonly',true);
+        if (data.load == 'true') {
+            $('#card').textbox('readonly', true);
+        } else {
+            $('#card').textbox('readonly', false);
+        }
         $("#" + id + "-form").form('load', data.rows);
         //$("#" + id).data('row', row);
     }
@@ -207,8 +204,9 @@ function dialogSubmit(dialogid, url = null) {
                     showMsg("完成", "成功", false);
                     closeDialog(dialogid);
                     //存在DG属性就刷新
+                    //$('#' + dgid).datagrid('reload');
                     if (dgid != undefined || dgid != "") {
-                        $('#' + dgid).treegrid('reload');
+                       // $('#' + dgid).treegrid('reload');
                         $('#' + dgid).datagrid('reload');
                     }
                 } else {

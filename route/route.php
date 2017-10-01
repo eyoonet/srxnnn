@@ -23,13 +23,17 @@ return [
     '/'                  => 'ui/Index/index',
     'login'              => 'ui/login/index',
     'doLogin'            => 'api/User/dologin',
+
     'getSidebarAll'      => 'api/menu/getSidebarAll',
     'getSidebar/:tag'    => 'api/menu/getSidebar',
     'menu-add'           => 'api/menu/create',
     'menu-del/:id'       => 'api/menu/delete',
+
     'getCombobox/:tag'   => 'api/combobox/get',
     'getAllLog'          => 'api/log/getAllLog',
+
     'dataCreate'         => 'api/Data/create',
     'dataEdit/:id'       => 'api/Data/edit',
+    'dataEditOne/:id'    => 'api/Data/getOneRow',
     'dataDgList'         => 'api/Data/getDglist',
 ];

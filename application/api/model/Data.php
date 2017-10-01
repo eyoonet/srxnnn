@@ -32,6 +32,27 @@ class Data extends Model
     public function total(){
         return $this->where('order',null)->count();
     }
+
+    public function search($page,$rows,$exp){
+        //dump($a->where('mode','in','1,3,8'));
+        return $this->where('orde',null)
+            ->order('add_time','desc')
+            ->page($page,$rows)
+            ->where();
+    }
+
+    /***********************************************************************************
+     * **********************************修改器******************************************
+     ***********************************************************************************/
+
+
+
+
+
+
+    /***********************************************************************************
+     ************************************获取器******************************************
+     ***********************************************************************************/
     //  `marriage` tinyint(1) unsigned DEFAULT NULL COMMENT '01未婚 02已婚 03离异 04丧偶',
     public function getMarriageAttr($key)
     {
@@ -83,7 +104,7 @@ class Data extends Model
     //`dangan` tinyint(2) DEFAULT '-1' COMMENT '调档 -1 | 1',
     public function getDanganAttr($key)
     {
-        $data = [-1 => '否' , 1=>'是' ];
+        $data = [0 => '否' , 1=>'是' ];
         if( isset($data[$key]) ){
             return $data[$key];
         }

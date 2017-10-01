@@ -4,6 +4,7 @@ use app\api\model\Data;
 use app\api\model\Log;
 use app\api\model\User;
 use app\common\controller\Base;
+use app\common\org\Res;
 use think\Collection;
 use think\Controller;
 use think\Db;
@@ -13,13 +14,9 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
-        $map = [
-            ['name', 'like', 'thinkphp%'],
-            ['title', 'like', '%thinkphp'],
-            ['id', '>','0'],
-        ];
-        $a =  new Data();
-        dump( $a->getDgList(1,3,$map ));
+
+        $a = new Data();
+
 
        // $u = new User();
 
