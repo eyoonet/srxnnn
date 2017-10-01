@@ -102,14 +102,25 @@ function ButtonRunDialog(options) {
     if ( load == 'true') {// 这里是字符串
         var row = $('#' + dg).datagrid('getSelected');
         if (row != null) {
-            $.getJSON(url+"One/"+row.Id,function(row){
-                 url = url +'/'+ row.Id;
+            //如果是Data 的编辑就直接用网络数据
+            if(url == 'dataEdit'){
+                //data 的 edit 需要获取原始数据,修改器的数据是不行的.
+                $.getJSON(url+"One/"+row.Id,function(row){
+                    url = url +'/'+ row.Id;
+                    _Dialog(diaid, text, {
+                        url:url,
+                        rows:row,
+                        load:load
+                    });
+                })
+            }else {
+                url = url +'/'+ row.Id;
                 _Dialog(diaid, text, {
                     url:url,
                     rows:row,
                     load:load
                 });
-            })
+            }
         }else{
             showMsg("错误", '未选取数据!', true, 'error');
         }
