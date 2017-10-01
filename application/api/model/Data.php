@@ -21,11 +21,11 @@ class Data extends Model
      * @param $data array 数据
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function getDgList($page,$rows,$rule,$data){
+    public function getDgList($page,$rows,$rule,$fieids){
         return $this->where('order',null)
              ->order('add_time', 'desc')
              ->page($page,$rows)
-             ->where($rule,$data)
+             ->where($rule,$fieids)
              //->fetchSql(true)
              ->select();
     }

@@ -79,7 +79,7 @@ $(function($){
             if(select_index != null)
 			   $('#dg').datagrid('selectRow',select_index);
 		},
-        //大于2天的高亮显示
+        //大于2天的高亮显示 这里好像表会被刷新
  		rowStyler:function(index,row){
 			if(row.rcdate != null){
 				if(diffTime(row.rcdate) < 2){

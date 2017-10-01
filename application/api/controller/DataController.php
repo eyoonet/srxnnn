@@ -38,18 +38,20 @@ class DataController extends Base
             }
         }
     }
-    //page:1
-    //rows:15
-    //sort:rcdate
-    //order:desc
+
+    //sort:rcdate  rows:15  page:1  order:desc
     public function getDglist(Data $sqldata){
+        //请求说明 $params为排序分页 $rule 是查询规则 $fieids 是绑定参数
         $prams  = $this->request->only(['page','rows','sort','order'], 'post');
         $rule   = $this->request->post('rule');
-        $fieids = $this->request->post('fieids');
+        $fieids = $this->request->except(['page','rows','sort','order','rule'], 'post');
         $lists  = $sqldata->getDgList($prams['page'],$prams['rows'],$rule,$fieids);
         return json([
             'rows'  => $lists,
             'total' => $sqldata->total()
         ]);
+    }
+    public function sousou(Data $sqldata){
+
     }
 }

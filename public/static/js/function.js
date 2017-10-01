@@ -39,10 +39,8 @@ function onClickMenu(treeid,url){
                 }
 
 
-                console.log("menu-json:" + node.json);
-
                 // dg 从新加载dg参数   这里通过AJAX 会有问题...估计是加载没完成吧, JS会报错
-                var params = $('#'+node.dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
+                //var params = $('#'+node.dgid).datagrid('options').queryParams; //先取得 datagrid 的查询参数
                 if(node.json != null ) {
                     var fields = node.json; //JSON.parse(node.json); //json字符串转到对象
                     //$.each(fields, function (i, field) {
