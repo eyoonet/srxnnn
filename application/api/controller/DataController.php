@@ -51,13 +51,13 @@ class DataController extends Base
         $rule   = $this->request->post('rule');
         $fieids = $this->request->except(['page','rows','sort','order','rule','type'], 'post');
         $type   = $this->request->post('type');
-        if($rule == null || $fieids== null){ // 没有条件显示所有
-            $rule = "1 = :id";
-            $fieids = ['id'=>1 ];
-        }
         if($type == 'sousou'){
             $lists =  $sqldata->search($params['page'],$params['rows'],$fieids);
         }else{
+            if($rule == null || $fieids== null){ // 没有条件显示所有
+                $rule = "1 = :id";
+                $fieids = ['id'=>1 ];
+            }
             $lists  = $sqldata->getDgList($params['page'],$params['rows'],$rule,$fieids);
         }
         return json([

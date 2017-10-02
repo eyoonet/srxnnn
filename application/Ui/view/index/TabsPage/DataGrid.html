@@ -19,9 +19,11 @@
             <script type="text/javascript">
                 $('#ss').searchbox({
                     searcher:function(value,name){
-                        var text= "&"+name+"="+encodeURIComponent(value);
+                        var text= "&"+name+"="+encodeURIComponent($.trim(value));
                         var val =$("#form_search").serializeObject();
-                        val[name]   = value;
+                        if(value != ''){
+                            val[name]   = value;
+                        }
                         val['type'] = 'sousou';
                         $('#dg').datagrid({
                             queryParams: val
@@ -58,10 +60,10 @@
                 进度：
                 <select name="speed" class="easyui-combobox" style="width:82px;"
                         data-options="panelHeight:'auto',value:'',multiple:true,multivalue:false" >
-                    <option>未办</option>
-                    <option>一审</option>
-                    <option>二审</option>
-                    <option>完结</option>
+                    <option value="0">未办</option>
+                    <option value="1">一审</option>
+                    <option value="2">二审</option>
+                    <option value="3">完结</option>
                 </select>
 
                 业务员：<select name="user"  class="easyui-combobox"  style="width:80px;"></select>
@@ -112,8 +114,8 @@
                 申报方式：
                 <select name="sbtype" class="easyui-combobox"  style="width:80px;"
                          data-options="panelHeight:'auto',editable:false,value:'',multiple:true,multivalue:false">
-                    <option>个人申报</option>
-                    <option>单位申报</option>
+                    <option value="1">个人申报</option>
+                    <option value="2">单位申报</option>
                 </select>
                 <!-- 服务窗口 -->
                 窗口：

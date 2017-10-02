@@ -1,4 +1,8 @@
-﻿$.fn.serializeObject = function() {
+﻿/**
+ * 格式表单到json对象 jquery 扩展
+ * @returns {{}}
+ */
+$.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function() {
@@ -15,43 +19,11 @@
     });
     return o;
 }
-//字符串到json对象
-function obj (str){
-    var o = {};
-    var strs= new Array(); //定义一数组
-    var strs2 = new Array();
-    strs=str.split("&"); //字符分割
-/*
-    $.each(strs, function() {
-        if (o[this.name]) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });*/
-    for (i=0;i<strs.length ;i++ )
-    {
-        strs2 = strs[i].split("=");
-        var key   = decodeURI(strs2[0]);//decodeURI
-        var value = decodeURI(strs2[1]);
-        if (o[key] !== undefined) {
-            if (!o[key].push) {
-                o[key] = [o[key]];
-            }
-            o[key].push(value || '');
-        } else {
-            o[key] = value || '';
-        }
-    }
-    return o;
-}
-//删除空
-function serializeNotNull(serStr){
-    return serStr.split("&").filter(function(str){return !str.endsWith("=")}).join("&");
-}
+/**
+ * 树形菜单创建
+ * @param treeid
+ * @param url
+ */
 function onClickMenu(treeid,url){
     $('#'+treeid).tree({
         url:url,

@@ -12,6 +12,9 @@ class Data extends Model
 {
     protected $autoWriteTimestamp = true;
     protected $createTime = 'add_time';
+
+
+
     /**
      * 菜单获取表格格式数据
      * 'id > :id AND name LIKE :name ', ['id' => 0, 'name' => 'thinkphp%']
@@ -47,7 +50,7 @@ class Data extends Model
         $exps = [
             "eq"      => [],
             "like"    => ['name','tel','rdate'],
-            "in"      => ['id'],
+            "in"      => ['mode','speed','sbtype','service','status'],
             "between time" => ['add_time','I_date','II_date','speed_time']
         ];
         //日期字段,对应html type 的 value
@@ -64,6 +67,7 @@ class Data extends Model
             $array[$datepk] = $array['date'];
             unset($array['date_type']);unset($array['date']);
         }
+
         //map条件组装.
         while ($value = current($array)) {
             $key   =  key($array);
@@ -72,6 +76,7 @@ class Data extends Model
             $map[] = [ $key, $exp ,$value];
             next($array);
         }
+
         return $this->where('order',null)
             ->order('add_time','desc')
             ->page($page,$rows)
