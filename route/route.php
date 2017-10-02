@@ -36,4 +36,5 @@ return [
     'dataEdit/:id'       => 'api/Data/edit',
     'dataEditOne/:id'    => 'api/Data/getOneRow',
     'dataDgList'         => 'api/Data/getDglist',
+    'dataSouSou'         => 'api/Data/sousou',
 ];

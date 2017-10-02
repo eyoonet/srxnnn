@@ -20,21 +20,11 @@
                 $('#ss').searchbox({
                     searcher:function(value,name){
                         var text= "&"+name+"="+encodeURIComponent(value);
-                        var val =$("#form_search").serialize();
-                        val = val+text;
-                        val = serializeNotNull(val)
-                        $.ajax({
-                            type: "POST",
-                            url: "/api/gdata/sousou",
-                            data: val,
-                            success: function(obj){
-                                //var obj = $.parseJSON(data);
-                                if (obj.code< 1) {
-                                    $.messager.alert('警告',obj.msg,"warning");
-                                    return;
-                                }
-                                $('#dg').datagrid('loadData',obj);
-                            }
+                        var val =$("#form_search").serializeObject();
+                        val[name]   = value;
+                        val['type'] = 'sousou';
+                        $('#dg').datagrid({
+                            queryParams: val
                         });
                     },
                     width:200,
@@ -59,40 +49,36 @@
                 <hr>
                 审核方式：
                 <select  name="mode" class="easyui-combobox"
-                        data-options="panelHeight:'auto',value:'',multiple:true,multivalue:true" style="width:80px;">
+                        data-options="panelHeight:'auto',value:'',multiple:true,multivalue:false" style="width:80px;">
                     <option value='12'>核准制</option>
                     <option value='05'>留学生</option>
                     <option value='03'>应届生</option>
                     <option value='13'>积分制</option>
                 </select>
                 进度：
-                <select name="speed" id="speed" class="easyui-combobox"
-                        data-options="panelHeight:'auto',value:''" style="width:82px;">
+                <select name="speed" class="easyui-combobox" style="width:82px;"
+                        data-options="panelHeight:'auto',value:'',multiple:true,multivalue:false" >
                     <option>未办</option>
                     <option>一审</option>
                     <option>二审</option>
                     <option>完结</option>
                 </select>
-                <!--管理员功能-->
-                {$Think.session.user.name=='管理员'? '
-                业务员： <select name="user" id="user" class="easyui-combobox"  style="width:80px;"></select>
+
+                业务员：<select name="user"  class="easyui-combobox"  style="width:80px;"></select>
                 社保：
-                <select  class="easyui-combobox"
-                         name="shebao" style="width:90px;">
+                <select name="shebao" class="easyui-combobox" style="width:90px;">
                     <option value="6+">6个月以上</option>
                     <option value="6-">6个月以下</option>
                     <option value="0">无</option>
                 </select>
-                ':''}
-                <!--福田区佳兆业中心大厦B座1408房  /api/gdata/getUserNameList-->
                 日期条件：
                 <select  class="easyui-combobox"
                          data-options="panelHeight:'auto',editable:false,value:''"
                          id='date_type' name="date_type" style="width:80px;">
-                    <option>一审日期</option>
-                    <option>二审日期</option>
-                    <option>添加日期</option>
-                    <option>进度日期</option>
+                    <option value="1">一审日期</option>
+                    <option value="2">二审日期</option>
+                    <option value="0">添加日期</option>
+                    <option value="3">进度日期</option>
                 </select>
                 <script type="text/javascript">
                     $(function(){
@@ -113,36 +99,36 @@
                 </script>
                 <!-- label: 'Email:'                labelPosition: 'top', -->
                 <div id='date_input' style="display:inline" >
-                    <input id='start_date' name="start_date" style="width:120px" type= "text"  class= "easyui-datebox"
+                    <input id='start_date' name="date[]" style="width:120px" type= "text"  class= "easyui-datebox"
                            data-options="formatter:myformatter,parser:myparser"
                     >
                     TO
-                    <input id='end_date' name="end_date" style="width:120px" type= "text"
+                    <input id='end_date' name="date[]" style="width:120px" type= "text"
                            class= "easyui-datebox "
                            data-options="formatter:myformatter,parser:myparser"
                     >
                 </div>
                 <hr>
                 申报方式：
-                <select  class="easyui-combobox"
-                         data-options="panelHeight:'auto',editable:false,value:''"
-                         name="sbtype" style="width:80px;">
+                <select name="sbtype" class="easyui-combobox"  style="width:80px;"
+                         data-options="panelHeight:'auto',editable:false,value:'',multiple:true,multivalue:false">
                     <option>个人申报</option>
                     <option>单位申报</option>
                 </select>
                 <!-- 服务窗口 -->
                 窗口：
-                <input name="service" class="easyui-combobox col-box-2"
+                <input name="service" class="easyui-combobox"  style="width:80px;"
                        data-options="panelHeight:'auto',
+                                          multiple:true,
+                                          multivalue:false,
                                           url:'getCombobox/SERVICE',
                                           valueField:'value',
                                           textField:'text',
                                           editable:true"/>
 
-                工 作 流：
-                <select  class="easyui-combobox"
-                         data-options="panelHeight:'auto',editable:false,value:''"
-                         name="status" style="width:80px;">
+                工作流：
+                <select name="status" class="easyui-combobox"  style="width:80px;"
+                         data-options="panelHeight:'auto',editable:false,value:'',multiple:true,multivalue:false">
                     <option>新进客户</option>
                     <option>没有社保</option>
                     <option>问题打回</option>

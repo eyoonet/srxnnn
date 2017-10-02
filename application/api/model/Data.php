@@ -33,20 +33,78 @@ class Data extends Model
         return $this->where('order',null)->count();
     }
 
-    public function search($page,$rows,$exp){
-        //dump($a->where('mode','in','1,3,8'));
-        return $this->where('orde',null)
+    /**
+     * 搜索数据
+     * @post @date_type int
+     * @powt @date array
+     * @param $page
+     * @param $rows
+     * @param $array
+     * @return array|\PDOStatement|string|\think\Collection
+     */
+    public function search($page,$rows,$array){
+        //表达式定义
+        $exps = [
+            "eq"      => [],
+            "like"    => ['name','tel','rdate'],
+            "in"      => ['id'],
+            "between time" => ['add_time','I_date','II_date','speed_time']
+        ];
+        //日期字段,对应html type 的 value
+        $datekeys = [
+            0 => 'add_time',
+            1 => 'I_date',
+            2 => 'II_date',
+            3 => 'speed_time'
+        ];
+
+        if( isset($array['date_type']) ){
+            $type           = $array['date_type'];// 等于数字
+            $datepk         = $datekeys[$type];
+            $array[$datepk] = $array['date'];
+            unset($array['date_type']);unset($array['date']);
+        }
+        //map条件组装.
+        while ($value = current($array)) {
+            $key   =  key($array);
+            $exp   =  $this->exp($exps,$key);
+            if($exp == null )$exp = "=";
+            $map[] = [ $key, $exp ,$value];
+            next($array);
+        }
+        return $this->where('order',null)
             ->order('add_time','desc')
             ->page($page,$rows)
-            ->where();
+            ->fetchSql(true)
+            ->where($map)->select();
+    }
+
+    /**
+     * 就是返回数组格式为 不知道相同值会不会有问题
+     * [
+     *   "eq"      => ['name','tel'],
+     *   "like"    => ['111'],
+     *   "in"      => ['222'],
+     *   "between" => ['333']
+     * ]
+     * @param $exps
+     * @param $key
+     * @return mixed
+     */
+    private function exp($exps,$key){
+        foreach($exps as $expp){
+            $expskey = array_search($expp,$exps);//获取value 为 $expp 的 key
+            foreach($expp as $val ){
+                if($key == $val){
+                    return $expskey;
+                }
+            }
+        }
     }
 
     /***********************************************************************************
      * **********************************修改器******************************************
      ***********************************************************************************/
-
-
-
 
 
 
