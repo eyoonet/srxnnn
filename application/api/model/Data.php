@@ -13,7 +13,10 @@ class Data extends Model
     protected $autoWriteTimestamp = true;
     protected $createTime = 'add_time';
 
-
+    public function data_img()
+    {
+        return $this->hasOne('dataimg');
+    }
 
     /**
      * 菜单获取表格格式数据
@@ -69,6 +72,7 @@ class Data extends Model
         }
 
         //map条件组装.
+        $map = array();
         while ($value = current($array)) {
             $key   =  key($array);
             $exp   =  $this->exp($exps,$key);
@@ -76,11 +80,10 @@ class Data extends Model
             $map[] = [ $key, $exp ,$value];
             next($array);
         }
-
         return $this->where('order',null)
             ->order('add_time','desc')
             ->page($page,$rows)
-            ->fetchSql(true)
+            //->fetchSql(true)
             ->where($map)->select();
     }
 

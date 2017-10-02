@@ -39,7 +39,7 @@ class Base extends Controller
             }
         }
         $this->auth();
-        $this->log();
+        //$this->log();
     }
     private function auth(){
         $module     = $this->request->module();
@@ -50,7 +50,7 @@ class Base extends Controller
         $this->auth = $auth->check( $this->url, $this->uid );
     }
 
-    private function log(){
+    protected function log(){
         $log  = new Log();
         $data = [
             'group_id'  => $this->group_id,

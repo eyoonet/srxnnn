@@ -20,7 +20,7 @@ Route::get('think', function () {
 return [
     'test'=>'api/Index/index',
     //'ui/[:name]'=>'ui/Index/index',
-    '/'                  => 'ui/Index/index',
+    'main'               => 'ui/Index/index',
     'login'              => 'ui/login/index',
     'doLogin'            => 'api/User/dologin',
 
