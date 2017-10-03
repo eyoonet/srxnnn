@@ -128,8 +128,8 @@ function ButtonRunDialog(options) {
             //如果是Data 的编辑就直接用网络数据
             if(url == 'dataEdit'){
                 //data 的 edit 需要获取原始数据,修改器的数据是不行的.
-                $.getJSON(url+"One/"+row.Id,function(row){
-                    url = url +'/'+ row.Id;
+                $.getJSON(url+"One/"+row.id,function(row){
+                    url = url +'/'+ row.id;
                     _Dialog(diaid, text, {
                         url:url,
                         rows:row,
@@ -137,7 +137,7 @@ function ButtonRunDialog(options) {
                     });
                 })
             }else { //不是编辑Data数据的话就直接用js数据加载就可以了.
-                url = url +'/'+ row.Id;
+                url = url +'/'+ row.id;
                 _Dialog(diaid, text, {
                     url:url,
                     rows:row,

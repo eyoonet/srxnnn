@@ -47,7 +47,7 @@ class Base extends Controller
         $action     = $this->request->action();
         $this->url  = "{$module}/{$controller}/{$action}"; //$this->request->routeInfo()['route'];
         $auth       = new Auth();
-        $this->auth = $auth->check( $this->url, $this->uid );
+        $this->auth = $auth->check( $this->url , $this->uid );
     }
 
     protected function log(){
@@ -60,4 +60,5 @@ class Base extends Controller
         ];
         $log->save($data);
     }
+
 }

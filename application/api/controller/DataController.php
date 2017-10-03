@@ -7,6 +7,7 @@
  */
 namespace app\api\controller;
 use app\api\model\Data;
+use app\api\model\DataImg;
 use app\common\controller\Base;
 use app\common\org\Res;
 use think\Response;
@@ -19,7 +20,8 @@ class DataController extends Base
         $this->log();
     }
     public function  create(Data $sqldata){
-        $data = $this->request->param();
+        $data            =  $this->request->param();
+        $data['user_id'] =  $this->uid;
         $validate = new \app\api\validate\Data();
         if($validate->check($data)){
              if( $sqldata->save($data)){
@@ -33,8 +35,9 @@ class DataController extends Base
         $data = $this->request->post();
         $validate = new \app\api\validate\Data();
         if($validate->scene('edit')->check($data)){
-            $sqldata  = new Data();
-            if( $sqldata->save($data,[ 'id'=>$id ]) ){
+            $m  = Data::get($id);
+            $m->bak(0);
+            if( $m->save($data) ){
                 return Res::Json(200);
             } else {
                 return Res::Json(400);

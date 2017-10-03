@@ -158,7 +158,7 @@
             <div id="dg-buttions-Group" dg="dg" style="margin-bottom:5px">
                 <a onclick="ButtonRunDialog(this);"  dialog="add" url="dataCreate" class="easyui-linkbutton" plain="true">添加</a>
                 <a onclick="ButtonRunDialog(this);"  dialog="add" url="dataEdit" load="true" class="easyui-linkbutton" plain="true">修改</a>
-                <a onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>
+                <!--<a onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>-->
                 <a onclick="ButtonRunDialog(this);" dialog="comment" url="refund" load="true" class="easyui-linkbutton"  plain="true">退款</a>
                 <a onclick="run(this)" action="back" class="easyui-linkbutton"  plain="true">退回</a>
                 <a onclick="run(this)" action="shebao" class="easyui-linkbutton"  plain="true">无社保</a>
@@ -196,7 +196,7 @@
         var key =  $(options).attr("action");
         var text =  $(options).context.innerText;
         if (row != null ){
-            var url = config[key] + row.Id;
+            var url = config[key] + row.id;
             console.info("URL:"+url);
             showConfirm("您好","执行命令为: [" + text + "] 是否确认 ? ",function(){
                 jsonAjax('post',url,{a:1},function(ret){
