@@ -120,7 +120,7 @@
             buttons: [{
                 text: '保存',
                 handler: function () {
-                    dialogSubmit('set-menu-dialog', 'menu-add/fid/' + fid);
+                    dialogSubmit('set-menu-dialog', 'menu/create/' + fid);
                 }
             }, {
                 text: '关闭',
@@ -142,7 +142,7 @@
                 id = row.id
             }
         }
-        var url = "menu-del/" + id;
+        var url = "menu/delete/" + id;
         //console.log(url);
         showConfirm("您好", "是否确认 ? ", function () {
             jsonAjax('post', url, {remov: 1}, function (ret) {
@@ -160,7 +160,7 @@
     $(function () {
         var lastIndex
         $('#set-menu-treegrid').treegrid({
-            url: 'getSidebarAll',
+            url: 'menu/GetAll',
             //method:'post',          //请求方式
             idField: 'id',           //定义标识树节点的键名字段
             treeField: 'text',       //定义树节点的字段

@@ -14,27 +14,40 @@ Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
 */
+Route::rule('test', 'api/Index/test');
+Route::group('data',[
+    'Create'	    =>	'api/Data/create',
+    'Edit/:id'	    =>	'api/Data/edit',
+    'EditOne/:id'   =>  'api/Data/getOneRow',
+    'DGlist'        =>  'api/Data/getDglist',
+    'SouSou'        =>  'api/Data/sousou'
+]);
 
-//Route::rule('test', 'api/Index/test');
+Route::group('ui',[
+    'main'	    =>	'ui/Index/index',
+    'login'	    =>	'ui/login/index',
+    'Settings'  =>  'ui/Index/Settings',
+    'log'       =>  'ui/index/Log',
+    'task'      =>  'ui/index/Task',
+]);
 
-return [
-    'test'=>'api/Index/index',
-    //'ui/[:name]'=>'ui/Index/index',
-    'main'               => 'ui/Index/index',
-    'login'              => 'ui/login/index',
-    'doLogin'            => 'api/User/dologin',
+Route::group('menu',[
+    'GetAll'      => 'api/menu/getSidebarAll',
+    'Get/:tag'    => 'api/menu/getSidebar',
+    'create'      => 'api/menu/create',
+    'delete/:id'  => 'api/menu/delete',
+]);
 
-    'getSidebarAll'      => 'api/menu/getSidebarAll',
-    'getSidebar/:tag'    => 'api/menu/getSidebar',
-    'menu-add'           => 'api/menu/create',
-    'menu-del/:id'       => 'api/menu/delete',
+Route::group('log',[
+    'GetAll'  => 'api/log/getAllLog',
+]);
 
-    'getCombobox/:tag'   => 'api/combobox/get',
-    'getAllLog'          => 'api/log/getAllLog',
+Route::group('combobox',[
+    'Get/:tag'  =>  'api/combobox/get',
+]);
 
-    'dataCreate'         => 'api/Data/create',
-    'dataEdit/:id'       => 'api/Data/edit',
-    'dataEditOne/:id'    => 'api/Data/getOneRow',
-    'dataDgList'         => 'api/Data/getDglist',
-    'dataSouSou'         => 'api/Data/sousou',
-];
+Route::group('user',[
+    'doLogin' => 'api/User/dologin',
+    'logout'  => 'api/User/logout'
+]);
+

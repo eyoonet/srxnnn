@@ -24,6 +24,7 @@ class UserController extends Controller
     }
     public function logout(){
         session('uid', null);
+        $this->redirect('/');
     }
     public function doRegister(User $user)
     {

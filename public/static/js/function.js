@@ -126,7 +126,7 @@ function ButtonRunDialog(options) {
         var row = $('#' + dg).datagrid('getSelected');
         if (row != null) {
             //如果是Data 的编辑就直接用网络数据
-            if(url == 'dataEdit'){
+            if(url == 'data/Edit'){
                 //data 的 edit 需要获取原始数据,修改器的数据是不行的.
                 $.getJSON(url+"One/"+row.id,function(row){
                     url = url +'/'+ row.id;

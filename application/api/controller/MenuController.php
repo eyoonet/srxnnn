@@ -9,10 +9,10 @@
 namespace app\api\controller;
 
 use app\api\model\MenuTree;
-use think\Controller;
+use app\common\controller\Base;
 use app\common\org\Res;
 
-class MenuController extends Controller
+class MenuController extends Base
 {
     /**
      *  取所有所有菜单用于菜单管理列表

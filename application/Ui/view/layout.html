@@ -4,33 +4,34 @@
 <body id="cc" class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:80px;background:#0081C2;padding:10px">
 		<input id="token" type="hidden" name="token" value="{$token}">
-
 		<script type="text/javascript">
 		  console.info("用户TOKGEN:"+$('#token').val());
 		</script>
-
 		<h1 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h1>
 		<p class="f-r" style="color:#FFF3F3;margin-top: 30px;
                                             margin-right: 90px;">当前用户 
 			<span id="username" style="color:#CFD22C">{/*$Think.session.user.name*/}</span>
-			<a style="color:#00E7FF" href="/ui/home/logout">退出</a>
+			<a style="color:#00E7FF" href="user/logout">退出</a>
 		</p>
 	</div>
 	<div data-options="region:'west',split:true" style="width:150px;padding:0px;">
 		<div id="aa" class="easyui-accordion" style="height:100%;">
 			<div title="客户管理" data-options="iconCls:'icon-man',selected:true" style="overflow:auto;padding:0px;">
-				{include file="public/menu" /}
+				<ul id="clents-menu"></ul>
+				<script type="text/javascript">
+					onClickMenu("clents-menu","menu/Get/CLENTS");
+				</script>
 			</div>
-			<div title="任务系统" data-options="iconCls:'icon-reload'" style="padding:0px;">
+			<div title="任务系统" data-options="iconCls:'icon-man'" style="padding:0px;">
 				<ul id="task-menu"></ul>
 				<script>
-					onClickMenu("task-menu","getSidebar/TASK");
+					onClickMenu("task-menu","menu/Get/TASK");
 				</script>
 			</div>
 			<div title="系统设置">
 				<ul id="sys-menu"></ul>
 				<script>
-					onClickMenu("sys-menu","getSidebar/SYS");
+					onClickMenu("sys-menu","menu/Get/SYS");
 				</script>
 			</div>
 			<div title="日志查询">

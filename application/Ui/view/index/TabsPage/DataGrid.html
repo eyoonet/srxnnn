@@ -120,34 +120,24 @@
                 <!-- 服务窗口 -->
                 窗口：
                 <input name="service" class="easyui-combobox"  style="width:80px;"
-                       data-options="panelHeight:'auto',
-                                          multiple:true,
-                                          multivalue:false,
-                                          url:'getCombobox/SERVICE',
-                                          valueField:'value',
-                                          textField:'text',
-                                          editable:true"/>
+                          data-options="panelHeight:'auto',
+                          multiple:true,
+                          multivalue:false,
+                          url:'combobox/Get/SERVICE',
+                          valueField:'value',
+                          textField:'text',
+                          editable:true"/>
 
                 工作流：
                 <select name="status" class="easyui-combobox"  style="width:80px;"
-                         data-options="panelHeight:'auto',editable:false,value:'',multiple:true,multivalue:false">
-                    <option>新进客户</option>
-                    <option>没有社保</option>
-                    <option>问题打回</option>
-                    <option>待录人保</option>
-                    <option>已录人保</option>
-                    <option>提交人保</option>
-                    <option>已约号</option>
-                    <option>预备二审</option>
-                    <option>可以二审</option>
-                    <option>已约号II</option>
-                    <option>已出号</option>
-                    <option>等待调令</option>
-                    <option>审批中</option>
-                    <option>已审批同意</option>
-                    <option>出调令</option>
-                    <option>已拿调令</option>
-                    <option>完结</option>
+                         data-options="panelHeight:'auto',
+                         editable:false,
+                         value:'',
+                         url:'combobox/Get/STATUS',
+                         valueField:'value',
+                         textField:'text',
+                         multiple:true,
+                         multivalue:false">
                 </select>
                 <a id="search"  class="easyui-linkbutton" data-options="iconCls:'icon-search'">查 找</a>
                 <a id="dow" class="easyui-linkbutton">下载</a>
@@ -156,13 +146,13 @@
             <hr>
             <!-- DATA表  按钮组 -->
             <div id="dg-buttions-Group" dg="dg" style="margin-bottom:5px">
-                <a onclick="ButtonRunDialog(this);"  dialog="add" url="dataCreate" class="easyui-linkbutton" plain="true">添加</a>
-                <a onclick="ButtonRunDialog(this);"  dialog="add" url="dataEdit" load="true" class="easyui-linkbutton" plain="true">修改</a>
+                <a onclick="ButtonRunDialog(this);"  dialog="add" url="data/Create" class="easyui-linkbutton" plain="true">添加</a>
+                <a onclick="ButtonRunDialog(this);"  dialog="add" url="data/Edit" load="true" class="easyui-linkbutton" plain="true">修改</a>
                 <!--<a onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>-->
                 <a onclick="ButtonRunDialog(this);" dialog="comment" url="refund" load="true" class="easyui-linkbutton"  plain="true">退款</a>
                 <a onclick="run(this)" action="back" class="easyui-linkbutton"  plain="true">退回</a>
                 <a onclick="run(this)" action="shebao" class="easyui-linkbutton"  plain="true">无社保</a>
-                <a onclick="ButtonRunDialog(this);"  dialog="error" url="refurn" load="true" class="easyui-linkbutton" plain="true">问题</a>
+                <a onclick="ButtonRunDialog(this);"  dialog="error" url="data/refurn" load="true" class="easyui-linkbutton" plain="true">问题</a>
                 <a onclick="run(this)" action="etcinput" class="easyui-linkbutton"  plain="true">待录</a>
                 <a onclick="ButtonRunDialog(this);" dialog="commit" url="data/commit" load="true" class="easyui-linkbutton" plain="true">提交</a>
                 <a onclick="run(this)" action="rcyuehao" class="easyui-linkbutton"  plain="true">约号</a>

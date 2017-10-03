@@ -10,7 +10,7 @@ $(function($){
         fitColumns: true, //自动调整各列，用了这个属性，下面各列的宽度值就只是一个比例。
         striped: true, //奇偶行颜色不同
         collapsible:false,//可折叠
-        url:"dataDgList", //数据来源
+        url:"data/DGlist", //数据来源
         sortName: 'rcdate', //排序的列
         sortOrder: 'desc', //倒序
         remoteSort: true, //服务器端排序

@@ -20,14 +20,14 @@ class IndexController extends Base
         $this->assign('token',$user->getToken($this->uid));
         return $this->fetch('main');
     }
-    public function SettingsUI()
+    public function Settings()
     {
         return response($this->fetch("/index/TabsJson/settings"));
     }
-    public function LogUI(){
+    public function Log(){
         return response($this->fetch("/index/TabsJson/log"));
     }
-    public function TaskUI(){
+    public function Task(){
         return response($this->fetch('/index/TabsJson/task'));
     }
 }
