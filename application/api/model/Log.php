@@ -16,11 +16,11 @@ class Log extends Model
 
     public function getUserActionLog($page,$rows)
     {
-        $sqldata = $this->view('User', 'name', 'user.id = log.user_id ')
-            ->view('auth_group', 'title', 'auth_group.id = log.group_id')
-            ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url')
-            ->view('Data', 'name as uname', 'data.id = log.clents_id')
-            ->view('Log', 'id,rule_url,type,create_time,action_ip')
+        $sqldata = $this->view('Log', 'id,rule_url,type,create_time,action_ip')
+            ->view('User', 'user_name', 'user.id = log.user_id ','LEFT')
+            ->view('auth_group', 'title', 'auth_group.id = log.group_id','LEFT')
+            ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url','LEFT')
+            ->view('Data', 'name as uname', 'data.id = log.clents_id','LEFT')
             ->order('create_time desc')
             ->page($page,$rows)
             ->select();
@@ -29,10 +29,10 @@ class Log extends Model
 
     public function getSysActionLog($page,$rows)
     {
-        $sqldata = $this->view('User', 'name', 'user.id = log.user_id ')
-            ->view('auth_group', 'title', 'auth_group.id = log.group_id')
-            ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url')
-            ->view('Log', 'id,rule_url,type,create_time,action_ip')
+        $sqldata = $this->view('Log', 'id,rule_url,type,create_time,action_ip')
+            ->view('User', 'user_name', 'user.id = log.user_id ','LEFT')
+            ->view('auth_group', 'title', 'auth_group.id = log.group_id','LEFT')
+            ->view('auth_rule', 'title as action', 'auth_rule.name = log.rule_url','LEFT')
             ->order('create_time desc')
             ->page($page,$rows)
             ->select();

@@ -1,11 +1,8 @@
 {layout name="layout" /}
-<input id="dg_type" type="hidden">
 <!-- tabs start -->
 <script type="text/javascript">
-	load();
+
 </script>
-
-
 <div id="tabs" class="easyui-tabs" data-options="fit:true" >
 	{include file="index/TabsPage/DataGrid" /}
 	{include file="index/TabsPage/table" /}
@@ -31,9 +28,6 @@
 	人才网结束 -->
 </div>
 <!--tabs end-->
-
-
-{include file="index/windows/add" /}
  <!-- 右键菜单开始 -->
 <div id="mm" class="easyui-menu" style="width:120px;">   
     <div>没有社保</div>
@@ -44,6 +38,7 @@
 	<div>已约号</div>	
 </div>  
 <!-- 右键菜单结束 -->
+{include file="index/windows/add" /}
 {include file="index/windows/comment" /}
 {include file="index/windows/task" /}
 {include file="index/windows/tag" /}

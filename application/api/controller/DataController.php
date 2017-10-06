@@ -225,18 +225,21 @@ class DataController extends Base
         $fieids = $this->request->except(['page','rows','sort','order','rule','type'], 'post');
         $type   = $this->request->post('type');
         if($type == 'sousou'){
-            $lists =  $sqldata->search($params['page'],$params['rows'],$fieids);
+            $lists =  $sqldata->search($params,$fieids);
         }else{
             if($rule == null || $fieids== null){ // 没有条件显示所有
                 $rule = "1 = :id";
                 $fieids = ['id'=>1 ];
             }
-            $lists  = $sqldata->getDgList($params['page'],$params['rows'],$rule,$fieids);
+            $lists  = $sqldata->getDgList($params,$rule,$fieids);
         }
         return json([
             'rows'  => $lists,
             'total' => $sqldata->total(),
             'type'  => $type
         ]);
+    }
+    public function getRcDate($id,Data $m){
+        return $m->where('id',$id)->value('rcdate');
     }
 }

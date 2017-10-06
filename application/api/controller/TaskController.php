@@ -29,12 +29,25 @@ class TaskController extends Base
                 $rule = "1 = :id";
                 $fieids = ['id'=>1 ];
             }
-            $lists  = $m->TList($params['page'],$params['rows'],$rule,$fieids);
+            if(isset($fieids['uid']))$fieids['uid'] = $this->uid;
+            $lists  = $m->TList($params,$rule,$fieids);
         }
         return json([
             'rows'  => $lists,
             'total' => $m->total(),
             'type'  => $type
         ]);
+    }
+    public function finish($id){
+        $m = Task::get($id);
+        $m->finish_type = 2;
+        $m->finish_time = time();
+        return $m->save()? Res::Json(200) : Res::Json(400);
+    }
+    public function failed($id){
+        $m= Task::get($id);
+        $m->finish_type = 0;
+        $m->finish_time = time();
+        return $m->save()? Res::Json(200) : Res::Json(400);
     }
 }

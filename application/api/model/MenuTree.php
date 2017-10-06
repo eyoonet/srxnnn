@@ -29,7 +29,7 @@ class MenuTree extends Model
         $arr = $this->where('group_id', $groupId)
             ->where('status', 1)
             ->where('tag', $tag)
-            ->order('sort desc')
+            ->order('sort asc')
             // ->fetchSql(true)
             ->select();
         return $this->formatSidebar($arr);

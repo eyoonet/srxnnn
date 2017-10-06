@@ -33,10 +33,13 @@ Route::group('data',[
     'etcinput/:id'  =>  'api/Data/etcinput',
     'comment/:id'   =>  'api/Data/comment',
     'tag/:id'       =>  'api/Data/tag',
+    'getRcDate/:id' =>  'api/data/getRcDate'
 ]);
 Route::group('task',[
     'create/[:id]'        => 'api/Task/create',
-    'List'                => 'api/Task/TList'
+    'List'                => 'api/Task/TList',
+    'Finish/:id'          => 'api/Task/Finish',
+    'failed/:id'         => 'api/Task/failed'
 ]);
 Route::group('ui',[
     'main'	    =>	'ui/Index/index',

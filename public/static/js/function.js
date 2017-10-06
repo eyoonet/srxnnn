@@ -470,7 +470,7 @@ function AjaxPost(url, data, confirm = true) {
 function jsonAjax(type, url, param, callback) {
     $.ajax({
         type: type,
-        async: false,
+        async: true,
         url: url,
         data: param,
         dataType: 'json',

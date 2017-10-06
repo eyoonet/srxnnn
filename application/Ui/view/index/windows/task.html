@@ -1,5 +1,5 @@
 <!-- 任务窗口开始 -->
-<div id="task" form="task-form"  dg="dg" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
+<div id="task" form="task-form"  dg="task-dg" class="easyui-dialog dialog-form-style" title="任务系统" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
           data-options="closed:true,modal:false,resizable:true">
    <form id="task-form">
        <label>标题:</label>
@@ -16,7 +16,7 @@
                                 panelHeight:'auto'"/>
        <input name="comments" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
         <label>时间：</label>
-        <input name='task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
+        <input id="rcdate" name='task_time' class="easyui-datetimebox" style="width:80%" data-options="required:true,formatter:my2formatter,parser:my2parser">
    </form>
 
     <!--<div id="cc" class="easyui-layout" style="width:500px;height:300px;">
