@@ -100,7 +100,9 @@ class User extends Model
         }
     }
 
-
+    public function comboboxUserList(){
+      return  $this->field('id as value,user_name as text')->select();
+    }
     /**
      * 获取用户角色
      * @return integer 返回角色信息或者返回-1

@@ -8,7 +8,6 @@ use app\common\org\Res;
 
 class UserController extends Controller
 {
-
     public function doLogin(User $user)
     {
         $username = $this->request->param('user');

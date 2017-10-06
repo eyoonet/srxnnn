@@ -14,15 +14,30 @@ Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
 */
-Route::rule('test', 'api/Index/test');
+Route::rule('test', 'api/Index/index');
 Route::group('data',[
     'Create'	    =>	'api/Data/create',
     'Edit/:id'	    =>	'api/Data/edit',
     'EditOne/:id'   =>  'api/Data/getOneRow',
     'DGlist'        =>  'api/Data/getDglist',
-    'SouSou'        =>  'api/Data/sousou'
+    'SouSou'        =>  'api/Data/sousou',
+    'refund/:id'    =>  'api/Data/refund',
+    'shebao/:id'    =>  'api/Data/shebao',
+    'refurn/:id'    =>  'api/Data/refurn',
+    'commit/:id'    =>  'api/Data/commit',
+    'sign/:id'      =>  'api/Data/sign',
+    'prepareSubmit/:id' =>  'api/Data/prepareSubmit',
+    'submit/:id'    =>  'api/Data/submit',
+    'takeDiaol/:id' =>  'api/Data/takeDiaol',
+    'finish/:id'    =>  'api/Data/finish',
+    'etcinput/:id'  =>  'api/Data/etcinput',
+    'comment/:id'   =>  'api/Data/comment',
+    'tag/:id'       =>  'api/Data/tag',
 ]);
-
+Route::group('task',[
+    'create/[:id]'        => 'api/Task/create',
+    'List'                => 'api/Task/TList'
+]);
 Route::group('ui',[
     'main'	    =>	'ui/Index/index',
     'login'	    =>	'ui/login/index',
@@ -44,6 +59,7 @@ Route::group('log',[
 
 Route::group('combobox',[
     'Get/:tag'  =>  'api/combobox/get',
+    'Userlist'  =>  'api/combobox/userlist'
 ]);
 
 Route::group('user',[

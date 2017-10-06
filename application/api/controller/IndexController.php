@@ -14,15 +14,43 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
+        $m = new Data();
 
-      $m = new Data();
-        $data=[
-            'card' => '420682199011051025',
-            'name' => 'sdafasdf'
+        $array = ['name'=>'333','shebao'=>'2323'];
+        //表达式定义
+        $exps = [
+            "eq"      => [],
+            "like"    => ['name','tel','rdate'],
+            "in"      => ['mode','speed','sbtype','service','status'],
+            "between time" => ['add_time','I_date','II_date','speed_time']
         ];
-        $m->save($data,['id'=>44]);
+        //日期字段,对应html type 的 value
+        $datekeys = [
+            0 => 'add_time',
+            1 => 'I_date',
+            2 => 'II_date',
+            3 => 'speed_time'
+        ];
 
-        dump( $m->DataImg());
+        if( isset($array['date_type']) ){
+            $type           = $array['date_type'];// 等于数字
+            $datepk         = $datekeys[$type];
+            $array[$datepk] = $array['date'];
+            unset($array['date_type']);unset($array['date']);
+        }
+        //map条件组装.
+        $map = array();
+        while ($value = current($array)) {
+            $key   =  key($array);
+            $exp   =  $this->exp($exps,$key);
+            if($exp == null )$exp = "=";
+            $map[] = [ $key, $exp ,$value];
+            next($array);
+        }
+        return $m->where('order',null)
+            ->order('add_time','desc')
+            ->fetchSql(true)
+            ->where($map)->select();
 
 
 
@@ -38,5 +66,15 @@ class IndexController extends Collection
         //$a= new Log();
         //dump($a->getSysActionLog());
         //dump($a->getUserActionLog());
+    }
+    private function exp($exps,$key){
+        foreach($exps as $expp){
+            $expskey = array_search($expp,$exps);//获取value 为 $expp 的 key
+            foreach($expp as $val ){
+                if($key == $val){
+                    return $expskey;
+                }
+            }
+        }
     }
 }

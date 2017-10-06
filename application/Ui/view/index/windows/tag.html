@@ -1,13 +1,14 @@
 <div id="tag" form="tag-form" dg="dg" class="easyui-dialog dialog-form-style" title="标签" style="width:300px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
      data-options="closed:true,modal:false,resizable:true">
     <form id="tag-form">
-        <input name="task.tag[]"  class="easyui-combobox"  style="width:100%;"
+        <input name="tag"  class="easyui-combobox"  style="width:100%;"
                data-options="multiple:true,
+                             multivalue:false,
                              panelHeight:'auto',
                              url:'Combobox/Get/TAG',
                              valueField:'value',
                              textField:'text',
                              editable:true"/>
-       <input name="task.tag[]" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
+       <input name="comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
     </form>
 </div>

@@ -8,6 +8,7 @@
 
 namespace app\api\controller;
 use app\api\model\Comboboxs;
+use app\api\model\User;
 use app\common\controller\Base;
 class ComboboxController extends Base
 {
@@ -16,5 +17,8 @@ class ComboboxController extends Base
           'tag' =>   $tag
         ];
         return $combox->order('sort asc')->where($where)->select();
+    }
+    public function userlist(User $user){
+       return  $user->comboboxUserList();
     }
 }

@@ -54,11 +54,13 @@ class Data extends Model
      */
     public function getDgList($page,$rows,$rule,$fieids){
         return $this->where('order',null)
-             ->order('add_time', 'desc')
-             ->page($page,$rows)
-             ->where($rule,$fieids)
-             //->fetchSql(true)
-             ->select();
+            ->view('data','*')
+            ->view('user', 'user_name','data.user_id=user.Id')
+            ->order('add_time', 'desc')
+            ->page($page,$rows)
+            ->where($rule,$fieids)
+            //->fetchSql(true)
+            ->select();
     }
     public function total(){
         return $this->where('order',null)->count();
@@ -91,7 +93,7 @@ class Data extends Model
         //表达式定义
         $exps = [
             "eq"      => [],
-            "like"    => ['name','tel','rdate'],
+            "like"    => ['name','tel','rdate','Tag'],
             "in"      => ['mode','speed','sbtype','service','status'],
             "between time" => ['add_time','I_date','II_date','speed_time']
         ];
@@ -109,21 +111,24 @@ class Data extends Model
             $array[$datepk] = $array['date'];
             unset($array['date_type']);unset($array['date']);
         }
-
         //map条件组装.
         $map = array();
         while ($value = current($array)) {
             $key   =  key($array);
             $exp   =  $this->exp($exps,$key);
             if($exp == null )$exp = "=";
+            if($exp == "like")$value =  "%" .$value."%";
             $map[] = [ $key, $exp ,$value];
             next($array);
         }
         return $this->where('order',null)
             ->order('add_time','desc')
             ->page($page,$rows)
+            ->view('data','*')
+            ->view('user', 'user_name','data.user_id=user.Id')
             //->fetchSql(true)
-            ->where($map)->select();
+            ->where($map)
+            ->select();
     }
 
     /**
@@ -162,7 +167,7 @@ class Data extends Model
         $data = [
             0 => '新进客户', 1 => '没有社保', 2 => '问题打回',  3=> '待录人保',
             4 => '提交人保', 5 => '已约号I',   6 => '已约号II',   7=> '已出号',
-            8 =>'已一审',    9 => '可以二审', 10=> '已二审',   11=> '撤销终止',
+            8 =>'已一审',    9 => '预备二审', 10=> '已二审',   11=> '撤销终止',
             12=> '不予受理', 13=> '待报道',   14=> '审批中',   15=> '审批同意',
             16=> '出调令',   17=> '已拿调令', 18=> '完结',
         ];

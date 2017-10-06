@@ -67,12 +67,12 @@
                 </select>
 
                 业务员：<select name="user"  class="easyui-combobox"  style="width:80px;"></select>
-                社保：
+                <!--社保：
                 <select name="shebao" class="easyui-combobox" style="width:90px;">
                     <option value="6+">6个月以上</option>
                     <option value="6-">6个月以下</option>
                     <option value="0">无</option>
-                </select>
+                </select>-->
                 日期条件：
                 <select  class="easyui-combobox"
                          data-options="panelHeight:'auto',editable:false,value:''"
@@ -149,24 +149,23 @@
                 <a onclick="ButtonRunDialog(this);"  dialog="add" url="data/Create" class="easyui-linkbutton" plain="true">添加</a>
                 <a onclick="ButtonRunDialog(this);"  dialog="add" url="data/Edit" load="true" class="easyui-linkbutton" plain="true">修改</a>
                 <!--<a onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>-->
-                <a onclick="ButtonRunDialog(this);" dialog="comment" url="refund" load="true" class="easyui-linkbutton"  plain="true">退款</a>
+                <a onclick="ButtonRunDialog(this);" dialog="comment" url="data/refund" load="true" class="easyui-linkbutton"  plain="true">退款</a>
                 <a onclick="run(this)" action="back" class="easyui-linkbutton"  plain="true">退回</a>
-                <a onclick="run(this)" action="shebao" class="easyui-linkbutton"  plain="true">无社保</a>
+                <a onclick="run(this)" url="data/shebao" class="easyui-linkbutton"  plain="true">无社保</a>
                 <a onclick="ButtonRunDialog(this);"  dialog="error" url="data/refurn" load="true" class="easyui-linkbutton" plain="true">问题</a>
-                <a onclick="run(this)" action="etcinput" class="easyui-linkbutton"  plain="true">待录</a>
+                <a onclick="run(this)" url="data/etcinput" class="easyui-linkbutton"  plain="true">待录</a>
                 <a onclick="ButtonRunDialog(this);" dialog="commit" url="data/commit" load="true" class="easyui-linkbutton" plain="true">提交</a>
                 <a onclick="run(this)" action="rcyuehao" class="easyui-linkbutton"  plain="true">约号</a>
-                <a onclick="run(this)" action="sign" class="easyui-linkbutton"  plain="true">一审</a>
-                <a onclick="run(this)" action="fileCheck" class="easyui-linkbutton"  plain="true">审核</a>
-                <a onclick="run(this)" action="soreSubmit" class="easyui-linkbutton"  plain="true">可以二审</a>
-                <a onclick="run(this)" action="submit" class="easyui-linkbutton"  plain="true">二审</a>
-                <a onclick="run(this)" action="takeDiaol" class="easyui-linkbutton"  plain="true">拿调令</a>
-                <a onclick="run(this)" action="success" class="easyui-linkbutton"  plain="true">完结</a>
+                <a onclick="run(this)" url="data/sign" class="easyui-linkbutton"  plain="true">一审</a>
+ <!--               <a onclick="run(this)" url="data/fileCheck" class="easyui-linkbutton"  plain="true">审核</a>-->
+                <a onclick="run(this)" url="data/prepareSubmit" class="easyui-linkbutton"  plain="true">预备二审</a>
+                <a onclick="run(this)" url="data/submit" class="easyui-linkbutton"  plain="true">二审</a>
+                <a onclick="run(this)" url="data/takeDiaol" class="easyui-linkbutton"  plain="true">拿调令</a>
+                <a onclick="run(this)" url="data/finish" class="easyui-linkbutton"  plain="true">完结</a>
                 <a onclick="run(this)" action="miss" class="easyui-linkbutton"  plain="true">爽约</a>
-                <a onclick="ButtonRunDialog(this);"  dialog="task" url="task" load="true" class="easyui-linkbutton" plain="true">任务</a>
-                <a id="comm-but" onclick="ButtonRunDialog(this);"  dialog="comment" url="comment" load="true" class="easyui-linkbutton" plain="true">备注</a>
-                <a id="tag-but" onclick="ButtonRunDialog(this);"  dialog="tag" url="tag" load="true" class="easyui-linkbutton" plain="true">标记</a>
-
+                <a onclick="ButtonRunDialog(this);"  dialog="task" url="task/create" load="true" class="easyui-linkbutton" plain="true">任务</a>
+                <a id="comm-but" onclick="ButtonRunDialog(this);"  dialog="comment" url="data/comment" load="true" class="easyui-linkbutton" plain="true">备注</a>
+                <a id="tag-but" onclick="ButtonRunDialog(this);"  dialog="tag" url="data/tag" load="true" class="easyui-linkbutton" plain="true">标记</a>
             </div>
         </div>
     </div>
@@ -183,15 +182,16 @@
            return alert("未设置butSdg属性");
         }
         var row = getSingleSelectRow(dg);
-        var key =  $(options).attr("action");
+        var url =  $(options).attr("url");
         var text =  $(options).context.innerText;
         if (row != null ){
-            var url = config[key] + row.id;
+            var url = url +"/" + row.id;
             console.info("URL:"+url);
             showConfirm("您好","执行命令为: [" + text + "] 是否确认 ? ",function(){
                 jsonAjax('post',url,{a:1},function(ret){
                     if (ret.code == Success){
-                        showMsg("完成","提交成功",true);
+                        showMsg("完成","提交成功",false);
+                        $('#' + dg).datagrid('reload');
                     }else{
                         showMsg("错误",ret.msg,true,"error");
                     }
