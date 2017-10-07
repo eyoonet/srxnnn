@@ -104,6 +104,8 @@ $(function($){
         onDblClickRow:function(index,obj){
             if (click) return;//解决冲突
             $('#tabs').tabs('select','详情页');
+
+			loadtable(obj);
         }
 	});
 })
