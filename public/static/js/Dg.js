@@ -103,7 +103,7 @@ $(function($){
         //用户双击事件
         onDblClickRow:function(index,obj){
             if (click) return;//解决冲突
-            $('#tabs').tabs('select','详情页');
+            //$('#tabs').tabs('select','详情页');
 
 			loadtable(obj);
         }

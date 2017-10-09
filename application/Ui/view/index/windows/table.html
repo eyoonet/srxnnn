@@ -1,12 +1,18 @@
+<!-- 详情页开始 -->
+<style>
+    #datatable input,textarea{
+        width: 98%;height:100%;border:0px;
+    }
+</style>
 <div id="table" form="error-form" dg="dg" class="easyui-dialog dialog-form-style" title="客户详情"
-     style="width:600px;height:'auto';text-align:center;padding:2px 2px 2px 2px"
+     style="width:1024px;height:550px;text-align:center;padding:2px 2px 2px 2px"
      data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
 
-    <div class="easyui-layout" style="width:100%;height:100%;" data-options="fit:true">
-        <div data-options="region:'east',title:'图片'" style="width:180px;height: 100%">
+    <div class="easyui-layout"  data-options="fit:true">
+        <div data-options="region:'east',title:'图片',collapsed:true" style="width:180px;height: 100%">
             <ul id="dowebok2" style="padding-left: 0px;"></ul>
         </div>
-        <div data-options="region:'center'" style="padding:5px;height: 100%">
+        <div data-options="region:'center'" style="padding:0px;height: 100%">
             <form id="datatable">
                 <table style="border-bottom-width: 0px;" width="100%" border="1" cellspacing="0" cellpadding="0">
                     <tr>
@@ -95,9 +101,9 @@
                             <input name="zdtype" type="text" readonly="readonly">
                         </td>
                         <td width="24%" rowspan="7" align="left" valign="top">
-                            <input id="t-comment" class="easyui-textbox" style="width:100%;height:100%"
-                                   data-options="multiline:true">
-                            <!--<input name="education" type="text" readonly="readonly" style="width:100%;height:100%;">-->
+                            <!--<input id="t-comment" class="easyui-textbox" style="width:100%;height:100%"
+                                   data-options="multiline:true">-->
+                            <textarea name="comment" type="text" readonly="readonly"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -175,3 +181,11 @@
         </div>
     </div>
 </div>
+<!-- 详情页结束 -->
+<script type="text/javascript">
+    function loadtable(row) {
+        $('#datatable').form('clear');
+        $('#datatable').form('load',row);
+        $('#table').dialog('open');
+    }
+</script>
