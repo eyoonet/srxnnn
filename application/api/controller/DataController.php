@@ -242,4 +242,7 @@ class DataController extends Base
     public function getRcDate($id,Data $m){
         return $m->where('id',$id)->value('rcdate');
     }
+    public function getOneData($id,Data $m){
+        return $m->get($id);
+    }
 }

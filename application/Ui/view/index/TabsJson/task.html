@@ -62,8 +62,8 @@
     function formatter_name(value, row, index) {
         if (value != null) {
             return  '<div dg="task-dg">' +
-                        '<a href="javascript:alert('+row.clents_id+')">详情</a>' +
-                        '<a onclick="ButtonRunDialog(this);loadRcdate('+row.clents_id+');"  dialog="task"  url="task/create' +'/'+row.clents_id+'"> 派单</a>'+
+                        '<a href="javascript:showtable('+row.clents_id+')">详情</a>' +
+                        '<a onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/create' +'/'+row.clents_id+'"> 派单</a>'+
                         '<span>【' +value+ '】</span>'+
                     '</div>';
         }
@@ -71,6 +71,11 @@
     function loadRcdate(id){
         jsonAjax('get','data/getRcDate/'+id,null,function(res){
             $('#rcdate').datetimebox('setValue',res);	// 设置日期输入框的值
+        })
+    }
+    function showtable(id){
+        jsonAjax('get','data/getOneData/'+id,null,function(res){
+            loadtable(res);
         })
     }
 </script>

@@ -5,8 +5,8 @@
     }
 </style>
 <div id="table" form="error-form" dg="dg" class="easyui-dialog dialog-form-style" title="客户详情"
-     style="width:1024px;height:550px;text-align:center;padding:2px 2px 2px 2px"
-     data-options="closed:true,modal:false,resizable:true,buttons:'#task-buttons'">
+     style="width:1024px;height:575px;text-align:center;padding:2px 2px 2px 2px"
+     data-options="closed:true,modal:false,resizable:true,buttons:'#table-buttons'">
 
     <div class="easyui-layout"  data-options="fit:true">
         <div data-options="region:'east',title:'图片',collapsed:true" style="width:180px;height: 100%">
@@ -34,6 +34,7 @@
                     <tr>
                         <th align="left" scope="row">身份证</th>
                         <td height="25">
+                            <input name="id" type="hidden">
                             <input name="card" type="text" readonly="readonly">
                         </td>
                         <th align="left">定金</th>
@@ -181,8 +182,24 @@
         </div>
     </div>
 </div>
+<div id="table-buttons">
+    <a  class="easyui-linkbutton">取消预约</a>
+    <a  class="easyui-linkbutton">人才网约号</a>
+    <a  class="easyui-linkbutton" onclick="tasklist();">计划列表</a>
+    <a  class="easyui-linkbutton" onclick="$('#table').dialog('close');">关闭</a>
+</div>
 <!-- 详情页结束 -->
 <script type="text/javascript">
+    function tasklist(){
+        $('#tabs').tabs('select','任务');//选中
+        $('#table').dialog('close');
+        var fields = {};
+        fields.rule  = "clents_id = :cid";
+        fields.cid = 	$("[name='id']").val();
+        $('#task-dg').datagrid({
+            queryParams: fields
+        });
+    }
     function loadtable(row) {
         $('#datatable').form('clear');
         $('#datatable').form('load',row);
