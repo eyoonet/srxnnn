@@ -55,6 +55,7 @@ Route::group('menu',[
     'Get/:tag'    => 'api/menu/getSidebar',
     'create'      => 'api/menu/create',
     'delete/:id'  => 'api/menu/delete',
+    'edit/:id'  => 'api/menu/edit',
 ]);
 
 Route::group('log',[
@@ -62,8 +63,9 @@ Route::group('log',[
 ]);
 
 Route::group('combobox',[
-    'Get/:tag'  =>  'api/combobox/get',
-    'Userlist'  =>  'api/combobox/userlist'
+    'Get/:tag'    =>  'api/combobox/get',
+    'Userlist'    =>  'api/combobox/userlist',
+    'menuFidlist' =>  'api/combobox/menufidlist'
 ]);
 
 Route::group('user',[

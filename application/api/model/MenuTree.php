@@ -77,4 +77,7 @@ class MenuTree extends Model
         }
         return $arr;
     }
+    public function getfidlist(){
+        return $this->field('id,text')->select();
+    }
 }

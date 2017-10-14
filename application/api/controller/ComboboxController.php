@@ -8,6 +8,7 @@
 
 namespace app\api\controller;
 use app\api\model\Comboboxs;
+use app\api\model\MenuTree;
 use app\api\model\User;
 use app\common\controller\Base;
 class ComboboxController extends Base
@@ -20,5 +21,8 @@ class ComboboxController extends Base
     }
     public function userlist(User $user){
        return  $user->comboboxUserList();
+    }
+    public function menufidlist(MenuTree $menu){
+        return $menu->getfidlist();
     }
 }

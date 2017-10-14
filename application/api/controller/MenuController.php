@@ -79,8 +79,9 @@ class MenuController extends Base
      */
     public function edit($id){
         $data = $this->request->post();
-        $sqldata = MenuTree::get($id)->data($data)->save();
-        if($sqldata){
+        $m = MenuTree::get($id);
+
+        if($m->save($data)){
             return res();
         }else{
             return Res::Json(200);

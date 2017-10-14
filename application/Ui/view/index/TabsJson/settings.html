@@ -27,7 +27,13 @@
             <ul class="my-ul" style="">
                 <li>
                     <label>菜单类型</label>
-                    <input name="type" class="easyui-combobox">
+                    <select name="type" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false">
+                        <option value="1">json</option>
+                        <option value="2">url</option>
+                        <option value="3">script</option>
+                    </select>
+                    <!--菜单类型1.json|2.url|3.script-->
                 </li>
                 <li>
                     <label>显示名称</label>
@@ -39,7 +45,12 @@
                 </li>
                 <li>
                     <label>所属模块</label>
-                    <input name="tag" class="easyui-combobox">
+                    <select name="tag" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false">
+                        <option value="CLENTS">客户系统</option>
+                        <option value="SYS">系统设置</option>
+                        <option value="TASK">任务系统</option>
+                    </select>
                 </li>
             </ul>
         </div>
@@ -47,7 +58,13 @@
             <ul class="my-ul">
                 <li>
                     <label>上级菜单</label>
-                    <input name="fid" class="easyui-combotree" data-options="url:'get_data.php'"></input>
+                    <input name="fid"  class="easyui-combobox"
+                           data-options="valueField:'id',
+                                textField:'text',
+                                url:'combobox/menuFidlist',
+                                panelHeight:'auto'"/>
+
+
                 </li>
                 <li>
                     <label>排序</label>
@@ -92,8 +109,7 @@
         if (id == null) {
             var row = menu_dg.treegrid("getSelected");
             if (row == null) {
-                showMsg("错误", "请选择一个菜单来编辑", true, "error");
-                return;
+                return showMsg("错误", "请选择一个菜单来编辑", true, "error");
             } else {
                 $("#set-menu-dialog-form").form('load', row);
             }
@@ -102,7 +118,8 @@
             buttons: [{
                 text: '保存',
                 handler: function () {
-                    dialogSubmit('set-menu-dialog', 'menu-edit/id/' + row.id);
+                    dialogSubmit('set-menu-dialog', 'menu/edit/' + row.id);
+                    $("#set-menu-treegrid").treegrid('reload');
                 }
             }, {
                 text: '关闭',
@@ -116,11 +133,17 @@
     //创建
     function new_menu(fid = 0) {
         $("#set-menu-dialog-form").form('clear');
+        if(fid != 0){
+            var row={};
+            row.fid = fid;
+            $("#set-menu-dialog-form").form('load',row);
+        }
         $("#set-menu-dialog").dialog({
             buttons: [{
                 text: '保存',
                 handler: function () {
                     dialogSubmit('set-menu-dialog', 'menu/create/' + fid);
+                    $("#set-menu-treegrid").treegrid('reload');
                 }
             }, {
                 text: '关闭',
@@ -186,7 +209,8 @@
                 //{field: 'script', title: 'JS', width: '7%'},
                 {
                     field: 'action', title: '操作', formatter: function (value, row, index) {
-                    return '<a href="#">添加</a> <a href="#">编辑</a>';
+                    return  '<a href="javasrcipt:void(0)" onclick="new_menu('+row.id+')">添加</a> ' +
+                            '<a href="javasrcipt:void(0)" onclick="">编辑</a>';
                 }
                 }
             ]],
@@ -236,6 +260,11 @@
                 text: '删除',
                 handler: function () {
                     remove_menu();
+                }
+            }, {
+                text: '刷新',
+                handler: function () {
+                    $("#set-menu-treegrid").treegrid('reload');
                 }
             }]
         });
