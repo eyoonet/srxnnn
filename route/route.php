@@ -34,7 +34,10 @@ Route::group('data',[
     'comment/:id'   =>  'api/Data/comment',
     'tag/:id'       =>  'api/Data/tag',
     'getRcDate/:id' =>  'api/data/getRcDate',
-    'getOneData/:id'=>  'api/data/getOneData'
+    'getOneData/:id'=>  'api/data/getOneData',
+    'setAppointment/:id'=>  'api/data/setAppointment',
+    'getAppointment'=>  'api/data/getAppointmentList',
+    'NuserCallin/:id'=>  'api/data/NuserCallin'
 ]);
 Route::group('task',[
     'create/[:id]'        => 'api/Task/create',

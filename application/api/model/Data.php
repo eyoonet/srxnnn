@@ -27,6 +27,12 @@ class Data extends Model
     {
         return $this->hasOne('DataImg');
     }*/
+
+    /**
+     * 备份单条DATA数据
+     * @param $type
+     * @return bool
+     */
     public function bak($type){
         $id = $this->getData('id');
         if($id){
@@ -45,6 +51,30 @@ class Data extends Model
             return false;
         }
     }
+
+    /**
+     * 方法返回用户分组规则SQL格式查询条件
+     * @param $group_id
+     * @return array|bool
+     */
+    private function groupWhere($group_id){
+        $uid = session('uid');
+        switch($group_id){
+            case 1: //管理员
+                $where = true;
+                break;
+            case 2: //业务员
+                $where = ['user_id' => $uid];
+                break;
+            case 3: //内勤
+                $where = ['nuser_id'=> $uid];
+                break;
+            case 4: //外勤
+                $where = ['wuser_id'=> $uid];
+                break;
+        }
+        return $where;
+    }
     /**
      * 菜单获取表格格式数据
      * 'id > :id AND name LIKE :name ', ['id' => 0, 'name' => 'thinkphp%']
@@ -53,34 +83,20 @@ class Data extends Model
      * @param $data array 数据
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function getDgList($params,$rule,$fieids){
+    public function getDgList($params,$rule,$fieids,$group_id){
         return $this->where('order',1)
             ->view('data','*')
             ->view('user', 'user_name','data.user_id=user.id','LEFT')
             ->order($params['sort'], $params['order'])
             ->page( $params['page'], $params['rows'])
             ->where($rule,$fieids)
+            ->where($this->groupWhere($group_id))
             //->fetchSql(true)
             ->select();
     }
     public function total(){
         return $this->where('order',null)->count();
     }
-
-    public function back($id){
-        $data = $this->get($id);
-
-    }
-
-    /**
-     * 数据删除不是真的删除只是改了一下标记
-     * @param $id
-     * @return false|int
-     */
-    public function dataDel($id){
-        return $this->save(['order'=>0 ],['id'=>$id]);
-    }
-
     /**
      * 搜索数据
      * @post @date_type int
@@ -89,7 +105,7 @@ class Data extends Model
      * @param $array
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function search($params,$array){
+    public function search($params,$array,$group_id){
         //表达式定义
         $exps = [
             "eq"      => [],
@@ -127,10 +143,18 @@ class Data extends Model
             ->view('data','*')
             ->view('user', 'user_name','data.user_id=user.Id','LEFT')
             //->fetchSql(true)
+            ->where($this->groupWhere($group_id))
             ->where($map)
             ->select();
     }
-
+    /**
+     * 数据删除不是真的删除只是改了一下标记
+     * @param $id
+     * @return false|int
+     */
+    public function dataDel($id){
+        return $this->save(['order'=>0 ],['id'=>$id]);
+    }
     /**
      * 就是返回数组格式为 不知道相同值会不会有问题
      * [
