@@ -2,12 +2,12 @@
 <html>
 	{include file="public/header" /}
 <body id="cc" class="easyui-layout">
-	<div data-options="region:'north',border:false" style="height:80px;background:#0081C2;padding:10px">
+	<div  data-options="region:'north',border:false,bodyCls:'color-blue'" style="height:80px;padding:10px">
 		<input id="token" type="hidden" name="token" value="{$token}">
 		<script type="text/javascript">
 		  console.info("用户TOKGEN:"+$('#token').val());
 		</script>
-		<h1 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h1>
+		<h2 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h2>
 		<p class="f-r" style="color:#FFF3F3;margin-top: 30px;
                                             margin-right: 90px;">当前用户 
 			<span id="username" style="color:#CFD22C">{/*$Think.session.user.name*/}</span>
@@ -42,8 +42,8 @@
 	<div data-options="region:'center'">
 		{__CONTENT__}
 	</div>
-	<div data-options="region:'south',border:false" style="height:50px;background:#0081C2;padding:10px;">
+	<!--<div data-options="region:'south',border:false,bodyCls:'color-blue'" style="height:50px;padding:10px;">
         {include file="public/footer" /}
-	</div>
+	</div>-->
 </body>
 </html>

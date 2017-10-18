@@ -182,8 +182,25 @@ class Data extends Model
      * **********************************修改器******************************************
      ***********************************************************************************/
 
-
-
+    const NEW_CLIENT          = 0;//新进客户
+    const NOT_SHEBAO          = 1;//没有社保
+    const REFURN              = 2;//问题打回
+    const ETCINPUT            = 3;//待录人保
+    const COMMIT              = 4;//提交人保
+    const APPOINTMENT_I       = 5;//预约1
+    const APPOINTMENT_II      = 6;//预约2
+    const APPOINTMENT_SUCCESS = 7;//预约完成
+    const SIGN                = 8;//一审
+    const PREPARE_SUBMIT      = 9;//预备二审
+    const SUBMIT              = 10;//已二审
+    const REVOCATION          = 11;//撤销终止
+    const REFUSE              = 12;//不予受理
+    const REGISTER            = 13;//待报道
+    const AUDIT               = 14;//审批中
+    const AUDIT_AGREE         = 15;//审批同意
+    const OUT_DIAOLING        = 16;//出调令
+    const GET_DIAOLING        = 17;//拿调令
+    const FINISH              = 18;//完结
     /***********************************************************************************
      ************************************获取器******************************************
      ***********************************************************************************/

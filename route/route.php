@@ -37,6 +37,7 @@ Route::group('data',[
     'getOneData/:id'=>  'api/data/getOneData',
     'setAppointment/:id'=>  'api/data/setAppointment',
     'getAppointment'=>  'api/data/getAppointmentList',
+    'getSubmitList' =>  'api/data/getSubmitList',
     'NuserCallin/:id'=>  'api/data/NuserCallin'
 ]);
 Route::group('task',[

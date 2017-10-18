@@ -6,7 +6,6 @@
  * Time: 21:51
  */
 namespace app\api\controller;
-
 use app\api\model\Data;
 use app\api\model\DataImg;
 use app\common\controller\Base;
@@ -15,6 +14,7 @@ use think\Response;
 
 class DataController extends Base
 {
+
     /**
      * 控制器初始化
      */
@@ -79,7 +79,7 @@ class DataController extends Base
     public function shebao($id)
     {
         $m = Data::get($id);
-        $m->status = 1;
+        $m->status = self::NOT_SHEBAO;
         if ($m->save()) {
             return Res::Json(200);
         } else {
@@ -114,7 +114,7 @@ class DataController extends Base
         $m = Data::get($id);
         $m->comment = $this->request->param('comment');
         $m->Tag = $this->request->param('Tag');
-        $m->status = 2;
+        $m->status = Data::REFURN;
         if ($m->save()) {
             return Res::Json(200);
         } else {
@@ -130,7 +130,7 @@ class DataController extends Base
     public function etcinput($id)
     {
         $m = Data::get($id);
-        $m->status = 3;
+        $m->status = Data::ETCINPUT;
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -142,7 +142,7 @@ class DataController extends Base
     public function commit($id)
     {
         $m = Data::get($id);
-        $m->status = 4;
+        $m->status = Data::COMMIT;
         $m->service = $this->request->param('service');
         $m->comment = $this->request->param('comment');
         return $m->save() ? Res::Json(200) : Res::Json(400);
@@ -157,7 +157,7 @@ class DataController extends Base
     {
         $m = Data::get($id);
         $m->speed = 1;
-        $m->status = 8;
+        $m->status = Data::SIGN;
         if ($m->I_date == null) {
             $m->I_date = time();
         }
@@ -172,7 +172,7 @@ class DataController extends Base
     public function prepareSubmit($id)
     {
         $m = Data::get($id);
-        $m->status = 9;
+        $m->status = Data::PREPARE_SUBMIT;
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -185,7 +185,7 @@ class DataController extends Base
     {
         $m = Data::get($id);
         $m->speed = 2;
-        $m->status = 10;
+        $m->status = Data::SUBMIT;
         if ($m->II_date == null) {
             $m->II_date = time();
         }
@@ -200,7 +200,7 @@ class DataController extends Base
     public function takeDiaol($id)
     {
         $m = Data::get($id);
-        $m->status = 17;
+        $m->status = Data::GET_DIAOLING;
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -213,7 +213,7 @@ class DataController extends Base
     {
         $m = Data::get($id);
         $m->speed = 3;
-        $m->status = 18;
+        $m->status = Data::FINISH;
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -297,14 +297,14 @@ class DataController extends Base
     {
         $m = Data::get($id);
         if ($m->getData('speed') == 0 ) {
-            $m->status = 5;//已约号1
+            $m->status = self::APPOINTMENT_I;//已约号1
         } else if ( $m->getData('speed') == 1 ) {
-            $m->status = 6;//已约号2
+            $m->status = self::APPOINTMENT_II;//已约号2
         }
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
     /**
-     * 获取约号列表
+     * 获取已约号列表EXE调用
      * @param Data $m
      * @return \think\response\Json
      */
@@ -313,6 +313,20 @@ class DataController extends Base
             $m->field('id,card,mode')
                 ->where('status','in','5,6')
                 ->where('order',1)
+                ->select()
+        );
+    }
+
+    /**
+     * 获取已二审列表EXE调用用于查询人社进度
+     * @param Data $m
+     * @return \think\response\Json
+     */
+    public function getSubmitList(Data $m){
+        return json(
+            $m->field('id,card')
+                ->where('order',1)
+                ->where('status',10)//已二审
                 ->select()
         );
     }
