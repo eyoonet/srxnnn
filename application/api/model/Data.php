@@ -22,11 +22,11 @@ class Data extends Model
             dump($data->toArray());
             $data->DataImg()->save($data->toArray());
         });
-    }
-    public function DataImg()
-    {
-        return $this->hasOne('DataImg');
     }*/
+    public function user()
+    {
+        return $this->belongsTo('User');
+    }
 
     /**
      * 备份单条DATA数据
@@ -134,14 +134,14 @@ class Data extends Model
             $exp   =  $this->exp($exps,$key);
             if($exp == null )$exp = "=";
             if($exp == "like")$value =  "%" .$value."%";
-            $map[] = [ $key, $exp ,$value];
+            $map[] = [ 'data.'.$key, $exp ,$value];
             next($array);
         }
         return $this->where('order',1)
             ->order($params['sort'], $params['order'])
             ->page( $params['page'], $params['rows'])
             ->view('data','*')
-            ->view('user', 'user_name','data.user_id=user.Id','LEFT')
+            ->view('user', 'user_name','data.user_id=user.id','LEFT')
             //->fetchSql(true)
             ->where($this->groupWhere($group_id))
             ->where($map)
