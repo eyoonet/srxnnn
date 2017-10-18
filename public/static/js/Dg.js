@@ -23,7 +23,8 @@ $(function($){
 		toolbar:"#Dg-toobar",
 		columns:[[
 			{field:'id',title:'操作',width:"7%",formatter:function(value,row,index){
-				return '<a href="#">约号</a> <a href="#">取消</a>';
+				return '<a class="button-default" href="#">约号</a> ' +
+					   '<a class="button-danger" href="#">取消</a>';
 			}},
 			{field:'name',title:'姓名',width:"5%"},
 			{field:'card',title:'身份证号',width:'11%'},
