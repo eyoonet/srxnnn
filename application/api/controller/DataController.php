@@ -297,9 +297,9 @@ class DataController extends Base
     {
         $m = Data::get($id);
         if ($m->getData('speed') == 0 ) {
-            $m->status = self::APPOINTMENT_I;//已约号1
+            $m->status = Data::APPOINTMENT_I;//已约号1
         } else if ( $m->getData('speed') == 1 ) {
-            $m->status = self::APPOINTMENT_II;//已约号2
+            $m->status = Data::APPOINTMENT_II;//已约号2
         }
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
@@ -341,6 +341,22 @@ class DataController extends Base
         return $m->where('id', $id)->value('rcdate');
     }
 
+    /**
+     * 设置人才网返回时间
+     * @param $id
+     * @param $time
+     * @return \think\response\Json
+     */
+    public function setRcDate($id,$time)
+    {
+        $data = Data::get($id);
+        $data->rcdate = $time;  //设置约号时间
+        $data->status = Data::APPOINTMENT_SUCCESS; // 设置已出号
+        return $data->save() ? Res::Json(200) : Res::Json(400);
+    }
+    public function getSzhrRegData(){
+
+    }
     /**
      * 获取一行DATA数据
      * @param $id

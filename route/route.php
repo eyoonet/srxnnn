@@ -34,6 +34,7 @@ Route::group('data',[
     'comment/:id'   =>  'api/Data/comment',
     'tag/:id'       =>  'api/Data/tag',
     'getRcDate/:id' =>  'api/data/getRcDate',
+    'setRcDate/:id/:time'=> 'api/data/setRcDate',
     'getOneData/:id'=>  'api/data/getOneData',
     'setAppointment/:id'=>  'api/data/setAppointment',
     'getAppointment'=>  'api/data/getAppointmentList',
