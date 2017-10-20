@@ -197,7 +197,7 @@ class Data extends Model
     const REFUSE              = 12;//不予受理
     const REGISTER            = 13;//待报道
     const AUDIT               = 14;//审批中
-    const AUDIT_AGREE         = 15;//审批同意
+    const AUDIT_SUCCESS       = 15;//审批同意
     const OUT_DIAOLING        = 16;//出调令
     const GET_DIAOLING        = 17;//拿调令
     const FINISH              = 18;//完结

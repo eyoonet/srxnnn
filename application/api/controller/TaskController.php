@@ -38,12 +38,14 @@ class TaskController extends Base
             'type'  => $type
         ]);
     }
+    //成功
     public function finish($id){
         $m = Task::get($id);
         $m->finish_type = 2;
         $m->finish_time = time();
         return $m->save()? Res::Json(200) : Res::Json(400);
     }
+    //失败
     public function failed($id){
         $m= Task::get($id);
         $m->finish_type = 0;

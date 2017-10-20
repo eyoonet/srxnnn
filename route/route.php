@@ -16,36 +16,38 @@ Route::get('think', function () {
 */
 Route::rule('test', 'api/Index/index');
 Route::group('data',[
-    'Create'	    =>	'api/Data/create',
-    'Edit/:id'	    =>	'api/Data/edit',
-    'EditOne/:id'   =>  'api/Data/getOneRow',
-    'DGlist'        =>  'api/Data/getDglist',
-    'SouSou'        =>  'api/Data/sousou',
-    'refund/:id'    =>  'api/Data/refund',
-    'shebao/:id'    =>  'api/Data/shebao',
-    'refurn/:id'    =>  'api/Data/refurn',
-    'commit/:id'    =>  'api/Data/commit',
-    'sign/:id'      =>  'api/Data/sign',
-    'prepareSubmit/:id' =>  'api/Data/prepareSubmit',
-    'submit/:id'    =>  'api/Data/submit',
-    'takeDiaol/:id' =>  'api/Data/takeDiaol',
-    'finish/:id'    =>  'api/Data/finish',
-    'etcinput/:id'  =>  'api/Data/etcinput',
-    'comment/:id'   =>  'api/Data/comment',
-    'tag/:id'       =>  'api/Data/tag',
-    'getRcDate/:id' =>  'api/data/getRcDate',
-    'setRcDate/:id/:time'=> 'api/data/setRcDate',
-    'getOneData/:id'=>  'api/data/getOneData',
-    'setAppointment/:id'=>  'api/data/setAppointment',
-    'getAppointment'=>  'api/data/getAppointmentList',
-    'getSubmitList' =>  'api/data/getSubmitList',
-    'NuserCallin/:id'=>  'api/data/NuserCallin'
+    'Create'                =>	'api/Data/create',                  //创建
+    'Edit/:id'              =>	'api/Data/edit',                    //编辑
+    'EditOne/:id'           =>  'api/Data/getOneRow',               //获取一条数据
+    'DGlist'                =>  'api/Data/getDglist',               //菜单列表数据
+    'SouSou'                =>  'api/Data/sousou',                  //搜索
+    'refund/:id'            =>  'api/Data/refund',                  //退款
+    'shebao/:id'            =>  'api/Data/shebao',                  //没有社保
+    'refurn/:id'            =>  'api/Data/refurn',                  //问题打回
+    'commit/:id'            =>  'api/Data/commit',                  //提交人保
+    'sign/:id'              =>  'api/Data/sign',                    //一审
+    'prepareSubmit/:id'     =>  'api/Data/prepareSubmit',           //预备二审
+    'submit/:id'            =>  'api/Data/submit',                  //二审
+    'takeDiaol/:id'         =>  'api/Data/takeDiaol',               //已拿调令
+    'finish/:id'            =>  'api/Data/finish',                  //完成
+    'etcinput/:id'          =>  'api/Data/etcinput',                //待录人保
+    'comment/:id'           =>  'api/Data/comment',                 //设置备注
+    'tag/:id'               =>  'api/Data/tag',                     //设置标签
+    'getRcDate/:id'         =>  'api/data/getRcDate',               //获取人才网约号时间
+    'setRcDate/:id/:time'   =>  'api/data/setRcDate',               //设置人才网返回的约号时间
+    'getOneData/:id'        =>  'api/data/getOneData',              //获取单条数据
+    'setAppointment/:id'    =>  'api/data/setAppointment',          //设置状态为已约号
+    'getAppointment'        =>  'api/data/getAppointmentList',      //获取已约号的列表
+    'getSubmitList'         =>  'api/data/getSubmitList',           //获取已经二审的列表
+    'NuserCallin/:id'       =>  'api/data/NuserCallin',             //内勤调入
+    'getAuditSuccessList'   =>  'api/data/getAuditSuccessList',     //获取审批完成的列表
+    'setSzhrss'             =>  'api/data/setSzhrss'                //设置人保局进度
 ]);
 Route::group('task',[
-    'create/[:id]'        => 'api/Task/create',
-    'List'                => 'api/Task/TList',
-    'Finish/:id'          => 'api/Task/Finish',
-    'failed/:id'         => 'api/Task/failed'
+    'create/[:id]'          => 'api/Task/create',           //任务创建
+    'List'                  => 'api/Task/TList',            //任务列表
+    'Finish/:id'            => 'api/Task/Finish',           //任务成功
+    'failed/:id'            => 'api/Task/failed'            //任务失败
 ]);
 Route::group('ui',[
     'main'	    =>	'ui/Index/index',
@@ -56,11 +58,11 @@ Route::group('ui',[
 ]);
 
 Route::group('menu',[
-    'GetAll'      => 'api/menu/getSidebarAll',
-    'Get/:tag'    => 'api/menu/getSidebar',
-    'create'      => 'api/menu/create',
-    'delete/:id'  => 'api/menu/delete',
-    'edit/:id'  => 'api/menu/edit',
+    'GetAll'      => 'api/menu/getSidebarAll',              //获取所有
+    'Get/:tag'    => 'api/menu/getSidebar',                 //获取左边
+    'create'      => 'api/menu/create',                     //创建
+    'delete/:id'  => 'api/menu/delete',                     //删除
+    'edit/:id'  => 'api/menu/edit',                         //编辑
 ]);
 
 Route::group('log',[

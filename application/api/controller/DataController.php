@@ -52,9 +52,9 @@ class DataController extends Base
         $data = $this->request->post();
         $validate = new \app\api\validate\Data();
         if ($validate->scene('edit')->check($data)) {
-            $m = Data::get($id);
-            $m->bak(0);
-            if ($m->save($data)) {
+            $M = Data::get($id);
+            $M->bak(0);
+            if ($M->save($data)) {
                 return Res::Json(200);
             } else {
                 return Res::Json(400);
@@ -78,9 +78,9 @@ class DataController extends Base
      */
     public function shebao($id)
     {
-        $m = Data::get($id);
-        $m->status = self::NOT_SHEBAO;
-        if ($m->save()) {
+        $M = Data::get($id);
+        $M->status = Data::NOT_SHEBAO;
+        if ($M->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -94,10 +94,10 @@ class DataController extends Base
      */
     public function refund($id)
     {
-        $m = Data::get($id);
-        $m->comment = $this->request->param('comment');
-        $m->order = 0;
-        if ($m->save()) {
+        $M = Data::get($id);
+        $M->comment = $this->request->param('comment');
+        $M->order = 0;
+        if ($M->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -111,11 +111,11 @@ class DataController extends Base
      */
     public function refurn($id)
     {
-        $m = Data::get($id);
-        $m->comment = $this->request->param('comment');
-        $m->Tag = $this->request->param('Tag');
-        $m->status = Data::REFURN;
-        if ($m->save()) {
+        $M = Data::get($id);
+        $M->comment = $this->request->param('comment');
+        $M->Tag = $this->request->param('Tag');
+        $M->status = Data::REFURN;
+        if ($M->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -129,9 +129,9 @@ class DataController extends Base
      */
     public function etcinput($id)
     {
-        $m = Data::get($id);
-        $m->status = Data::ETCINPUT;
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->status = Data::ETCINPUT;
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -141,11 +141,11 @@ class DataController extends Base
      */
     public function commit($id)
     {
-        $m = Data::get($id);
-        $m->status = Data::COMMIT;
-        $m->service = $this->request->param('service');
-        $m->comment = $this->request->param('comment');
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->status = Data::COMMIT;
+        $M->service = $this->request->param('service');
+        $M->comment = $this->request->param('comment');
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -155,13 +155,13 @@ class DataController extends Base
      */
     public function sign($id)
     {
-        $m = Data::get($id);
-        $m->speed = 1;
-        $m->status = Data::SIGN;
-        if ($m->I_date == null) {
-            $m->I_date = time();
+        $M = Data::get($id);
+        $M->speed = 1;
+        $M->status = Data::SIGN;
+        if ($M->I_date == null) {
+            $M->I_date = time();
         }
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -171,9 +171,9 @@ class DataController extends Base
      */
     public function prepareSubmit($id)
     {
-        $m = Data::get($id);
-        $m->status = Data::PREPARE_SUBMIT;
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->status = Data::PREPARE_SUBMIT;
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -183,13 +183,13 @@ class DataController extends Base
      */
     public function submit($id)
     {
-        $m = Data::get($id);
-        $m->speed = 2;
-        $m->status = Data::SUBMIT;
-        if ($m->II_date == null) {
-            $m->II_date = time();
+        $M = Data::get($id);
+        $M->speed = 2;
+        $M->status = Data::SUBMIT;
+        if ($M->II_date == null) {
+            $M->II_date = time();
         }
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -199,9 +199,9 @@ class DataController extends Base
      */
     public function takeDiaol($id)
     {
-        $m = Data::get($id);
-        $m->status = Data::GET_DIAOLING;
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->status = Data::GET_DIAOLING;
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -211,10 +211,10 @@ class DataController extends Base
      */
     public function finish($id)
     {
-        $m = Data::get($id);
-        $m->speed = 3;
-        $m->status = Data::FINISH;
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->speed = 3;
+        $M->status = Data::FINISH;
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -224,9 +224,9 @@ class DataController extends Base
      */
     public function comment($id)
     {
-        $m = Data::get($id);
-        $m->comment = $this->request->param('comment');
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->comment = $this->request->param('comment');
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -236,10 +236,10 @@ class DataController extends Base
      */
     public function tag($id)
     {
-        $m = Data::get($id);
-        $m->Tag = $this->request->param('tag');
-        $m->comment = $this->request->param('comment');
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        $M = Data::get($id);
+        $M->Tag = $this->request->param('tag');
+        $M->comment = $this->request->param('comment');
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -277,16 +277,16 @@ class DataController extends Base
      * @return \think\response\Json
      */
     public function NuserCallin($id){
-        $m = Data::get($id);
-        if($m->nuser_id != null ){
+        $M = Data::get($id);
+        if($M->nuser_id != null ){
             return Res::Json(400,
                 '该用户已经是【 '
-                .$m->nuser_id
+                .$M->nuser_id
                 .' 】负责的客户若要调入请先联系该内勤调出'
             );
         }
-        $m->nuser_id = $this->uid;
-        return $m->save() ? Res::Json(200,'成功调入!') : Res::Json(400);
+        $M->nuser_id = $this->uid;
+        return $M->save() ? Res::Json(200,'成功调入!') : Res::Json(400);
     }
     /**
      * SET已约号
@@ -295,22 +295,22 @@ class DataController extends Base
      */
     public function setAppointment($id)
     {
-        $m = Data::get($id);
-        if ($m->getData('speed') == 0 ) {
-            $m->status = Data::APPOINTMENT_I;//已约号1
-        } else if ( $m->getData('speed') == 1 ) {
-            $m->status = Data::APPOINTMENT_II;//已约号2
+        $M = Data::get($id);
+        if ($M->getData('speed') == 0 ) {
+            $M->status = Data::APPOINTMENT_I;//已约号1
+        } else if ( $M->getData('speed') == 1 ) {
+            $M->status = Data::APPOINTMENT_II;//已约号2
         }
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        return $M->save() ? Res::Json(200) : Res::Json(400);
     }
     /**
      * 获取已约号列表EXE调用
-     * @param Data $m
+     * @param Data $M
      * @return \think\response\Json
      */
-    public function getAppointmentList(Data $m){
+    public function getAppointmentList(Data $M){
         return json(
-            $m->field('id,card,mode')
+            $M->field('id,card,mode')
                 ->where('status','in','5,6')
                 ->where('order',1)
                 ->select()
@@ -319,26 +319,26 @@ class DataController extends Base
 
     /**
      * 获取已二审列表EXE调用用于查询人社进度
-     * @param Data $m
+     * @param Data $M
      * @return \think\response\Json
      */
-    public function getSubmitList(Data $m){
+    public function getSubmitList(Data $M){
         return json(
-            $m->field('id,card')
+            $M->field('id,card,name,sbtype')
                 ->where('order',1)
-                ->where('status',10)//已二审
+                ->where('status',Data::SUBMIT)//已二审
                 ->select()
         );
     }
     /**
      * 获取人才网时间
      * @param $id
-     * @param Data $m
+     * @param Data $M
      * @return mixed
      */
-    public function getRcDate($id, Data $m)
+    public function getRcDate($id, Data $M)
     {
-        return $m->where('id', $id)->value('rcdate');
+        return $M->where('id', $id)->value('rcdate');
     }
 
     /**
@@ -357,14 +357,33 @@ class DataController extends Base
     public function getSzhrRegData(){
 
     }
+    //获取审批同意的
+    public function getAuditSuccessList(Data $M){
+        $Map = [
+            'mode'   => '05',
+            'status' => Data::SUBMIT
+        ];
+        return json(
+            $M->field('id,name,card')
+                ->where('status',Data::AUDIT_SUCCESS)
+                ->whereOr($Map)
+                ->select()
+        );
+    }
+    //设置深圳人保局查询的结果
+    public function setSzhrss($id,$code){
+        $M = Data::get($id);
+        $M->status  =  $code;
+        return $data->save() ? Res::Json(200) : Res::Json(400);
+    }
     /**
      * 获取一行DATA数据
      * @param $id
-     * @param Data $m
+     * @param Data $M
      * @return static
      */
-    public function getOneData($id, Data $m)
+    public function getOneData($id, Data $M)
     {
-        return $m->get($id);
+        return $M->get($id);
     }
 }
