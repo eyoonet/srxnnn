@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>三人行</title>
+	<link rel="stylesheet" type="text/css" href="themes/metro/easyui.css">
+    <link rel="stylesheet" type="text/css" href="themes/mobile.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="jquery.easyui.mobile.js"></script>
+</head>
+<body>
+	<div class="easyui-navpanel">
+        <header>
+            <div class="m-toolbar">
+                <div class="m-title">三人行教育信息任务系统</div>
+                <div class="m-left">
+                    <a href="javascript:void(0)" class="easyui-linkbutton m-back" plain="true" outline="true">上一步</a>
+                </div>
+                <div class="m-right">
+                    <!-- <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" outline="true">Search</a> -->
+                </div>
+            </div>
+        </header>
+		<!-- 表格开始 -->
+		<div>
+			<table id="dg" data-options="singleSelect:true,border:false,fit:true,fitColumns:true,scrollbarSize:0">  
+				<thead>  
+					<tr>  
+						<th data-options="field:'itemid',width:80">姓名</th>  
+						<th data-options="field:'itemid',width:80">标题</th>  
+						<th data-options="field:'productid',width:100">时间</th>  
+					</tr>
+				</thead>  
+			</table>
+		</div>
+	    <!-- 表格结束 -->
+		
+		
+	
+		
+		
+		
+		
+		<footer>
+            <div class="m-buttongroup m-buttongroup-justified" style="width:100%">
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top',plain:true">待办</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-clipart',size:'large',iconAlign:'top',plain:true">逾期</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes',size:'large',iconAlign:'top',plain:true">已处理</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-smartart',size:'large',iconAlign:'top',plain:true">我发布的</a>
+            </div>
+        </footer> 
+	</div>
+	
+	
+		<!--详情页 start-->
+		<div id="p2"  class="easyui-navpanel">
+			<header>
+				<div class="m-toolbar">
+					<span id="p2-title" class="m-title">外勤客户信息查看</span>
+					<div class="m-left">
+						<a href="javascript:void(0)" class="easyui-linkbutton m-back" plain="true" outline="true" onclick="$.mobile.back()">Back</a>
+					</div>
+				</div>
+			</header>
+			<div  style="margin:0 5px 0" class='xqpage'>   
+				<!-- 表格开始 -->
+				<div class="table">
+					<table  style="border-bottom-width: 0px;" width="100%" border="1" cellspacing="0" cellpadding="0">
+					  <tr>
+						<th width="20%" align="left" scope="row">姓名</th>
+						<td id="t-name" width="31%" height="25" nowrap="nowrap" >&nbsp;</td>
+						<th width="17%" align="left">电话</th>
+						<td width="31%"><a id="t-tel" href="tel:+120">电话!</a></td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">身份证</th>
+						<td height="25" colspan="3" id="t-card">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">约号日期</th>
+						<td id="t-rcdate" height="25">&nbsp;</td>
+						<th align="left">尾款</th>
+						<td>&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">办理进度</th>
+						<td id="t-speed" height="25">&nbsp;</td>
+						<th align="left">业务员</th>
+						<td id="t-user">&nbsp;</td>
+					  </tr>
+					</table>
+				  
+					<table  style="border-top-width: 0px;border-bottom-width: 0px;" width="100%" border="1" align="left" cellpadding="0" cellspacing="0">
+					  <tr>
+						<th height="25" colspan="5" align="center" valign="middle" scope="row">其他信息</th>
+					  </tr>
+					  <tr>
+						<th height="26" align="left" scope="row">人保账户</th>
+						<td  width="25%" align="left" id="t-renbao_user" scope="row">&nbsp;</td>
+						<th scope="row">密码</th>
+						<td height="26" colspan="2" align="left" id="t-renbao_password" scope="row">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th width="19%" align="left" scope="row">学历</th>
+						<td id="t-education">&nbsp;</td>
+						<th  width="15%">招调</th>
+						<td id="zdtype" width="20%" height="25">&nbsp;</td>
+						<td  width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">社保</th>
+						<td height="25" colspan="3" id="t-shebao">&nbsp;</td>
+						<td  width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">入户方式</th>
+						<td height="25" colspan="3" id="t-mode">&nbsp;</td>
+						<td  width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">窗口</th>
+						<td id = "t-service" height="25" colspan="3" >&nbsp;</td>
+						<td  width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">小孩信息</th>
+						<td height="25" colspan="3" id="t-child">&nbsp;</td>
+						<td width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">是否随迁</th>
+						<td height="25" colspan="3" id="t-childad">&nbsp;</td>
+						<td  width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					  <tr>
+						<th align="left" scope="row">迁入地</th>
+						<td height="25" colspan="3" id="t-adderss">&nbsp;</td>
+						<td width="21%" align="left" valign="top">&nbsp;</td>
+					  </tr>
+					</table>
+					<table  style="border-top-width: 0px; float: left;" width="100%" border="1" align="left" cellpadding="0" cellspacing="0" >
+						<tr>
+							<th id="comment" height="56" colspan="4" scope="">备注</th>
+						</tr>
+						<tr>
+							<th  style="" height="30" align="center" colspan="4" scope="">
+								<button class="easyui-linkbutton c1" style="width:18%;height:30px"  onclick="but_ajax_post('/api/gdata/wyishen','一审');" >已一审</button>   
+								<button class="easyui-linkbutton c1" style="width:18%;height:30px"  onclick="but_ajax_post('/api/gdata/setspeed','二审');" >已二审</button>
+								<button class="easyui-linkbutton c1" style="width:18%;height:30px"  onclick="but_ajax_post('/api/gdata/nadiaoling','已拿调令');" >拿调令</button>
+								<button class="easyui-linkbutton c1" style="width:18%;height:30px"  onclick="$('#dlg1').dialog('open').dialog('center')"  >未处理</button>
+								<button class="easyui-linkbutton c1" style="width:18%;height:30px"  onclick="$.mobile.back()">返 回</button>
+							</th>
+						</tr>                                                   
+					</table>         
+				</div>
+				<!-- 表格结束 -->
+				
+				<!-- 弹窗开始 -->
+				<div id="dlg1" class="easyui-dialog" style="padding:2px 2px;width:80%;" data-options="inline:false,modal:true,closed:true,title:'需要备注原因'">
+					<div style="margin-bottom:1px;width:100%;text-align:center;"> 
+					   <textarea style="width:96%;overflow:auto;word-break:break-all;" id='comm' rows=9></textarea>
+					</div> 
+					<div style="width:100%;display: inline-block;text-align:center;" class="dialog-button">
+						<div >
+						<a href="javascript:void(0)" data-options="" class="easyui-linkbutton" style="width:49%;height:35px" onclick="commit();">提交</a>
+						<script type='text/javascript'>
+							function commit(){
+								var idcard = $('#t-card').html();
+								var comm = $('#comm').val();
+								$.ajax({
+								   type: "POST",
+								   async: true,
+								   dataType: "json",
+								   url:  '/api/gdata/MobComment',
+								   data: {card:idcard, param:comm},
+								   success: function(data){					
+										if (data.code > 1 ) {
+											$('#dlg1').dialog('close');
+											$.messager.alert('服务器消息',data.msg,"info");
+											$.mobile.go('#dgpage');
+											if ($('#dg_type').val()=='get') {
+												$('#dg').datagrid('reload'); 
+											}else{
+												$('.searchbox-button').trigger("click");
+											}                                   
+										}else{
+										   return $.messager.alert('服务器消息',data.msg,"error");
+										}		                  
+								   }
+								});	
+							}
+						</script>
+						<a href="javascript:void(0)" class="easyui-linkbutton" style="width:49%;height:35px" onclick="$('#dlg1').dialog('close')">取消</a>
+						</div>
+					</div>
+				</div>    
+				<!-- 弹窗结束 -->
+			</div>
+			<!-- 图片容器 -->
+			<div class ="imagebox" style = "float:right;width:100%;padding-top: 10px;margin:0;text-align:center;"></div>		
+		</div>
+		<!-- 详情页end -->			
+	
+	
+	
+	
+	<script>
+		var data = 	[
+			{"productid":"FI-SW-01","productname":"Koi","unitcost":10.00,"status":"P","listprice":36.50,"attr1":"Large","itemid":"EST-1"},
+			{"productid":"K9-DL-01","productname":"Dalmation","unitcost":12.00,"status":"P","listprice":18.50,"attr1":"Spotted Adult Female","itemid":"EST-10"},
+			{"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":38.50,"attr1":"Venomless","itemid":"EST-11"},
+			{"productid":"RP-SN-01","productname":"Rattlesnake","unitcost":12.00,"status":"P","listprice":26.50,"attr1":"Rattleless","itemid":"EST-12"},
+			{"productid":"RP-LI-02","productname":"Iguana","unitcost":12.00,"status":"P","listprice":35.50,"attr1":"Green Adult","itemid":"EST-13"},
+			{"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"P","listprice":158.50,"attr1":"Tailless","itemid":"EST-14"},
+			{"productid":"FL-DSH-01","productname":"Manx","unitcost":12.00,"status":"P","listprice":83.50,"attr1":"With tail","itemid":"EST-15"},
+			{"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"P","listprice":23.50,"attr1":"Adult Female","itemid":"EST-16"},
+			{"productid":"FL-DLH-02","productname":"Persian","unitcost":12.00,"status":"P","listprice":89.50,"attr1":"Adult Male","itemid":"EST-17"},
+			{"productid":"AV-CB-01","productname":"Amazon Parrot","unitcost":92.00,"status":"P","listprice":63.50,"attr1":"Adult Male","itemid":"EST-18"}
+		];
+		$(function(){
+			$('#dg').datagrid({
+				data: data
+			});
+		});
+	</script>
+	
+</body>
+</html>

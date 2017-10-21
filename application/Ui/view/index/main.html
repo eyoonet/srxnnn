@@ -4,9 +4,25 @@
 
 </script>
 <div id="tabs" class="easyui-tabs" data-options="fit:true" >
-	{include file="index/TabsPage/DataGrid" /}
+
+	<!-- 查询页开始 -->
+	<div title="查询页" style="width:'100%';padding:5px;display:none;">
+		{include file="index/TabsPage/DataGrid" /}
+	</div>
+	<!-- 查询页结束 -->
+
+
+	<!-- 任务页开始 -->
+	<div title="任务" style="width:'100%';padding:5px;display:none;">
+		{include file="index/TabsPage/task" /}
+	</div>
+	<!-- 任务页结束 -->
+
+
 	<!-- 意向客户开始 -->
-	<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px"></div>
+	<!--<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px">
+
+	</div>-->
 	<!-- 意向客户结束 -->		
 	
 	<!-- 统计页开始 -->
@@ -17,6 +33,7 @@
 	</div> 	
 	<!-- 统计页结束 -->
 
+
 	<!-- 人才网开始
 	<div title="人才网" style="padding:20px;display:none;">
 	    <iframe src='http://aux.szhr.com/pasr/login-person.jsp'  width='32%' height=520></iframe>
@@ -25,6 +42,7 @@
 		<script type="text/javascript"></script>
 	</div> 	
 	人才网结束 -->
+
 </div>
 <!--tabs end-->
  <!-- 右键菜单开始 -->

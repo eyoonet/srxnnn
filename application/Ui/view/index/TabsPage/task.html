@@ -1,0 +1,81 @@
+<table id="task-dg" class="easyui-datagrid" style="width:100%;height:550px"
+       data-options="url:'task/List',
+                    fitColumns:false,
+                    singleSelect:true,
+                    striped:true,
+                    fit:true,
+                    pagination:true,
+                    rownumbers:true,
+                    sortName: 'task_time',
+                    sortOrder: 'asc',
+                    remoteSort: true,
+          	 	    pageSize:15,
+		            pageList:[15,30,45,60,75],
+                    toolbar:'#task-dg-buttions'">
+    <thead>
+    <tr>
+        <!--<th data-options="field:'id'" style="width: 5%">编码</th>-->
+        <!--<th data-options="field:'type'" style="width: 5%">类型</th>-->
+        <th data-options="field:'task_time',sortable:true" style="width: 11%">计划时间</th>
+        <th data-options="field:'clents_name',formatter:formatter_name" style="width: 11%">客户</th>
+        <th data-options="field:'title'" style="width: 11%">标题</th>
+        <th data-options="field:'se_name'" style="width: 11%">任务发布者</th>
+        <th data-options="field:'re_name'" style="width: 11%">任务接收者</th>
+        <th data-options="field:'finish_type'" style="width: 11%">完成状态</th>
+        <th data-options="field:'create_time',sortable:true" style="width: 11%">创建时间</th>
+        <th data-options="field:'finish_time',sortable:true" style="width: 11%">处理时间</th>
+        <th data-options="field:'action',formatter:task_action" style="width: 18%">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<div id="task-dg-buttions" style="padding:5px;height:auto">
+    <div style="margin-bottom:5px" dg="task-dg">
+        <a onclick="ButtonRunDialog(this);" dialog="task" url="task/create" iconCls="icon-add" class="easyui-linkbutton"
+           plain="true">添加任务</a>
+        <a onclick="ButtonRunDialog(this);" dialog="task" url="task" load="true" iconCls="icon-edit"
+           class="easyui-linkbutton" plain="true">编辑任务</a>
+        <a onclick="run(this)" url="task/finish" class="easyui-linkbutton" iconCls="icon-ok" plain="true">成功</a>
+        <a onclick="run(this)" url="task/failed" class="easyui-linkbutton" iconCls="icon-no" plain="true">失败</a>
+        <!--<a onclick="run(this)" action="del" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除</a>-->
+    </div>
+    <div>
+        执行日: <input class="easyui-datebox" style="width:80px">
+        发布日: <input class="easyui-datebox" style="width:80px">
+        类型:
+        <select class="easyui-combobox" panelHeight="auto" style="width:100px">
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="basic">Basic</option>
+            <option value="perl">Perl</option>
+            <option value="python">Python</option>
+        </select>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function task_action() {
+        return  '<a href="#" >成功</a>'+
+                '<a href="#" >失败</a>';
+    }
+    function formatter_name(value, row, index) {
+        if (value != null) {
+            return  '<div dg="task-dg">' +
+                        '<a class="button-default" href="javascript:showtable('+row.clents_id+')">详情</a> ' +
+                        '<a class="button-danger" onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/create' +'/'+row.clents_id+'">转发</a>'+
+                        '<span>【' +value+ '】</span>'+
+                    '</div>';
+        }
+    }
+    function loadRcdate(id){
+        jsonAjax('get','data/getRcDate/'+id,null,function(res){
+            $('#rcdate').datetimebox('setValue',res);	// 设置日期输入框的值
+        })
+    }
+    function showtable(id){
+        jsonAjax('get','data/getOneData/'+id,null,function(res){
+            loadtable(res);
+        })
+    }
+</script>
