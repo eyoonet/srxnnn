@@ -25,7 +25,6 @@ class Base extends Controller
     public function initialize(){
         $this->uid      = session('uid');
         $this->tokgen   = $this->request->param('TokGen');
-        $this->group_id = User::getUserGroupId($this->uid);
         if( $this->uid == null) {
             if($this->tokgen == null ){
                 $this->redirect("ui/login/index");
@@ -33,11 +32,13 @@ class Base extends Controller
                 $tid = User::checkToken($this->tokgen);
                 if($tid){
                     session('uid',$tid);
+                    $this->uid      = $tid;
                 }else{
                     $this->redirect("ui/login/index");
                 }
             }
         }
+        $this->group_id = User::getUserGroupId($this->uid);
         $this->auth();
         //$this->log();
     }

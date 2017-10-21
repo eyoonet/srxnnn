@@ -15,7 +15,7 @@
     <thead>
     <tr>
         <!--<th data-options="field:'id'" style="width: 5%">编码</th>-->
-        <th data-options="field:'type'" style="width: 5%">类型</th>
+        <!--<th data-options="field:'type'" style="width: 5%">类型</th>-->
         <th data-options="field:'task_time',sortable:true" style="width: 11%">计划时间</th>
         <th data-options="field:'clents_name',formatter:formatter_name" style="width: 11%">客户</th>
         <th data-options="field:'title'" style="width: 11%">标题</th>
@@ -63,7 +63,7 @@
         if (value != null) {
             return  '<div dg="task-dg">' +
                         '<a class="button-default" href="javascript:showtable('+row.clents_id+')">详情</a> ' +
-                        '<a class="button-danger" onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/create' +'/'+row.clents_id+'">派单</a>'+
+                        '<a class="button-danger" onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/create' +'/'+row.clents_id+'">转发</a>'+
                         '<span>【' +value+ '】</span>'+
                     '</div>';
         }

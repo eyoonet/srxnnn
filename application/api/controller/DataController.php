@@ -310,7 +310,7 @@ class DataController extends Base
      */
     public function getAppointmentList(Data $M){
         return json(
-            $M->field('id,card,mode')
+            $M->field('id,card,mode,user_id')
                 ->where('status','in','5,6')
                 ->where('order',1)
                 ->select()

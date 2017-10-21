@@ -4,13 +4,16 @@
    <form id="task-form">
        <label>标题:</label>
        <input name="title"  class="easyui-combobox"  style="width:35%;"
-               data-options="valueField:'id',
-                                textField:'text',
-                                url:'/static/js/combobox.json',
-                                panelHeight:'auto'"/>
+              data-options=" ultivalue:false,
+                             panelHeight:'auto',
+                             url:'Combobox/Get/TASK_TITLE',
+                             valueField:'value',
+                             textField:'text',
+                             editable:true"/>
        <label>用户:</label>
        <input name="re_by_id"  class="easyui-combobox"  style="width:35%;"
                data-options="valueField:'value',
+                                required:true,
                                 textField:'text',
                                 url:'combobox/Userlist',
                                 panelHeight:'auto'"/>

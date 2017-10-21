@@ -2,6 +2,7 @@
 namespace app\api\controller;
 use app\api\model\Data;
 use app\api\model\Log;
+use app\api\model\Task;
 use app\api\model\User;
 use app\common\controller\Base;
 use app\common\org\Res;
@@ -14,7 +15,16 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
-        $m = new Data();
+        list($start, $end) = Time::today();// 今日开始和结束的时间戳
+        dump( $start);
+
+
+        $M = new Task();
+
+
+      dump($M->where('create_time', '> time', '2016-1-1')->fetchSql(true)->select());
+
+       /* $m = new Data();
 
         $array = ['name'=>'333','shebao'=>'2323'];
         //表达式定义
@@ -50,11 +60,11 @@ class IndexController extends Collection
         return $m->where('order',null)
             ->order('add_time','desc')
             ->fetchSql(true)
-            ->where($map)->select();
+            ->where($map)->select();*/
 
 
 
-/*        list($start, $end) = Time::today();
+       /*list($start, $end) = Time::today();
         echo $start; // 零点时间戳
         echo $end; // 23点59分59秒的时间戳
        dump(  Time::today());*/

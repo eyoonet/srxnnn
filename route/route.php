@@ -45,7 +45,7 @@ Route::group('data',[
 ]);
 Route::group('task',[
     'create/[:id]'          => 'api/Task/create',           //任务创建
-    'List'                  => 'api/Task/TList',            //任务列表
+    'List'                  => 'api/Task/List',            //任务列表
     'Finish/:id'            => 'api/Task/Finish',           //任务成功
     'failed/:id'            => 'api/Task/failed'            //任务失败
 ]);
