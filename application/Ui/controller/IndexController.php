@@ -18,16 +18,21 @@ class IndexController extends Base
     {
         $user = new User();
         $this->assign('token',$user->getToken($this->uid));
-        return $this->fetch('main');
+        return $this->fetch('/PC/main');
     }
     public function Settings()
     {
-        return response($this->fetch("/index/TabsJson/settings"));
+        return response($this->fetch("/PC/TabsJson/settings"));
     }
     public function Log(){
-        return response($this->fetch("/index/TabsJson/log"));
+        return response($this->fetch("/PC/TabsJson/log"));
     }
     public function Task(){
-        return response($this->fetch('/index/TabsJson/task'));
+        return response($this->fetch('/PC/TabsJson/task'));
+    }
+
+    public function Mobile(){
+        return response($this->fetch('/Mobile/main'));
+        //return response($this->fetch('/Mobile/pages/tabs/dg'));
     }
 }

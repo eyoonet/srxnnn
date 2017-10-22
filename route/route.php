@@ -55,6 +55,8 @@ Route::group('ui',[
     'Settings'  =>  'ui/Index/Settings',
     'log'       =>  'ui/index/Log',
     'task'      =>  'ui/index/Task',
+
+    'mobile'    =>  'ui/index/Mobile'
 ]);
 
 Route::group('menu',[

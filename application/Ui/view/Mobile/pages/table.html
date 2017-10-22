@@ -1,0 +1,131 @@
+{include file="Mobile/public/header" /}
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'east',title:'图片',collapsed:true" style="width:180px;height: 100%">
+        <ul id="dowebok2" style="padding-left: 0px;"></ul>
+    </div>
+    <div data-options="region:'center'" style="padding:0px;height: 100%">
+        <!-- 表格开始 -->
+        <form id="table_load" class="datatable">
+            <table style="border-bottom-width: 0px;" width="100%" border="1" cellspacing="0" cellpadding="0">
+                <tr>
+                    <th width="20%" align="left" scope="row">姓名</th>
+                    <td width="31%" height="25" nowrap="nowrap">
+                        <input name="name" type="text" readonly="readonly">
+                    </td>
+                    <th width="17%" align="left">电话</th>
+                    <td width="31%"><a id="t-tel" href="tel:+120"></a></td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">身份证</th>
+                    <td height="25" colspan="3">
+                        <input name="card" type="text" readonly="readonly">
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">约号日期</th>
+                    <td height="25">
+                        <input name="rcdate" type="text" readonly="readonly">
+                    </td>
+                    <th align="left">尾款</th>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">办理进度</th>
+                    <td height="25">
+                        <input name="speed" type="text" readonly="readonly">
+                    </td>
+                    <th align="left">业务员</th>
+                    <td>
+                        <input name="user_name" type="text" readonly="readonly">
+                    </td>
+                </tr>
+            </table>
+
+            <table style="border-top-width: 0px;border-bottom-width: 0px;" width="100%" border="1" align="left"
+                   cellpadding="0" cellspacing="0">
+                <tr>
+                    <th height="25" colspan="5" align="center" valign="middle" scope="row">其他信息</th>
+                </tr>
+                <tr>
+                    <th height="26" align="left" scope="row">人保账户</th>
+                    <td width="25%" align="left" scope="row">
+                        <input name="renbao_user" type="text" readonly="readonly">
+                    </td>
+                    <th scope="row">密码</th>
+                    <td height="26" colspan="2" align="left" scope="row">
+                        <input name="renbao_password" type="text" readonly="readonly">
+                    </td>
+                </tr>
+                <tr>
+                    <th width="19%" align="left" scope="row">学历</th>
+                    <td>
+                        <input name="education" type="text" readonly="readonly">
+                    </td>
+                    <th width="15%">招调</th>
+                    <td width="20%" height="25">
+                        <input name="zdtype" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">社保</th>
+                    <td height="25" colspan="3">
+                        <input name="shebao" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">入户方式</th>
+                    <td height="25" colspan="3">
+                        <input name="mode" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">窗口</th>
+                    <td height="25" colspan="3">
+                        <input name="service" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">小孩信息</th>
+                    <td height="25" colspan="3" id="t-child">
+                        <input name="child" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">是否随迁</th>
+                    <td height="25" colspan="3">
+                        <input name="childad" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th align="left" scope="row">迁入地</th>
+                    <td height="25" colspan="3">
+                        <input name="adderss" type="text" readonly="readonly">
+                    </td>
+                    <td width="21%" align="left" valign="top">&nbsp;</td>
+                </tr>
+            </table>
+            <table style="border-top-width: 0px; float: left;" width="100%" border="1" align="left" cellpadding="0"
+                   cellspacing="0">
+                <tr>
+                    <th height="56" colspan="4" scope="">
+                        <input name="comment" class="easyui-textbox" style="width:99%;height:100%"
+                     data-options="multiline:true" readonly="readonly">
+                        <!--<textarea name="comment" type="text" readonly="readonly"></textarea>-->
+                    </th>
+                </tr>
+                <tr>
+                    <th style="" height="30" align="center" colspan="4" scope="">
+                    </th>
+                </tr>
+            </table>
+        </form>
+        <!-- 表格结束 -->
+    </div>
+</div>
+{include file="Mobile/public/footer" /}

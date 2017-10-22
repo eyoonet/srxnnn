@@ -1,0 +1,39 @@
+{include file="Mobile/public/header" /}
+<style>
+    .datatable input,textarea{
+        width: 100%;height:100%;border:0px;
+    }
+</style>
+<form id="task_load">
+    <input name="clents_id" type="hidden">
+    <ul  class="m-list datatable">
+        <li>
+            <div class="list-header">
+                姓名:<input name="clents_name" type="text" readonly="readonly">
+        </li>
+        <li>电话:18938923990</li>
+        <li>标题:<input name="title" type="text" readonly="readonly"></li>
+        <li>内容:<input name="comment" type="text" readonly="readonly"></li>
+        <li>发布者:<input name="se_name" type="text" readonly="readonly"></li>
+        <li>进度:<input name="finish_type" type="text" readonly="readonly"></li>
+        <li>时间:<input name="task_time" type="text" readonly="readonly"></li>
+        <li style="padding: 0">
+            <div class="list-content" >
+                <textarea style="padding: 0" name="comment" type="text" readonly="readonly"></textarea>
+            </div>
+        </li>
+        <li><a href="javascript:void(0)" onclick="$.mobile.go('#page-table');load_data()">客户详情</a></li>
+        <p><a href="#" class="easyui-linkbutton c1" style="width:100%">成功</a></p>
+        <p><a href="#" class="easyui-linkbutton c2" style="width:100%">失败</a></p>
+    </ul>
+</form>
+{include file="Mobile/public/footer" /}
+<script type="text/javascript">
+function load_data(){
+        url = '/data/getOneData/'+$("input[name='clents_id']").val();
+        //data 的 edit 需要获取原始数据,修改器的数据是不行的.
+        $.getJSON(url,function(row){
+            $('#table_load').form('load',row);
+        })
+}
+</script>

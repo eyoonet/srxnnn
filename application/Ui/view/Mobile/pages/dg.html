@@ -1,0 +1,33 @@
+{include file="Mobile/public/header" /}
+<div id="dg"></div>
+<script type="text/javascript">
+    function dginit(param) {
+        $('#dg').datalist({
+            queryParams: param,
+            url: '/task/List',
+            fitColumns: false,
+            singleSelect: true,
+            striped: true,
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            sortName: 'task_time',
+            sortOrder: 'asc',
+            remoteSort: true,
+            pageSize: 15,
+            pageList: [15, 30, 45, 60, 75],
+            border: false,
+            scrollbarSize: 0,
+            columns: [[
+                {field: 'clents_name', title: '客户', width: 50},
+                {field: 'title', title: '标题', width: 80},
+                {field: 'task_time', title: '时间', width: 80, align: 'right'}
+            ]],
+            //用户单击
+            onClickRow:function(index, row){
+                $.mobile.go('#page-datails');
+                $('#task_load').form('load',row);
+            }
+        });
+    }
+</script>

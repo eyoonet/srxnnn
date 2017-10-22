@@ -1,0 +1,87 @@
+{include file="Mobile/public/header" /}
+<div class="easyui-navpanel">
+    <ul class="m-list">
+        <li><a href="javascript:void(0)" onclick="openit(this)">待办</a></li>
+        <li><a href="javascript:void(0)" onclick="openit(this)">逾期</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    function openit(target){
+        var text = $(target).text();
+        $('#h-title').html(text);
+        $.mobile.go('#page-dg');
+        List(text);
+    }
+    function List(where) {
+        var param = {};
+        switch (where) {
+            case "待办":
+                param = {
+                    "rule": "re_by_id = :uid AND finish_type = :value",
+                    "uid": "0",
+                    "value": "1"
+                };
+                break;
+            case "逾期":
+                param = {
+                    "rule": "re_by_id = :uid AND finish_type = :value",
+                    "uid": "0",
+                    "value": "1",
+                    "type": "sousou"
+                };
+                break;
+            case "处理成功":
+                param = {
+                    "rule":"re_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"2"
+                }
+                break;
+            case "处理失败":
+                param = {
+                    "rule":"re_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"0"
+                }
+                break;
+            case "我发布的":
+                param = {
+                    "rule": "se_by_id = :uid",
+                    "uid": "0"
+                };
+                break;
+            case "过期未处理":
+                param = {
+                    "rule":"se_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"1",
+                    "type":"sousou"
+                };
+                break;
+            case "处理成功":
+                param = {
+                    "rule":"se_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"2"
+                };
+                break;
+            case "处理失败":
+                param = {
+                    "rule":"se_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"0"
+                };
+                break;
+            case "进行中":
+                param = {
+                    "rule":"se_by_id = :uid  AND finish_type = :value",
+                    "uid":"0",
+                    "value":"1"
+                };
+                break;
+        }
+        //$(".deldg").remove();
+        dginit(param);
+    }
+</script>
+{include file="Mobile/public/footer" /}

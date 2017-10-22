@@ -13,6 +13,6 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return $this->fetch('login/index');
+        return $this->fetch('login/PC');
     }
 }
