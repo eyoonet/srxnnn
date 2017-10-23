@@ -3,8 +3,10 @@
           data-options="closed:true,modal:false,resizable:true">
    <form id="task-form">
        <label>标题:</label>
-       <input name="title"  class="easyui-combobox"  style="width:35%;"
+       <input name="type" type="hidden">
+       <input id="ttc" name="title"  class="easyui-combobox"  style="width:35%;"
               data-options=" ultivalue:false,
+                             required:true,
                              panelHeight:'auto',
                              url:'Combobox/Get/TASK_TITLE',
                              valueField:'value',
@@ -46,3 +48,23 @@
 
 </div>
 <!-- 任务窗口结束 -->
+<script type="text/javascript">
+    $('input[name="title"]').combobox({
+     onSelect: function(record){
+         console.log(record.text);
+         switch (record.text){
+             case "一审":
+                 $('input[name="type"]').val(1);
+                 break;
+             case "二审":
+                 $('input[name="type"]').val(2);
+                 break;
+             case "拿调令":
+                 $('input[name="type"]').val(3);
+                 break;
+             default:
+                 $('input[name="type"]').val(0);
+         }
+     }
+    });
+</script>

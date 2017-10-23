@@ -7,20 +7,34 @@
  */
 namespace app\api\controller;
 use app\api\model\Task;
-use app\common\controller\Base;
 use app\common\org\Res;
-class TaskController extends Base
+use app\api\controller\DataController;
+use app\api\model\Data;
+use think\Db;
+class TaskController extends DataController
 {
-    public function create(Task $m, $id = 0)
+    /**
+     * 创建一个任务
+     * @param Task $m
+     * @param int $id
+     * @return \think\response\Json
+     */
+    public function taskCreate(Task $m, $id = 0, $type = 0)
     {
         $data = $this->request->post();
         $data['se_by_id'] = $this->uid;
         $data['clents_id'] = $id;
-
-        return $m->save($data) ? Res::Json(200,$data['se_by_id']) : Res::Json(400);
+        if($type != 0)
+            $data['type'] = $type;
+        return $m->save($data) ? Res::Json(200, $data['se_by_id']) : Res::Json(400);
     }
 
-    public function List(Task $m)
+    /**
+     * 获取任务列表
+     * @param Task $m
+     * @return \think\response\Json
+     */
+    public function taskList(Task $m)
     {
         $params = $this->request->only(['page', 'rows', 'sort', 'order'], 'post');
         $rule = $this->request->post('rule');
@@ -33,7 +47,8 @@ class TaskController extends Base
             // 没有条件显示所有
             if ($rule == null || $fieids == null) {
 
-                $rule = "1 = :id";$fieids = ['id' => 1];
+                $rule = "1 = :id";
+                $fieids = ['id' => 1];
 
             }
 
@@ -44,7 +59,8 @@ class TaskController extends Base
             //没有条件显示所有
             if ($rule == null || $fieids == null) {
 
-                $rule = "1 = :id";$fieids = ['id' => 1];
+                $rule = "1 = :id";
+                $fieids = ['id' => 1];
 
             }
             $lists = $m->List($params, $rule, $fieids);
@@ -56,21 +72,67 @@ class TaskController extends Base
         ]);
     }
 
-    //成功
-    public function finish($id)
+    //任务成功  如果用户组是外勤, 并且任务类型是1审的话就发布任务给内勤
+    //如果用户组不是外勤.类型是1审二审,就修改DATA进度
+    public function taskFinish($id)
     {
         $m = Task::get($id);
-        $m->finish_type = 2;
+        $m->finish_type = 2;//成功
         $m->finish_time = time();
+        //..不是外勤.
+        if ($this->group_id != 4) {
+            //任务类型 是一审二审拿调令 修改DATA进度
+            switch ($m->type) {
+                case 1:
+                    $this->sign($m->clents_id);
+                    break;
+                case 2:
+                    $this->submit($m->clents_id);
+                    break;
+                case 3:
+                    $this->takeDiaol($m->clents_id);
+                    break;
+            }
+        }else if($m->type == 1 || $m->type == 2 || $m->type == 3 ){
+            //是外勤如果任务类型是一审二审拿调令就回馈一个任务.
+            $re_by_id = Db::table('Data')->where('id',$m->clents_id)->value('user_id');
+            $newm = new Task();
+            $data=[
+                'clents_id'=> $m->clents_id,
+                'type'     => $m->type,
+                'se_by_id' => $this->uid,
+                're_by_id' => $re_by_id,
+                'title'    => '回访任务',
+                'comment'  => '',
+                'task_time'=>time()
+            ];
+            $newm->isUpdate(false)->save($data);
+        }
         return $m->save() ? Res::Json(200) : Res::Json(400);
     }
-
     //失败
-    public function failed($id)
+    public function taskFailed($id)
     {
         $m = Task::get($id);
         $m->finish_type = 0;
         $m->finish_time = time();
         return $m->save() ? Res::Json(200) : Res::Json(400);
+    }
+    //转发 2种方案, 1 直接编辑转发 2 完成当前转发.  还是推荐完成后转发
+    public function taskForward($id,$clents_id = 0, $type = 0){
+        $d = Task::get($id);
+        $d->finish_type = 3;//转发
+        $d->finish_time = time();
+
+        $data = $this->request->post();
+        $data['se_by_id'] = $this->uid;
+        $data['clents_id'] = $clents_id;
+        if($type != 0)
+            $data['type'] = $type;
+
+        $m = new Task();
+        $m->save($data);
+
+        return $d->save() ? Res::Json(200) : Res::Json(400);
     }
 }

@@ -24,9 +24,9 @@ class MenuTree extends Model
      * @param $tag
      * @return array
      */
-    public function getMenu($groupId = null, $tag = null)
+    public function getMenu($groupId = array(), $tag = null)
     {
-        $arr = $this->where('group_id', $groupId)
+        $arr = $this->where('group_id','in',$groupId)
             ->where('status', 1)
             ->where('tag', $tag)
             ->order('sort asc')

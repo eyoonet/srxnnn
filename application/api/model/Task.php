@@ -147,7 +147,7 @@ class Task extends Model
 
 
     /******************************************************************************************************************/
-    public function getTypeAttr($key)
+/*    public function getTypeAttr($key)
     {
         $data = [
             0 => '其他',
@@ -158,13 +158,14 @@ class Task extends Model
             5 => '体检'
         ];
         return isset($data[$key]) ? $data[$key] : '';
-    }
+    }*/
 
     public function getFinishTypeAttr($key)
     {
         $data = [
             1 => '进行中',
             2 => '完成',
+            3 => '转发',
             0 => '失败',
         ];
         return isset($data[$key]) ? $data[$key] : "";

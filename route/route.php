@@ -44,10 +44,11 @@ Route::group('data',[
     'setSzhrss'             =>  'api/data/setSzhrss'                //设置人保局进度
 ]);
 Route::group('task',[
-    'create/[:id]'          => 'api/Task/create',           //任务创建
-    'List'                  => 'api/Task/List',            //任务列表
-    'Finish/:id'            => 'api/Task/Finish',           //任务成功
-    'failed/:id'            => 'api/Task/failed'            //任务失败
+    'create/[:id]/[:type]'          => 'api/Task/taskCreate',           //任务创建
+    'taskForward/:id/[:clents_id]/[:type]'          => 'api/Task/taskForward',           //任务转发
+    'List'                  => 'api/Task/taskList',            //任务列表
+    'Finish/:id'            => 'api/Task/taskFinish',           //任务成功
+    'failed/:id'            => 'api/Task/taskFailed'            //任务失败
 ]);
 Route::group('ui',[
     'main'	    =>	'ui/Index/index',

@@ -110,7 +110,7 @@ class Data extends Model
         $exps = [
             "eq"      => [],
             "like"    => ['name','tel','rdate','Tag'],
-            "in"      => ['mode','speed','sbtype','service','status'],
+            "in"      => ['mode','speed','sbtype','service','status','user_id'],
             "between time" => ['add_time','I_date','II_date','speed_time']
         ];
         //日期字段,对应html type 的 value
@@ -182,7 +182,7 @@ class Data extends Model
      * **********************************修改器******************************************
      ***********************************************************************************/
 
-    const NEW_CLIENT          = 0;//新进客户
+    const NEW_CLIENT          = -1;//新进客户
     const NOT_SHEBAO          = 1;//没有社保
     const REFURN              = 2;//问题打回
     const ETCINPUT            = 3;//待录人保
@@ -206,7 +206,7 @@ class Data extends Model
      ***********************************************************************************/
     public function getStatusAttr($key){
         $data = [
-            0 => '新进客户', 1 => '没有社保', 2 => '问题打回',  3=> '待录人保',
+            -1 => '新进客户', 1 => '没有社保', 2 => '问题打回',  3=> '待录人保',
             4 => '提交人保', 5 => '已约号I',   6 => '已约号II',   7=> '已出号',
             8 =>'已一审',    9 => '预备二审', 10=> '已二审',   11=> '撤销终止',
             12=> '不予受理', 13=> '待报道',   14=> '审批中',   15=> '审批同意',
@@ -218,6 +218,13 @@ class Data extends Model
     public function getMarriageAttr($key)
     {
         $data = ['01' => '未婚', '02' => '已婚', '03' => '离异', '04' => '丧偶'];
+        if( isset($data[$key]) ){
+            return $data[$key];
+        }
+    }
+    public function getAdderssAttr($key)
+    {
+        $data = [ 1=>'窗口集体户',2=>'自己房产',3=>'亲友房产',4=>'单位集体户',5=>'我们提供'];
         if( isset($data[$key]) ){
             return $data[$key];
         }
@@ -273,7 +280,7 @@ class Data extends Model
     // `speed` tinyint(1) DEFAULT '0' COMMENT '进度 0 未办 1 一审 2 二审 3 完结',
     public function getSpeedAttr($key)
     {
-        $data = [ 0 => '未办' ,1 => '签协议' , 2 =>'交材料', 3 =>'完结'];
+        $data = [ -1 => '未办' ,1 => '签协议' , 2 =>'交材料', 3 =>'完结'];
         if( isset($data[$key]) ){
             return $data[$key];
         }

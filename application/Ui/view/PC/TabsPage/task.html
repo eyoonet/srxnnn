@@ -63,7 +63,7 @@
         if (value != null) {
             return  '<div dg="task-dg">' +
                         '<a class="button-default" href="javascript:showtable('+row.clents_id+')">详情</a> ' +
-                        '<a class="button-danger" onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/create' +'/'+row.clents_id+'">转发</a>'+
+                        '<a class="button-danger" onclick="loadRcdate('+row.clents_id+');ButtonRunDialog(this);"  dialog="task"  url="task/taskForward' +'/'+row.id+'/'+row.clents_id+'">转发</a>'+
                         '<span>【' +value+ '】</span>'+
                     '</div>';
         }

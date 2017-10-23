@@ -32,7 +32,7 @@ class MenuController extends Base
      */
     public function getSidebar(MenuTree $sidebar, $tag)
     {
-        return json($sidebar->getMenu(1, $tag));
+        return json($sidebar->getMenu([$this->uid,0], $tag));
     }
 
     /**
