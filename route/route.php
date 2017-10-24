@@ -41,7 +41,9 @@ Route::group('data',[
     'getSubmitList'         =>  'api/data/getSubmitList',           //获取已经二审的列表
     'NuserCallin/:id'       =>  'api/data/NuserCallin',             //内勤调入
     'getAuditSuccessList'   =>  'api/data/getAuditSuccessList',     //获取审批完成的列表
-    'setSzhrss'             =>  'api/data/setSzhrss'                //设置人保局进度
+    'setSzhrss'             =>  'api/data/setSzhrss',               //设置人保局进度
+    'upload'                =>  'api/data/uploadByImage',                  //图片上传
+    'imageList'             =>  'api/data/imageList',
 ]);
 Route::group('task',[
     'create/[:id]/[:type]'          => 'api/Task/taskCreate',           //任务创建
@@ -56,8 +58,8 @@ Route::group('ui',[
     'Settings'  =>  'ui/Index/Settings',
     'log'       =>  'ui/index/Log',
     'task'      =>  'ui/index/Task',
-
-    'mobile'    =>  'ui/index/Mobile'
+    'upload'    =>  'ui/index/Upload',
+    'mobile'    =>  'ui/index/Mobile',
 ]);
 
 Route::group('menu',[

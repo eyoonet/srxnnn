@@ -18,6 +18,7 @@
 <!-- 添加数据开始 -->
 <div id="add" class="easyui-dialog" title="My Dialog" form="add-form" dg="dg"
      data-options="closed:true,
+                    toolbar:'#add-buttons',
                     cache:false,
                     height:'auto',
                     width:720,
@@ -52,53 +53,6 @@
                     <input name="renbao_password" class="easyui-textbox" />
                 </li>
                 <li>
-                    <label>价格</label>
-                    <input name="price" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
-                </li>
-                <li>
-                    <label>定金</label>
-                    <input name="deposit" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
-                </li>
-                <li>
-                    <label>毕业学校</label>
-                    <input name="schoolName" class="easyui-textbox" />
-                </li>
-                <li>
-                    <label>专业</label>
-                    <input name="major" class="easyui-textbox" />
-                </li>
-            </ul>
-        </div>
-
-        <div style="float: left">
-            <ul class="my-ul" style="">
-                <li>
-                    <label>毕业日期</label>
-                    <input name="graduateDate" class="easyui-textbox">
-                </li>
-                <li>
-                    <label>通讯地址</label>
-                    <input name="txadderss" class="easyui-textbox"/>
-                </li>
-                <li>
-                    <label>店铺</label>
-                    <input name="shop" class="easyui-combobox"
-                           data-options="panelHeight:'auto',
-                                          url:'combobox/Get/SHOP',
-                                          valueField:'value',
-                                          textField:'text',
-                                          editable:true"/>
-                </li>
-                <li>
-                    <label>服务窗口</label>
-                    <input name="service" class="easyui-combobox col-box-2"
-                           data-options="panelHeight:'auto',
-                                         url:'combobox/Get/SERVICE',
-                                         valueField:'value',
-                                         textField:'text',
-                                         editable:true"/>
-                </li>
-                <li>
                     <label>学历</label>
                     <select name="education" class="easyui-combobox"
                             data-options="panelHeight:'auto',editable:false,required:true">
@@ -109,7 +63,84 @@
                     </select>
                 </li>
                 <li>
-                    <label>社保</label>
+                    <label>毕业学校</label>
+                    <input name="schoolName" class="easyui-textbox" />
+                </li>
+                <li>
+                    <label>专业</label>
+                    <input name="major" class="easyui-textbox" />
+                </li>
+                <li>
+                    <label>毕业日期</label>
+                    <input name="graduateDate" class="easyui-textbox">
+                </li>
+                <li>
+                    <label>通讯地址</label>
+                    <input name="txadderss" class="easyui-textbox"/>
+                </li>
+                <li>
+                    <label>迁入地</label>
+                    <select name="adderss" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false">
+                        <option value="1">窗口集体户</option>
+                        <option value="2">自己房产</option>
+                        <option value="3">亲友房产</option>
+                        <option value="4">单位集体户</option>
+                        <option value="5">我们提供</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+
+        <div style="float: left">
+            <ul class="my-ul" style="">
+                <li>
+                    <label>婚姻状态</label>
+                    <select name='marriage' class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false,required:true">
+                        <option value="01">未婚</option>
+                        <option value="02">已婚</option>
+                        <option value="02">复婚</option>
+                        <option value="02">再婚</option>
+                        <option value="03">离异</option>
+                        <option value="04">丧偶</option>
+                    </select>
+                </li>
+                <li>
+                    <label>结婚日期</label>
+                    <input name="marrDate" class="easyui-textbox"/>
+                </li>
+                <li>
+                    <label>小孩信息</label>
+                    <select name="child" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false,multiple:true,multivalue:false">
+                        <option value="-1">无</option>
+                        <option value="1">一孩</option>
+                        <option value="2">二孩</option>
+                        <option value="3">怀孕</option>
+                        <option value="4">随迁</option>
+                    </select>
+                </li>
+                <li>
+                    <label>审核方式</label>
+                    <select name="mode" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false,required:true">
+                        <option value="03">应届生</option>
+                        <option value="05">留学生</option>
+                        <option value="12">核准制</option>
+                        <option value="12">积分制</option>
+                    </select>
+                </li>
+                <li>
+                    <label>申报方式</label>
+                    <select name="sbtype" class="easyui-combobox"
+                            data-options="panelHeight:'auto',editable:false,required:true">
+                        <option value="1">个人申报</option>
+                        <option value="2">单位申报</option>
+                    </select>
+                </li>
+                <li>
+                    <label>社保数</label>
                     <select name="shebao" class="easyui-combobox col-box-2" data-options="panelHeight:'auto',editable:false">
                         <option value="0">未缴社保</option>
                         <option value="2017-01">17-1月起缴</option>
@@ -128,7 +159,7 @@
                     </select>
                 </li>
                 <li>
-                    <label>社保公司</label>
+                    <label>公司名</label>
                     <select name="shebaoname" class="easyui-combobox"
                             data-options="panelHeight:'auto',
                                           url:'combobox/Get/SHEBAO_NAME',
@@ -138,39 +169,96 @@
                     </select>
                 </li>
                 <li>
-                    <label>审核方式</label>
+                    <label>公司区</label>
+                    <select name="shebaoname" class="easyui-combobox"
+                            data-options="panelHeight:'auto',
+                                          url:'combobox/Get/SHEBAO_NAME',
+                                          valueField:'value',
+                                          textField:'text',
+                                          editable:true">
+                    </select>
+                </li>
+                <li>
+                    <label>价格</label>
+                    <input name="price" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
+                </li>
+                <li>
+                    <label>定金</label>
+                    <input name="deposit" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
+                </li>
+                <li>
+                    <label>来源</label>
+                    <input name="shop" class="easyui-combobox"
+                           data-options="panelHeight:'auto',
+                                          url:'combobox/Get/SHOP',
+                                          valueField:'value',
+                                          textField:'text',
+                                          editable:true"/>
+                </li>
+                <li>
+                    <label>付款方式</label>
                     <select name="mode" class="easyui-combobox"
-                            data-options="panelHeight:'auto',editable:false,required:true">
-                        <option value="03">应届生</option>
-                        <option value="05">留学生</option>
-                        <option value="12">核准制</option>
-                        <option value="12">积分制</option>
-                    </select>
-                </li>
-                <li>
-                    <label>迁入地</label>
-                    <select name="adderss" class="easyui-combobox"
                             data-options="panelHeight:'auto',editable:false">
-                        <option value="1">窗口集体户</option>
-                        <option value="2">自己房产</option>
-                        <option value="3">亲友房产</option>
-                        <option value="4">单位集体户</option>
-                        <option value="5">我们提供</option>
+                        <option value="1">淘宝</option>
+                        <option value="2">支付宝</option>
+                        <option value="3">微信</option>
+                        <option value="4">对公账户</option>
+                        <option value="5">现金</option>
+                        <option value="6">POS机</option>
                     </select>
                 </li>
-                <li>
-                    <label>申报方式</label>
-                    <select name="sbtype" class="easyui-combobox"
-                            data-options="panelHeight:'auto',editable:false,required:true">
-                        <option value="1">个人申报</option>
-                        <option value="2">单位申报</option>
-                    </select>
-                </li>
+
+
             </ul>
         </div>
 
         <div style="float: left">
             <ul class="my-ul" style="">
+                <li>
+                    <label>所属用户</label>
+                    <input name="shop" class="easyui-combobox"
+                           data-options="panelHeight:'auto',
+                           url:'combobox/Userlist',
+                           valueField:'value',
+                           textField:'text',
+                           editable:true">
+                </li>
+                <li>
+                    <label>内勤</label>
+                    <input name="shop" class="easyui-combobox"
+                           data-options="panelHeight:'auto',
+                           url:'combobox/Userlist',
+                           valueField:'value',
+                           textField:'text',
+                           editable:true">
+                </li>
+                <li>
+                    <label>外勤</label>
+                    <input name="shop" class="easyui-combobox"
+                           data-options="panelHeight:'auto',
+                           url:'combobox/Userlist',
+                           valueField:'value',
+                           textField:'text',
+                           editable:true">
+                </li>
+                <li>
+                    <label>服务窗口</label>
+                    <input name="service" class="easyui-combobox col-box-2"
+                           data-options="panelHeight:'auto',
+                                         url:'combobox/Get/SERVICE',
+                                         valueField:'value',
+                                         textField:'text',
+                                         editable:true"/>
+                </li>
+                <li>
+                    <label>渠道</label>
+                    <input name="service" class="easyui-combobox col-box-2"
+                           data-options="panelHeight:'auto',
+                                         url:'combobox/Get/SERVICE',
+                                         valueField:'value',
+                                         textField:'text',
+                                         editable:true"/>
+                </li>
                 <li>
                     <label>招调</label>
                     <select name="zdtype" class="easyui-combobox"
@@ -178,22 +266,6 @@
                         <option value="01">招工</option>
                         <option value="02">调干</option>
                     </select>
-                </li>
-                <li>
-                    <label>婚姻状态</label>
-                    <select name='marriage' class="easyui-combobox"
-                            data-options="panelHeight:'auto',editable:false,required:true">
-                        <option value="01">未婚</option>
-                        <option value="02">已婚</option>
-                        <option value="02">复婚</option>
-                        <option value="02">再婚</option>
-                        <option value="03">离异</option>
-                        <option value="04">丧偶</option>
-                    </select>
-                </li>
-                <li>
-                    <label>结婚日期</label>
-                    <input name="marrDate" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>调档案</label>
@@ -206,17 +278,7 @@
                     <label>保管地</label>
                     <input name="danan_ads" class="easyui-textbox" />
                 </li>
-                <li>
-                    <label>小孩信息</label>
-                    <select name="child" class="easyui-combobox"
-                            data-options="panelHeight:'auto',editable:false,multiple:true,multivalue:false">
-                        <option value="-1">无</option>
-                        <option value="1">一孩</option>
-                        <option value="2">二孩</option>
-                        <option value="3">怀孕</option>
-                        <option value="4">随迁</option>
-                    </select>
-                </li>
+
                 <li>
                     <label>标签</label>
                     <input name="Tag" class="easyui-textbox" />
@@ -225,24 +287,23 @@
                     <input name="comment" class="easyui-textbox" style="width:218px;height:105px;"
                            data-options="multiline:true">
                 </li>
+                <li>
+
+                </li>
             </ul>
         </div>
     </form>
 </div>
 
-
-
-
 <div id="add-buttons">
-    <a id="add-buttons-imageup" href="#">上传图片</a>
+    <a  id="add-buttons-imageup" >上传图片</a>
     <a id="add-buttons-imagedel" href="#">清空图片</a>
-    <a class="easyui-linkbutton" href="javascript:saveData()" data-options="iconCls:'icon-save'">保 存</a>
-    <a id="add-buttons-close" data-options="iconCls:'icon-clear'">关 闭</a>
 </div>
 
-<div id="dd_image" class="easyui-dialog" title="图片上传" style="width:695px;height:550px;"
+<div id="upLoadByImage" class="easyui-dialog" title="图片上传" style="width:695px;height:555px;"
      data-options="iconCls:'icon-save',
         			  resizable:true,
+        			  href:'/ui/upload',
         			  modal:true,
         			  closed:true">
 </div>

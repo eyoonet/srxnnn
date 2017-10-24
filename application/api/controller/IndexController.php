@@ -5,6 +5,7 @@ use app\api\model\Log;
 use app\api\model\Task;
 use app\api\model\User;
 use app\common\controller\Base;
+use app\common\lib\LibFile;
 use app\common\org\Res;
 use think\Collection;
 use think\Controller;
@@ -15,14 +16,7 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
-        list($start, $end) = Time::today();// 今日开始和结束的时间戳
-        dump( $start);
 
-
-        $M = new Task();
-
-
-      dump($M->where('create_time', '> time', '2016-1-1')->fetchSql(true)->select());
 
        /* $m = new Data();
 

@@ -44,6 +44,6 @@
 	font-size: 16px;
 }
 /* 图片容器 */
-#dowebok2 { width:auto; margin: 0 auto; font-size: 16;}
-#dowebok2 li { display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%;}
-#dowebok2 li img { width: 150px; height: 150px}
+#dowebok { width:auto; margin: 0 auto; font-size: 16;}
+#dowebok li { display: inline-block; width: 150px; margin-left: 1%; padding-top: 1%;}
+#dowebok li img { width: 150px; height: 150px}

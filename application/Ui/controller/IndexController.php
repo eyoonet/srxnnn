@@ -33,6 +33,10 @@ class IndexController extends Base
 
     public function Mobile(){
         return response($this->fetch('/Mobile/main'));
-        //return response($this->fetch('/Mobile/pages/tabs/dg'));
+    }
+
+    public function Upload(){
+        //$this->assign('idcard');
+        return response($this->fetch('/PC/windows/upload'));
     }
 }

@@ -15,13 +15,13 @@ $(function($){
 		onClick: function(){
 			var card = $("#card").val();
 			if (card == ""){
-				alert('SB啊!身份证是填了在来上传');
-			}else{		 
- 				 $('#dd_image').html("<iframe src='/upimage?card="+card+"'  width='100%' height='500px'></iframe>");
- 				 $('#dd_image').window('open');;
+				return showMsg("错误", '身份证有误不能上传!', true, 'error');
+			}else{
+ 				// $('#upLoadByImage').html("<iframe id='imagesfra' src='/ui/upload?card="+card+"'  width='98%' height='500px'></iframe>");
+				$('#upLoadByImage').dialog('open');
 			}
 		},
-	});  
+	});
 	  //清空图片按钮
 	$('#add-buttons-imagedel').linkbutton({
 		onClick: function(){

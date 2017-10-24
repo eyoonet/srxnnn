@@ -9,6 +9,7 @@ namespace app\api\controller;
 use app\api\model\Data;
 use app\api\model\DataImg;
 use app\common\controller\Base;
+use app\common\lib\LibFile;
 use app\common\org\Res;
 use think\Response;
 
@@ -387,5 +388,31 @@ class DataController extends Base
     public function getOneData($id, Data $M)
     {
         return $M->get($id);
+    }
+    //上传资料
+    public function uploadByImage(){
+        $idcard = $this->request->param('idcard');
+        $file = $this->request->file('file');
+        //中文需要转化编码
+        $fileName = iconv("UTF-8", "gb2312", $file->getInfo('name'));
+        $info = $file->move( UPLOAD_PATH . $idcard,$fileName);
+        if($info){
+            // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
+            $ext =  $info->getExtension();
+            //$info->getInfo('name')
+            //成功上传后 返回上传信息
+            //{"jsonrpc" : "2.0", "result" : null, "id" : "id"}
+            return json(array('result'=>null,'id'=>'id','ext'=>$ext));
+        }else{
+            // 上传失败返回错误信息
+            //{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}
+            return json(array('result'=>0,'error'=>'id'));
+        }
+    }
+    //获取文件列表
+    public function imageList($idcard){
+        return json(
+            LibFile::getImageByNames(UPLOAD_PATH.$idcard
+        ));
     }
 }
