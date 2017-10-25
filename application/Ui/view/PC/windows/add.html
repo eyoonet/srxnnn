@@ -14,11 +14,10 @@
         width: 148px;
     }
 </style>
-
 <!-- 添加数据开始 -->
 <div id="add" class="easyui-dialog" title="My Dialog" form="add-form" dg="dg"
      data-options="closed:true,
-                    toolbar:'#add-buttons',
+                    toolbar:'#add-toolbar',
                     cache:false,
                     height:'auto',
                     width:720,
@@ -128,7 +127,7 @@
                         <option value="03">应届生</option>
                         <option value="05">留学生</option>
                         <option value="12">核准制</option>
-                        <option value="12">积分制</option>
+                        <option value="13">积分制</option>
                     </select>
                 </li>
                 <li>
@@ -170,7 +169,7 @@
                 </li>
                 <li>
                     <label>公司区</label>
-                    <select name="shebaoname" class="easyui-combobox"
+                    <select name="area" class="easyui-combobox"
                             data-options="panelHeight:'auto',
                                           url:'combobox/Get/SHEBAO_NAME',
                                           valueField:'value',
@@ -197,7 +196,7 @@
                 </li>
                 <li>
                     <label>付款方式</label>
-                    <select name="mode" class="easyui-combobox"
+                    <select name="pay_mode" class="easyui-combobox"
                             data-options="panelHeight:'auto',editable:false">
                         <option value="1">淘宝</option>
                         <option value="2">支付宝</option>
@@ -252,7 +251,7 @@
                 </li>
                 <li>
                     <label>渠道</label>
-                    <input name="service" class="easyui-combobox col-box-2"
+                    <input name="place" class="easyui-combobox col-box-2"
                            data-options="panelHeight:'auto',
                                          url:'combobox/Get/SERVICE',
                                          valueField:'value',
@@ -295,11 +294,10 @@
     </form>
 </div>
 
-<div id="add-buttons">
-    <a  id="add-buttons-imageup" >上传图片</a>
-    <a id="add-buttons-imagedel" href="#">清空图片</a>
+<div id="add-toolbar">
+    <a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imageup" >上传证件</a>
+    <!--<a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imagedel">清空图片</a>-->
 </div>
-
 <div id="upLoadByImage" class="easyui-dialog" title="图片上传" style="width:695px;height:555px;"
      data-options="iconCls:'icon-save',
         			  resizable:true,
@@ -308,3 +306,15 @@
         			  closed:true">
 </div>
 <!-- 添加数据结束 -->
+<script type="text/javascript">
+    $('#add-buttons-imageup').linkbutton({
+        onClick: function(){
+            var card = $("#card").val();
+            if (card == ""){
+                return showMsg("错误", '身份证有误不能上传!', true, 'error');
+            }else{
+                $('#upLoadByImage').dialog('open');
+            }
+        },
+    });
+</script>

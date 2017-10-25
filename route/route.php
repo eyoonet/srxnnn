@@ -42,8 +42,9 @@ Route::group('data',[
     'NuserCallin/:id'       =>  'api/data/NuserCallin',             //内勤调入
     'getAuditSuccessList'   =>  'api/data/getAuditSuccessList',     //获取审批完成的列表
     'setSzhrss'             =>  'api/data/setSzhrss',               //设置人保局进度
-    'upload'                =>  'api/data/uploadByImage',                  //图片上传
-    'imageList'             =>  'api/data/imageList',
+    'upload'                =>  'api/data/uploadByImage',           //图片上传
+    'imageList'             =>  'api/data/imageList',               //证件列表
+    'back/:id'              =>  'api/data/back'                     //后撤
 ]);
 Route::group('task',[
     'create/[:id]/[:type]'          => 'api/Task/taskCreate',           //任务创建
@@ -60,8 +61,8 @@ Route::group('ui',[
     'task'      =>  'ui/index/Task',
     'upload'    =>  'ui/index/Upload',
     'mobile'    =>  'ui/index/Mobile',
+    'downExcel' =>  'ui/index/downExcel'                    //下载excel表格
 ]);
-
 Route::group('menu',[
     'GetAll'      => 'api/menu/getSidebarAll',              //获取所有
     'Get/:tag'    => 'api/menu/getSidebar',                 //获取左边
