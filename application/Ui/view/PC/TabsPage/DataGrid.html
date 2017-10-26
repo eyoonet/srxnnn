@@ -1,23 +1,20 @@
 <!-- SELECT -->
 <style>
     .filter div {
-        clear: both;
+        clear: both;//清除浮动
         margin-top: 5px;
     }
-
     .filter div label {
         float: left;
         width: 60px;
         line-height: 35px;
     }
-
     .filterinput {
         float: left;
         margin-right: 20px;
         width: 80px;
     }
 </style>
-
 <div class="easyui-panel" style="width:100%;height:auto;padding:2px;" data-options="iconCls:'icon-save',closable:true,
                 collapsible:true,minimizable:true,maximizable:true">
     <div style="display:inline;">
@@ -29,6 +26,7 @@
             <div data-options="name:'tel'">电话</div>
             <div data-options="name:'wangwang'">旺旺号</div>
             <div data-options="name:'rcdate'">约号日期</div>
+            <div data-options="name:'shebaoname'">社保公司</div>
         </div>
     </div>
     <!--按钮-->
@@ -58,18 +56,9 @@
                     <option value="2">二审</option>
                     <option value="3">完结</option>
                 </select>
-
-                <label>业务员</label>
-                <select name="user_id" class="easyui-combobox"
-                        data-options="cls:'filterinput',
-                              multiple:true,
-                              multivalue:false,
-                              url:'combobox/Userlist',
-                              valueField:'value',
-                              textField:'text',
-                              editable:true">
-                </select>
-
+                {foreach $filter as $itm }
+                     {:htmlspecialchars_decode($itm.html)}
+                {/foreach}
                 <label>日期条件</label>
                 <select class="easyui-combobox"
                         data-options="cls:'filterinput',panelHeight:'auto',editable:false,value:''"
@@ -79,7 +68,6 @@
                     <option value="0">添加日期</option>
                     <option value="3">进度日期</option>
                 </select>
-
                 <div id='date_input' style="display:inline">
                     <input id='start_date' name="date[]" style="width:120px" type="text" class="easyui-datebox"
                            data-options="formatter:myformatter,parser:myparser">
@@ -134,39 +122,11 @@
 <div id="Dg-toobar" style="padding:5px;height:auto; clear:both">
     <!-- DATA表  按钮组 -->
     <div id="dg-buttions-Group" dg="dg" style="margin-bottom:5px">
-        <a onclick="ButtonRunDialog(this);" dialog="add" url="data/Create" class="easyui-linkbutton"
-           plain="true">添加</a>
-        <a onclick="ButtonRunDialog(this);" dialog="add" url="data/Edit" load="true" class="easyui-linkbutton"
-           plain="true">修改</a>
-        <!--<a onclick="run(this)" action="del" class="easyui-linkbutton"  plain="true">删除</a>-->
-        <a onclick="ButtonRunDialog(this);" dialog="comment" url="data/refund" load="true" class="easyui-linkbutton"
-           plain="true">退款</a>
-        <a onclick="run(this)" url="data/back" class="easyui-linkbutton" plain="true">退回</a>
-        <a onclick="run(this)" url="data/shebao" class="easyui-linkbutton" plain="true">无社保</a>
-        <a onclick="ButtonRunDialog(this);" dialog="error" url="data/refurn" load="true" class="easyui-linkbutton"
-           plain="true">问题</a>
-        <a onclick="run(this)" url="data/etcinput" class="easyui-linkbutton" plain="true">待录</a>
-        <a onclick="ButtonRunDialog(this);" dialog="commit" url="data/commit" load="true" class="easyui-linkbutton"
-           plain="true">提交</a>
-        <a onclick="run(this)" url="data/setAppointment" class="easyui-linkbutton" plain="true">约号</a>
-        <a onclick="run(this)" url="data/sign" class="easyui-linkbutton" plain="true">一审</a>
-        <!-- a onclick="run(this)" url="data/fileCheck" class="easyui-linkbutton"  plain="true">审核</a>-->
-        <a onclick="run(this)" url="data/prepareSubmit" class="easyui-linkbutton" plain="true">预备二审</a>
-        <a onclick="run(this)" url="data/submit" class="easyui-linkbutton" plain="true">二审</a>
-        <a onclick="run(this)" url="data/takeDiaol" class="easyui-linkbutton" plain="true">拿调令</a>
-        <a onclick="run(this)" url="data/finish" class="easyui-linkbutton" plain="true">完结</a>
-        <a onclick="run(this)" action="miss" class="easyui-linkbutton" plain="true">爽约</a>
-        <a onclick="run(this)" url="data/NuserCallin" class="easyui-linkbutton" plain="true">调入</a>
-        <a onclick="ButtonRunDialog(this);" dialog="task" url="task/create" load="true" class="easyui-linkbutton"
-           plain="true">任务</a>
-        <a id="comm-but" onclick="ButtonRunDialog(this);" dialog="comment" url="data/comment" load="true"
-           class="easyui-linkbutton" plain="true">备注</a>
-        <a id="tag-but" onclick="ButtonRunDialog(this);" dialog="tag" url="data/tag" load="true"
-           class="easyui-linkbutton" plain="true">标记</a>
+        {foreach $buttions as $buttion }
+            {:htmlspecialchars_decode($buttion.html)}
+        {/foreach}
     </div>
-
 </div>
-
 <script type="text/javascript">
     /**
      * 对话框提交

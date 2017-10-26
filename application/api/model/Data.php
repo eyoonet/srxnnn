@@ -14,7 +14,9 @@ class Data extends Model
     protected $autoWriteTimestamp = true;
     protected $createTime = 'add_time';
     protected $type = [
-        'rcdate' => 'datetime:Y-m-d H:i'
+        'rcdate'  => 'datetime:Y-m-d H:i',
+        'I_date'  => 'datetime:Y-m-d H:i',
+        'II_date' => 'datetime:Y-m-d H:i'
     ];
 
     /*public function initialize()
@@ -119,7 +121,7 @@ class Data extends Model
         //表达式定义
         $exps = [
             "eq" => [],
-            "like" => ['name', 'tel', 'rdate', 'Tag'],
+            "like" => ['name', 'tel', 'rdate', 'Tag','shebaoname'],
             "in" => ['mode', 'speed', 'sbtype', 'service', 'status', 'user_id'],
             "between time" => ['add_time', 'I_date', 'II_date', 'speed_time']
         ];
@@ -313,7 +315,7 @@ class Data extends Model
     // `speed` tinyint(1) DEFAULT '0' COMMENT '进度 0 未办 1 一审 2 二审 3 完结',
     public function getSpeedAttr($key)
     {
-        $data = [-1 => '未办', 1 => '签协议', 2 => '交材料', 3 => '完结'];
+        $data = [-1 => '未办', 1 => '签协议', 2 => '交材料', 3 => '调令'];
         if (isset($data[$key])) {
             return $data[$key];
         }

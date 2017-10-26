@@ -1,0 +1,56 @@
+{include file="Mobile/public/header" /}
+<div class="easyui-navpanel">
+
+    <input id="ss" class="easyui-searchbox" style="width:100%;margin-top: 5px"
+           data-options="searcher:sousou,prompt:'Please Input Value',menu:'#mm'">
+    <div id="mm" style="width:80px">
+        <div data-options="name:'name'">姓名</div>
+        <div data-options="name:'Tag'">标签</div>
+        <div data-options="name:'rcdate'">预约时间</div>
+        <div data-options="name:'card'">身份证</div>
+        <div data-options="name:'tel'">电话</div>
+    </div>
+    <div style="margin-top: 10px" id="client-dg"></div>
+</div>
+{include file="Mobile/public/footer" /}
+<script type="text/javascript">
+    function sousou(value, name) {
+        //用字json字符串来组装条件
+        var p = '{"' + name + '":"' + value + '"}';
+        p = $.parseJSON(p);
+        p.type = 'sousou';
+        $('#client-dg').datalist({
+            queryParams: p,
+        });
+    }
+    //init client dg
+    $(function(){
+        $('#client-dg').datalist({
+            queryParams: {},
+            url: '/data/DGlist',
+            fitColumns: false,
+            singleSelect: true,
+            striped: true,
+            fit: true,
+            pagination: true,
+            rownumbers: true,
+            sortName: 'name',
+            sortOrder: 'asc',
+            remoteSort: true,
+            pageSize: 15,
+            pageList: [15, 30, 45, 60, 75],
+            border: false,
+            scrollbarSize: 0,
+            columns: [[
+                {field: 'name', title: '姓名', width:'60%'},
+                //{field: 'rcdate', title: '预约时间', width:'50%'},
+                {field: 'tel', title: '电话', width:'40%', align: 'right'}
+            ]],
+            //用户单击
+            onClickRow: function (index, row) {
+                $.mobile.go('#page-table');
+                load_data(row);
+            }
+        });
+    })
+</script>

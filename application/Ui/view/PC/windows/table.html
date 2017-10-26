@@ -3,9 +3,34 @@
     #datatable input,textarea{
         width: 98%;height:100%;border:0px;
     }
+    #datatable th,td {
+        padding-left: 6px;
+    }
+    table.gridtable {
+        font-family: verdana,arial,sans-serif;
+        font-size:11px;
+        color:#333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+    table.gridtable th {
+        border-width: 1px;
+        padding: 3px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #e5e5e5;
+    }
+    table.gridtable td {
+        border-width: 1px;
+        padding: 3px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
 </style>
 <div id="table" form="error-form" dg="dg" class="easyui-dialog dialog-form-style" title="客户详情"
-     style="width:1024px;height:575px;text-align:center;padding:2px 2px 2px 2px"
+     style="width:1024px;height:580px;text-align:center;padding:2px 2px 2px 2px"
      data-options="closed:true,modal:false,resizable:true,buttons:'#table-buttons'">
 
     <div class="easyui-layout"  data-options="fit:true">
@@ -17,10 +42,10 @@
 
         <div data-options="region:'center'" style="padding:0px;height: 100%">
             <form id="datatable">
-                <table style="border-bottom-width: 0px;" width="100%" border="1" cellspacing="0" cellpadding="0">
+                <table class="gridtable"  width="100%" >
                     <tr>
                         <th height="40" colspan="2" align="center" scope="row">基本信息</th>
-                        <th colspan="4" align="center">订单信息 [ <span id='t-user'></span> ]</th>
+                        <th colspan="4" align="center">订单信息</th>
                     </tr>
                     <tr>
                         <th width="14%" align="left" scope="row">姓名</th>
@@ -31,8 +56,10 @@
                         <td width="17%">
                             <input name="price" type="text" readonly="readonly">
                         </td>
-                        <th width="12%">优先级</th>
-                        <td width="23%">&nbsp;</td>
+                        <th width="12%">所属</th>
+                        <td width="23%">
+                            <input name="user_name" type="text" readonly="readonly">
+                        </td>
                     </tr>
                     <tr>
                         <th align="left" scope="row">身份证</th>
@@ -76,13 +103,12 @@
                         </td>
                     </tr>
                 </table>
-                <table style="border-top-width: 0px;border-bottom-width: 0px;" width="100%" border="1" align="left"
-                       cellpadding="0" cellspacing="0">
+                <table class="gridtable" width="100%">
                     <tr>
                         <th height="35" align="center" colspan="6" valign="middle" scope="row">其他信息</th>
                     </tr>
                     <tr>
-                        <th height="26" align="left" scope="row">人保账户密码</th>
+                        <th height="26" align="left" scope="row">账户 & 密码</th>
                         <td width="13%" align="left" scope="row">
                             <input name="renbao_user" type="text" readonly="readonly">
                         </td>
@@ -125,16 +151,20 @@
                         <td colspan="2">
                             <input name="mode" type="text" readonly="readonly">
                         </td>
-                        <td>&nbsp;</td>
-                        <td height="25">&nbsp;</td>
+                        <th>一审日期</th>
+                        <td height="25">
+                            <input name="I_date" type="text" readonly="readonly">
+                        </td>
                     </tr>
                     <tr>
                         <th align="left" scope="row">婚姻状态</th>
                         <td colspan="2">
                             <input name="marriage" type="text" readonly="readonly">
                         </td>
-                        <td>&nbsp;</td>
-                        <td height="25">&nbsp;</td>
+                        <th>二审日期</th>
+                        <td height="25">
+                            <input name="II_date" type="text" readonly="readonly">
+                        </td>
                     </tr>
                     <tr>
                         <th align="left" scope="row">小孩信息</th>
@@ -149,8 +179,8 @@
                         <td colspan="2">
                             <input name="childad" type="text" readonly="readonly">
                         </td>
-                        <td>&nbsp;</td>
-                        <td height="25">&nbsp;</td>
+                        <td></td>
+                        <td height="25"></td>
                     </tr>
                     <tr>
                         <th align="left" scope="row">迁入地</th>
@@ -163,8 +193,8 @@
                         </td>
                     </tr>
                 </table>
-                <table style="border-top-width: 0px; float: left;" width="100%" border="1" align="left" cellpadding="0"
-                       cellspacing="0">
+
+                <!--<table class="gridtable" width="100%">
                     <tr>
                         <th id="t-Tag" height="32" colspan="4" scope="col">工作经历</th>
                     </tr>
@@ -180,7 +210,8 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
-                </table>
+                </table>-->
+
             </form>
         </div>
     </div>

@@ -7,6 +7,7 @@
  */
 namespace app\ui\controller;
 
+use app\api\model\AuthUserHtml;
 use app\api\model\Data;
 use think\Controller;
 use app\api\model\MenuTree;
@@ -17,10 +18,15 @@ use PHPExcel;
 
 class IndexController extends Base
 {
-    public function index()
+    public function index(User $user)
     {
-        $user = new User();
+        $buttions = AuthUserHtml::getByHtmls($this->group_id,'buttions');
+        $extadds  = AuthUserHtml::getByHtmls($this->group_id,'adds');
+        $filter   = AuthUserHtml::getByHtmls($this->group_id,'filter');
         $this->assign('token', $user->getToken($this->uid));
+        $this->assign('buttions',$buttions);
+        $this->assign('extadds',$extadds);
+        $this->assign('filter',$filter);
         return $this->fetch('/PC/main');
     }
 
@@ -54,8 +60,11 @@ class IndexController extends Base
     {
         $fieids = $this->request->except(['/ui/downExcel'], 'get');
         $params = ['sort' => 'id', 'order' => 'asc'];
+
         $title = ['编号', '添加时间', '姓名', '标签', '身份证'];
         $fieidstr = 'id,add_time,name,tag,card,sbtype,tel,shebao,shebaoname,adderss,renbao_user,renbao_password,mode,speed,status,service,shop,price,deposit,price-deposit col,I_date,II_date,speed_time,comment';
+
+
         $lists = $M->search($params, $fieids, $this->group_id, true, $fieidstr);
         $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
             'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG'
@@ -75,9 +84,9 @@ class IndexController extends Base
             foreach ($itms as $key => $itm) {
                 $PHPExcel->getActiveSheet()->setCellValue($letter[$key] . $row, $itm);
                 $PHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);//自动宽度
-                //设置比边框
-                $PHPExcel->getActiveSheet()->getStyle($letter[$key] . $row)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
-                $PHPExcel->getActiveSheet()->getStyle($letter[$key] . $row)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                //设置边框
+                //$PHPExcel->getActiveSheet()->getStyle($letter[$key] . $row)->getBorders()->getTop()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
+                //$PHPExcel->getActiveSheet()->getStyle($letter[$key] . $row)->getBorders()->getLeft()->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
             }
         }
         $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');//按照指定格式生成Excel文件，‘Excel2007’表示生成2007版本的xlsx，‘Excel5’表示生成2003版本Excel文件

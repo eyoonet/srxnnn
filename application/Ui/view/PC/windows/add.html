@@ -213,33 +213,9 @@
 
         <div style="float: left">
             <ul class="my-ul" style="">
-                <li>
-                    <label>所属用户</label>
-                    <input name="shop" class="easyui-combobox"
-                           data-options="panelHeight:'auto',
-                           url:'combobox/Userlist',
-                           valueField:'value',
-                           textField:'text',
-                           editable:true">
-                </li>
-                <li>
-                    <label>内勤</label>
-                    <input name="shop" class="easyui-combobox"
-                           data-options="panelHeight:'auto',
-                           url:'combobox/Userlist',
-                           valueField:'value',
-                           textField:'text',
-                           editable:true">
-                </li>
-                <li>
-                    <label>外勤</label>
-                    <input name="shop" class="easyui-combobox"
-                           data-options="panelHeight:'auto',
-                           url:'combobox/Userlist',
-                           valueField:'value',
-                           textField:'text',
-                           editable:true">
-                </li>
+                {foreach $extadds as $itm }
+                     {:htmlspecialchars_decode($itm.html)}
+                {/foreach}
                 <li>
                     <label>服务窗口</label>
                     <input name="service" class="easyui-combobox col-box-2"
