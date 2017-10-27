@@ -37,7 +37,7 @@
                 </li>
                 <li>
                     <label>电话</label>
-                    <input name="tel" class="easyui-numberbox" type="text"/>
+                    <input name="tel" class="easyui-numberbox"/>
                 </li>
                 <li>
                     <label>旺旺号</label>
@@ -140,7 +140,7 @@
                 </li>
                 <li>
                     <label>社保数</label>
-                    <select name="shebao" class="easyui-combobox col-box-2" data-options="panelHeight:'auto',editable:false">
+                    <select name="shebao" class="easyui-combobox" data-options="panelHeight:'auto',editable:false">
                         <option value="0">未缴社保</option>
                         <option value="2017-01">17-1月起缴</option>
                         <option value="2017-02">17-2月起缴</option>
@@ -218,16 +218,15 @@
                 {/foreach}
                 <li>
                     <label>服务窗口</label>
-                    <input name="service" class="easyui-combobox col-box-2"
-                           data-options="panelHeight:'auto',
-                                         url:'combobox/Get/SERVICE',
+                    <input name="service" class="easyui-combobox"
+                           data-options="url:'combobox/Get/SERVICE',
                                          valueField:'value',
                                          textField:'text',
                                          editable:true"/>
                 </li>
                 <li>
                     <label>渠道</label>
-                    <input name="place" class="easyui-combobox col-box-2"
+                    <input name="place" class="easyui-combobox"
                            data-options="panelHeight:'auto',
                                          url:'combobox/Get/SERVICE',
                                          valueField:'value',

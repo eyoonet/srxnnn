@@ -23,14 +23,14 @@ $(function ($) {
         toolbar: "#Dg-toobar",
         columns: [[
             {
-                field: 'id', title: '操作', width: "7%", formatter: function (value, row, index) {
+                field: 'id', title: '操作', width: 65, formatter: function (value, row, index) {
                 return '<a class="button-default" href="#">约号</a> ' +
                     '<a class="button-danger" href="#">取消</a>';
             }
             },
             {field: 'name', title: '姓名', width: "5%"},
-            {field: 'card', title: '身份证号', width: '11%'},
-            {field: 'tel', title: '电话', width: '7%'},
+            {field: 'card', title: '身份证号', width: '12%'},
+            {field: 'tel', title: '电话', width: '8%'},
             {field: 'mode', title: '入户方式', align: 'center', width: '6%'},
             {field: 'status', title: '工作流', width: '7%'},
             //{field:'education',title:'学历',width:'3%'},

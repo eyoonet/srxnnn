@@ -333,9 +333,12 @@ class DataController extends Base
 
     /**
      * 获取数据列表支持搜索
-     * //sort:rcdate  rows:15  page:1  order:desc
-     * @param Data $sqldata
-     * @return \think\response\Json
+     *  POST     只支持POST
+     *  $rule    条件规则               rule  fieids = :name and fiedis2 = :name2;
+     *  $fieids  规则绑定 or 数组条件    array [name => :name , name2=>:name2]
+     *  $params  分页排序参数           array ['page', 'rows', 'sort', 'order'] post;
+     *  $type    列表或搜索             string  sousou OR null
+     * @return \think\response\Json  {rows:{},total:xx,type:xx}
      */
     public function getDglist(Data $sqldata)
     {
@@ -353,11 +356,8 @@ class DataController extends Base
             }
             $lists = $sqldata->getDgList($params, $rule, $fieids, $this->group_id);
         }
-        return json([
-            'rows' => $lists,
-            'total' => $sqldata->total(),
-            'type' => $type
-        ]);
+        $lists['type'] = $type;
+        return json($lists);
     }
 
     /**

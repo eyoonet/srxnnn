@@ -14,8 +14,8 @@ class Data extends Model
     protected $autoWriteTimestamp = true;
     protected $createTime = 'add_time';
     protected $type = [
-        'rcdate'  => 'datetime:Y-m-d H:i',
-        'I_date'  => 'datetime:Y-m-d H:i',
+        'rcdate' => 'datetime:Y-m-d H:i',
+        'I_date' => 'datetime:Y-m-d H:i',
         'II_date' => 'datetime:Y-m-d H:i'
     ];
 
@@ -92,7 +92,8 @@ class Data extends Model
      */
     public function getDgList($params, $rule, $fieids, $group_id)
     {
-        return $this->where('order', 1)
+
+        $lists = $this->where('order', 1)
             ->view('data', '*')
             ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
             ->order($params['sort'], $params['order'])
@@ -101,27 +102,32 @@ class Data extends Model
             ->where($this->groupWhere($group_id))
             //->fetchSql(true)
             ->select();
-    }
 
-    public function total()
-    {
-        return $this->where('order', null)->count();
+        $total = $this->where('order', 1)
+            ->where($rule, $fieids)
+            ->where($this->groupWhere($group_id))
+            ->count();
+
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
     }
 
     /**
-     * 搜索数据
-     * @post @date_type int
-     * @powt @date array
-     * @param $params array 排序分页参数
-     * @param $array
-     * @return array|\PDOStatement|string|\think\Collection
+     * 搜索 Data 带分页
+     * @param $params        分页排序参数          array ['page', 'rows', 'sort', 'order']
+     * @param $array         数组条件
+     * @param $group_id      用户组
+     * @param bool $excel    是否为EXCEL下载格式
+     * @param string $fieid  规定数据库字段
+     * @return array         返回数组             [ row , total ]
      */
     public function search($params, $array, $group_id, $excel = false, $fieid = '*')
     {
         //表达式定义
         $exps = [
             "eq" => [],
-            "like" => ['name', 'tel', 'rdate', 'Tag','shebaoname'],
+            "like" => ['name', 'tel', 'rdate', 'Tag', 'shebaoname'],
             "in" => ['mode', 'speed', 'sbtype', 'service', 'status', 'user_id'],
             "between time" => ['add_time', 'I_date', 'II_date', 'speed_time']
         ];
@@ -156,7 +162,8 @@ class Data extends Model
                 ->select();
         } else {
             //返回带分页的
-            return $this->where('order', 1)
+
+            $lists = $this->where('order', 1)
                 ->order($params['sort'], $params['order'])
                 ->page($params['page'], $params['rows'])
                 ->view('data', '*')
@@ -165,6 +172,15 @@ class Data extends Model
                 ->where($this->groupWhere($group_id))
                 ->where($map)
                 ->select();
+
+            $total = $this->where('order', 1)
+                ->where($this->groupWhere($group_id))
+                ->where($map)
+                ->count();
+
+            return array(
+                'rows' => $lists, 'total' => $total
+            );
         }
     }
 
@@ -236,15 +252,27 @@ class Data extends Model
             4 => '提交人保', 5 => '已约号I', 6 => '已约号II', 7 => '已出号',
             8 => '已一审', 9 => '预备二审', 10 => '已二审', 11 => '撤销终止',
             12 => '不予受理', 13 => '待报道', 14 => '审批中', 15 => '审批同意',
-            16 => '出调令', 17 => '已拿调令', 18 => '完结',
+            16 => '出调令', 17 => '已拿调令', 18 => '完结', 100 => '派单外勤', 101 => '拿到身份证', 102 => '外处理'
         ];
         return isset($data[$key]) ? $data[$key] : '';
+    }
+
+    public function getServiceAttr($key)
+    {
+        $data = [
+            -1 => '暂无', 101 => '外服(窗口)', 102 => '罗湖(窗口)', 103 => '龙华(窗口)', 104 => '龙岗(窗口)', 105 => '高新区(窗口)', 106 => '中心区(窗口)',
+
+            201 => '龙华(区局)', 202 => '福田(区局)', 203 => '南山(区局)', 204 => ' 罗湖(区局) ', 205 => '光明(区局)', 206 => ' 盐田(区局)',
+
+            300 => '单位(自己)', 301 => '单位(邦芒)', 302 => '单位(一牛)', 303 => ' 单位(永安)', 304 => '单位(神鹰)',
+        ];
+        return isset($data[$key]) ? $data[$key] : '暂无';
     }
 
     //  `marriage` tinyint(1) unsigned DEFAULT NULL COMMENT '01未婚 02已婚 03离异 04丧偶',
     public function getMarriageAttr($key)
     {
-        $data = ['01' => '未婚', '02' => '已婚', '03' => '离异', '04' => '丧偶'];
+        $data = ['01' => '未婚', '02' => '已婚', '03' => '离异', '04' => '复婚', '05' => '再婚0', '06' => '丧偶'];
         if (isset($data[$key])) {
             return $data[$key];
         }
@@ -279,7 +307,7 @@ class Data extends Model
     //`mode` varchar(10) DEFAULT NULL COMMENT '模式:核准积分12.应届生3.留学生5',
     public function getModeAttr($key)
     {
-        $data = ['03' => '应届生', '05' => '留学生', '12' => '核准制'];
+        $data = ['03' => '应届生', '05' => '留学生', '11' => '积分制', '12' => '核准制'];
         if (isset($data[$key])) {
             return $data[$key];
         }
@@ -306,7 +334,7 @@ class Data extends Model
     //`dangan` tinyint(2) DEFAULT '-1' COMMENT '调档 -1 | 1',
     public function getDanganAttr($key)
     {
-        $data = [0 => '否', 1 => '是'];
+        $data = [-1 => '否', 1 => '是'];
         if (isset($data[$key])) {
             return $data[$key];
         }
