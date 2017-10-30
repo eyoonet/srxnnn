@@ -1,13 +1,13 @@
 {include file="Mobile/public/header" /}
 <div class="easyui-navpanel">
     <ul class="m-list">
-        <li><a href="javascript:void(0)" onclick="openit(this)">待办</a></li>
-        <li><a href="javascript:void(0)" onclick="openit(this)">逾期</a></li>
+        <li><a href="javascript:void(0)" onclick="openit('re_100')">待办</a></li>
+        <li><a href="javascript:void(0)" onclick="openit('re_300')">逾期</a></li>
     </ul>
 </div>
 <script type="text/javascript">
-    function openit(target){
-        var text = $(target).text();
+    function openit(target) {
+        var text = target//$(target).text();
         $('#h-title').html(text);
         $.mobile.go('#page-dg');
         List(text);
@@ -15,14 +15,16 @@
     function List(where) {
         var param = {};
         switch (where) {
-            case "待办":
+            //待办
+            case "re_100":
                 param = {
                     "rule": "re_by_id = :uid AND finish_type = :value",
                     "uid": "0",
                     "value": "1"
                 };
                 break;
-            case "逾期":
+            //逾期
+            case "re_300":
                 param = {
                     "rule": "re_by_id = :uid AND finish_type = :value",
                     "uid": "0",
@@ -30,53 +32,60 @@
                     "type": "sousou"
                 };
                 break;
-            case "处理成功":
+            //处理成功
+            case "re_200":
                 param = {
-                    "rule":"re_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"2"
+                    "rule": "re_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "2"
                 }
                 break;
-            case "处理失败":
+            //处理睡吧
+            case "re_400":
                 param = {
-                    "rule":"re_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"0"
+                    "rule": "re_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "0"
                 }
                 break;
+            //我发布的
             case "我发布的":
                 param = {
                     "rule": "se_by_id = :uid",
                     "uid": "0"
                 };
                 break;
-            case "过期未处理":
+            //发布的过期未处理
+            case "se_300":
                 param = {
-                    "rule":"se_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"1",
-                    "type":"sousou"
+                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "1",
+                    "type": "sousou"
                 };
                 break;
-            case "处理成功":
+            //发布的处理成功
+            case "se_200":
                 param = {
-                    "rule":"se_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"2"
+                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "2"
                 };
                 break;
-            case "处理失败":
+            //发布的处理失败
+            case "se_400":
                 param = {
-                    "rule":"se_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"0"
+                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "0"
                 };
                 break;
-            case "进行中":
+            //发布的进行中
+            case "se_100":
                 param = {
-                    "rule":"se_by_id = :uid  AND finish_type = :value",
-                    "uid":"0",
-                    "value":"1"
+                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "uid": "0",
+                    "value": "1"
                 };
                 break;
         }

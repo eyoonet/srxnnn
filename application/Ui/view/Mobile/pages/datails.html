@@ -7,6 +7,7 @@
     }
 </style>
 <form id="task_load">
+    <input name="id" type="hidden">
     <input name="clents_id" type="hidden">
     <ul class="m-list datatable">
         <li>
@@ -15,22 +16,26 @@
         </li>
         <li>电话:18938923990</li>
         <li>标题:<input name="title" type="text" readonly="readonly"></li>
-        <li>内容:<input name="comment" type="text" readonly="readonly"></li>
+        <li>内容:<input name="comments" type="text" readonly="readonly"></li>
         <li>发布者:<input name="se_name" type="text" readonly="readonly"></li>
         <li>进度:<input name="finish_type" type="text" readonly="readonly"></li>
         <li>时间:<input name="task_time" type="text" readonly="readonly"></li>
         <li style="padding: 0">
             <div class="list-content">
-                <textarea style="padding: 0" name="comment" type="text" readonly="readonly"></textarea>
+                <textarea style="padding: 0" name="error" type="text" readonly="readonly"></textarea>
             </div>
         </li>
         <li><a href="javascript:void(0)" onclick="$.mobile.go('#page-table');load_data()">客户详情</a></li>
-        <p><a href="#" class="easyui-linkbutton c1" style="width:100%">成功</a></p>
-        <p><a href="#" class="easyui-linkbutton c2" style="width:100%">失败</a></p>
+        <p><a href="javascript:success()" class="easyui-linkbutton c1" style="width:100%">成功</a></p>
+        <p><a href="javascript:Failure()" class="easyui-linkbutton c2" style="width:100%">失败</a></p>
     </ul>
 </form>
 {include file="Mobile/public/footer" /}
 <script type="text/javascript">
+    /**
+     * 加载客户详情
+     * @param row
+     */
     function load_data(row = null) {
         if (row == null) {
             url = '/data/getOneData/' + $("input[name='clents_id']").val();
@@ -41,5 +46,52 @@
         } else {
             $('#table_load').form('load', row);
         }
+    }
+    /**
+     * 任务完成
+     */
+    function success() {
+        url = '/task/Finish/' + $("input[name='id']").val();
+        $.getJSON(url, function (row) {
+            if (row.code == 200) {
+                $('#task_load').form('load', row.data);
+                showMsg('服务器', row.msg, true);
+            } else {
+                showMsg('服务器', row.msg, true, 'error');
+            }
+            //$.mobile.back()
+        })
+    }
+    /**
+     * 任务失败需要填写原因
+     * @constructor
+     */
+    function Failure() {
+        $("#comment").dialog({
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    //做了提交处理
+                    var url = '/task/failed/' + $("input[name='id']").val();
+                    jsonAjax('post', url, {error: $("input[name='error']").val()}, function (row) {
+                        if (row.code == 200) {
+                            $('#task_load').form('load', row.data);
+                            showMsg('服务器', row.msg, true);
+                            $("#comment").dialog('close');
+                        } else {
+                            showMsg('服务器', row.msg, true, 'error');
+                        }
+                    })
+                }
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#comment").dialog('close');
+                }
+            }]
+        });
+        //var comment = $("input[name='comment']").val();
+        //$('#comment').textbox('setValue',comment);
+        $("#comment").dialog('open').dialog('center');
     }
 </script>

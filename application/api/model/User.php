@@ -84,7 +84,7 @@ class User extends Model
      */
     public function info($uid)
     {
-        $user = $this->where('id', $uid)->field('name,client_ip,login_time')->find();
+        $user = $this->where('id', $uid)->field('user_name,client_ip,login_time')->find();
         if ($user) {
             // 返回用户数据
             $auth_group = $this->table('auth_group')->where('id',$this->getUserGroupId($uid))->field('id,title')->find();

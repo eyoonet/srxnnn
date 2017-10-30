@@ -20,9 +20,11 @@ class IndexController extends Base
 {
     public function index(User $user)
     {
-        $buttions = AuthUserHtml::getByHtmls($this->group_id,'buttions');
-        $extadds  = AuthUserHtml::getByHtmls($this->group_id,'adds');
-        $filter   = AuthUserHtml::getByHtmls($this->group_id,'filter');
+        $buttions  = AuthUserHtml::getByHtmls($this->group_id,'buttions');
+        $extadds   = AuthUserHtml::getByHtmls($this->group_id,'adds');
+        $filter    = AuthUserHtml::getByHtmls($this->group_id,'filter');
+        $user_info = $user->info($this->uid);
+        $this->assign('info',$user_info);
         $this->assign('token', $user->getToken($this->uid));
         $this->assign('buttions',$buttions);
         $this->assign('extadds',$extadds);

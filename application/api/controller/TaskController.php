@@ -6,11 +6,13 @@
  * Time: 0:55
  */
 namespace app\api\controller;
+
 use app\api\model\Task;
 use app\common\org\Res;
 use app\api\controller\DataController;
 use app\api\model\Data;
 use think\Db;
+
 class TaskController extends DataController
 {
     /**
@@ -24,7 +26,7 @@ class TaskController extends DataController
         $data = $this->request->post();
         $data['se_by_id'] = $this->uid;
         $data['clents_id'] = $id;
-        if($type != 0)
+        if ($type != 0)
             $data['type'] = $type;
         return $m->save($data) ? Res::Json(200, $data['se_by_id']) : Res::Json(400);
     }
@@ -77,6 +79,10 @@ class TaskController extends DataController
     public function taskFinish($id)
     {
         $m = Task::get($id);
+        if ($m->getData('finish_type') != 1)
+            return Res::Json(400, '重复提交');
+        if ($m->getData('re_by_id')!= $this->uid )
+            return Res::Json(400, "需处理用户不是前登录用户");
         $m->finish_type = 2;//成功
         $m->finish_time = time();
         //..不是外勤.
@@ -93,33 +99,42 @@ class TaskController extends DataController
                     $this->takeDiaol($m->clents_id);
                     break;
             }
-        }else if($m->type == 1 || $m->type == 2 || $m->type == 3 ){
+        } else if ($m->type == 1 || $m->type == 2 || $m->type == 3) {
             //是外勤如果任务类型是一审二审拿调令就回馈一个任务.
-            $re_by_id = Db::table('Data')->where('id',$m->clents_id)->value('user_id');
+            $re_by_id = Db::table('Data')->where('id', $m->clents_id)->value('user_id');
             $newm = new Task();
-            $data=[
-                'clents_id'=> $m->clents_id,
-                'type'     => $m->type,
+            $data = [
+                'clents_id' => $m->clents_id,
+                'type' => $m->type,
                 'se_by_id' => $this->uid,
                 're_by_id' => $re_by_id,
-                'title'    => '回访任务',
-                'comment'  => '',
-                'task_time'=>time()
+                'title' => '回访任务',
+                'comment' => '',
+                'task_time' => time()
             ];
             $newm->isUpdate(false)->save($data);
         }
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        return $m->save() ? Res::Json(200, '成功', $m) : Res::Json(400);
     }
+
     //失败
     public function taskFailed($id)
     {
+        $errormsg = $this->request->param('error');
         $m = Task::get($id);
+        if ($m->getData('finish_type') != 1)
+            return Res::Json(400, '重复提交');
+        if ($m->getData('re_by_id')!= $this->uid )
+            return Res::Json(400, '需处理用户不是前登录用户');
+        $m->error = $errormsg;
         $m->finish_type = 0;
         $m->finish_time = time();
-        return $m->save() ? Res::Json(200) : Res::Json(400);
+        return $m->save() ? Res::Json(200, '提交成功', $m) : Res::Json(400);
     }
+
     //转发 2种方案, 1 直接编辑转发 2 完成当前转发.  还是推荐完成后转发
-    public function taskForward($id,$clents_id = 0, $type = 0){
+    public function taskForward($id, $clents_id = 0, $type = 0)
+    {
         $d = Task::get($id);
         $d->finish_type = 3;//转发
         $d->finish_time = time();
@@ -127,7 +142,7 @@ class TaskController extends DataController
         $data = $this->request->post();
         $data['se_by_id'] = $this->uid;
         $data['clents_id'] = $clents_id;
-        if($type != 0)
+        if ($type != 0)
             $data['type'] = $type;
 
         $m = new Task();

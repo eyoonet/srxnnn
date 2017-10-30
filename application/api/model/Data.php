@@ -15,8 +15,8 @@ class Data extends Model
     protected $createTime = 'add_time';
     protected $type = [
         'rcdate' => 'datetime:Y-m-d H:i',
-        'I_date' => 'datetime:Y-m-d H:i',
-        'II_date' => 'datetime:Y-m-d H:i'
+        'I_date' => 'timestamp:Y-m-d H:i',
+        'II_date' => 'timestamp:Y-m-d H:i'
     ];
 
     /*public function initialize()
@@ -73,10 +73,10 @@ class Data extends Model
                 $where = ['user_id' => $uid];
                 break;
             case 3: //内勤
-                $where = ['nuser_id' => $uid];
+                $where = true;// ['nuser_id' => $uid];
                 break;
             case 4: //外勤
-                $where = ['wuser_id' => $uid];
+                $where = true;//['wuser_id' => $uid];
                 break;
         }
         return $where;

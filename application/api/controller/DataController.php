@@ -36,7 +36,6 @@ class DataController extends Base
     public function create(Data $sqldata)
     {
         $data = $this->request->param();
-        return $data;
         $data['user_id'] = $this->uid;
         $validate = new \app\api\validate\Data();
         if ($validate->check($data)) {
@@ -387,7 +386,7 @@ class DataController extends Base
     public function setAppointment($id)
     {
         $M = Data::get($id);
-        if ($M->getData('speed') == 0) {
+        if ($M->getData('speed') == -1) {
             $M->status = Data::APPOINTMENT_I;//已约号1
         } else if ($M->getData('speed') == 1) {
             $M->status = Data::APPOINTMENT_II;//已约号2
