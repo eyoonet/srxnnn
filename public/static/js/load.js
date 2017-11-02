@@ -19,3 +19,4 @@ function completeLoading() {
 		loadingMask.parentNode.removeChild(loadingMask);
 	}
 }
+

@@ -94,7 +94,7 @@ class Data extends Model
     {
 
         $lists = $this->where('order', 1)
-            ->view('data', '*')
+            ->view('data', '*,price-deposit surplus')
             ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
@@ -166,7 +166,7 @@ class Data extends Model
             $lists = $this->where('order', 1)
                 ->order($params['sort'], $params['order'])
                 ->page($params['page'], $params['rows'])
-                ->view('data', '*')
+                ->view('data', '*,price-deposit surplus')
                 ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
                 //->fetchSql(true)
                 ->where($this->groupWhere($group_id))
@@ -343,7 +343,7 @@ class Data extends Model
     // `speed` tinyint(1) DEFAULT '0' COMMENT '进度 0 未办 1 一审 2 二审 3 完结',
     public function getSpeedAttr($key)
     {
-        $data = [-1 => '未办', 1 => '签协议', 2 => '交材料', 3 => '调令'];
+        $data = [-1 => '未办', 1 => '已签协议', 2 => '已交材料', 3 => '已拿调令'];
         if (isset($data[$key])) {
             return $data[$key];
         }

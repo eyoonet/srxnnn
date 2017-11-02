@@ -16,8 +16,8 @@ class IndexController extends Collection
     //测试专用
     public function index()
     {
-
-
+        $task = Task::get(2);
+       dump($task);
        /* $m = new Data();
 
         $array = ['name'=>'333','shebao'=>'2323'];

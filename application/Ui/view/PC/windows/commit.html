@@ -3,17 +3,16 @@
      data-options="closed:true,modal:false,resizable:true">
     <form id="commit-form">
         <input name="service"  class="easyui-combobox"  style="width:100%;"
+               data-options="url:'combobox/Get/SERVICE',
+                                         valueField:'value',
+                                         textField:'text',
+                                         editable:true"/>
+        <!--<input name="service"  class="easyui-combobox"  style="width:100%;"
                data-options="valueField:'id',
                                 value:'',
                                 textField:'text',
                                 url:'/static/js/combobox.json',
-                                panelHeight:'auto'"/>
-        <input name="service"  class="easyui-combobox"  style="width:100%;"
-               data-options="valueField:'id',
-                                value:'',
-                                textField:'text',
-                                url:'/static/js/combobox.json',
-                                panelHeight:'auto'"/>
+                                panelHeight:'auto'"/>-->
         <input name="comment" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
     </form>
 </div>

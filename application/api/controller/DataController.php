@@ -59,7 +59,7 @@ class DataController extends Base
         if ($validate->scene('edit')->check($data)) {
             $M = Data::get($id);
             $M->bak(0);
-            if ($M->save($data)) {
+            if ($M->readonly(['price','deposit'])->save($data)) {
                 return Res::Json(200);
             } else {
                 return Res::Json(400);

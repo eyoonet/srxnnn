@@ -17,7 +17,9 @@ class Task extends Model
     protected $type = [
         'task_time' => 'timestamp:Y-m-d H:i',
         'finish_time' => 'timestamp:Y-m-d H:i',
+        'Tag' => 'json',
     ];
+
     /**
      * 带分页排序获取任务列表
      * @param $params  分页排序的数组 array(sort,order,page,rows)
@@ -31,7 +33,7 @@ class Task extends Model
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id')
+            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
             ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
             ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
@@ -59,7 +61,7 @@ class Task extends Model
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
             ->where('task.task_time', '<= time', $start)
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id')
+            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
             ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
             ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
@@ -112,7 +114,7 @@ class Task extends Model
         return $this->where('order', 1)
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id')
+            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
             ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
             ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
@@ -145,20 +147,36 @@ class Task extends Model
         }
     }
 
+    const SIGN = 1;//一审
+    const SUBMIT = 2;//已二审
+    const GET_DIAOLING = 3;//拿调令
+    const BACK_SIGN = 5;//一审回访
+    const BACK_SUBMIT = 6;//二审回访
+    const BACK_DIAOLIN = 7;//拿调令回访
+    const APPOINTMENT = 8; //约号
+    const CAN_MOVE = 9; //准迁
+    const SETTLE = 10;//落户
+    const SUBMIT_DATA = 11;
 
     /******************************************************************************************************************/
-/*    public function getTypeAttr($key)
+    public function getTitleAttr($key, $d)
     {
         $data = [
-            0 => '其他',
-            1 => '一审',
-            2 => '二审',
+            1 => '签协议',
+            2 => '提交材料',
             3 => '拿调令',
-            4 => '计生',
-            5 => '体检'
+            4 => '其他',
+            5 => '一审回访',
+            6 => '二审回访',
+            7 => '拿调令回访',
+            8 => '约号',
+            9 => '打准迁',
+            10 => '办落户',
+            11 => '备二审材料',
+            12 => '出号约客户'
         ];
-        return isset($data[$key]) ? $data[$key] : '';
-    }*/
+        return isset($data[$d['type']]) ? $data[$d['type']] : '';
+    }
 
     public function getFinishTypeAttr($key)
     {
