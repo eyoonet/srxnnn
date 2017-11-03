@@ -19,7 +19,7 @@ Route::group('data',[
     'Create'                =>	'api/Data/create',                  //创建
     'Edit/:id'              =>	'api/Data/edit',                    //编辑
     'EditOne/:id'           =>  'api/Data/getOneRow',               //获取一条数据
-    'DGlist'                =>  'api/Data/getDglist',               //菜单列表数据
+    'DGlist'                =>  'api/Data/List',               //菜单列表数据
     'SouSou'                =>  'api/Data/sousou',                  //搜索
     'refund/:id'            =>  'api/Data/refund',                  //退款
     'shebao/:id'            =>  'api/Data/shebao',                  //没有社保
@@ -47,11 +47,11 @@ Route::group('data',[
     'back/:id'              =>  'api/data/back'                     //后撤
 ]);
 Route::group('task',[
-    'create/[:id]/[:type]'          => 'api/Task/taskCreate',           //任务创建
-    'taskForward/:id/[:clents_id]/[:type]'          => 'api/Task/taskForward',           //任务转发
-    'List'                  => 'api/Task/taskList',            //任务列表
-    'Finish/:id'            => 'api/Task/taskFinish',           //任务成功
-    'failed/:id'            => 'api/Task/taskFailed'            //任务失败
+    'create/[:id]/[:type]'          => 'api/Task/Create',           //任务创建
+    'taskForward/:id/[:clents_id]/[:type]'          => 'api/Task/Forward',           //任务转发
+    'List'                  => 'api/Task/List',            //任务列表
+    'Finish/:id'            => 'api/Task/Finish',           //任务成功
+    'failed/:id'            => 'api/Task/Failed'            //任务失败
 ]);
 Route::group('ui',[
     'main'	    =>	'ui/Index/index',

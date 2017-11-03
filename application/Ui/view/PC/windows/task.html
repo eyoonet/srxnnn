@@ -3,7 +3,6 @@
           data-options="closed:true,modal:false,resizable:true">
    <form id="task-form">
        <label>标题:</label>
-       <input name="type" type="hidden">
        <input id="ttc" name="type"  class="easyui-combobox"  style="width:35%;"
               data-options=" ultivalue:false,
                              required:true,
@@ -11,13 +10,14 @@
                              url:'Combobox/Get/TASK_TITLE',
                              valueField:'value',
                              textField:'text',
-                             editable:true"/>
+                             editable:false"/>
        <label>用户:</label>
        <input name="re_by_id"  class="easyui-combobox"  style="width:35%;"
                data-options="valueField:'value',
                                 required:true,
                                 textField:'text',
                                 url:'combobox/Userlist',
+                                editable:false,
                                 panelHeight:'auto'"/>
        <input name="comments" class="easyui-textbox"  style="width:100%;height:115px;" data-options="multiline:true">
         <label>时间：</label>

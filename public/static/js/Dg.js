@@ -156,3 +156,7 @@ function images(card) {
         }, 1000);
     });
 }
+
+
+
+

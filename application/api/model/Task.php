@@ -5,7 +5,6 @@
  * Date: 2017/10/6
  * Time: 0:55
  */
-
 namespace app\api\model;
 
 use think\Model;
@@ -77,7 +76,7 @@ class Task extends Model
      * @param $array
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function search($params, $array, $group_id)
+    public function search($params, $array)
     {
         //表达式定义
         $exps = [
@@ -145,6 +144,178 @@ class Task extends Model
                 }
             }
         }
+    }
+
+    /**
+     * 外勤的任务是:去窗口一审;二审;拿调令;监督准备二审材料
+     * @param $post
+     * @param $task
+     * @param $data
+     */
+    public function wsuccess($data, $post)
+    {
+        switch ($this->getData('type')) {
+
+            /** 完成任务:窗口一审  **/
+            case self::SIGN:
+
+                //新建任务 回访一审 TO 内勤
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SIGN, $data->nuser_id, time());
+                break;
+
+            /** 完成任务:窗口二审  **/
+            case self::SUBMIT:
+
+                //新建惹怒 二审回访 TO 内勤
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SUBMIT, $data->nuser_id, time());
+                break;
+
+            /** 完成任务:拿调令  **/
+            case self::GET_DIAOLING:
+
+                //新建任务 调令回访 TO 业务员
+                $envd = $this->_sysAddTask($this->clents_id, self::GET_DIAOLING, $data->user_id, time());
+                break;
+
+            /** 完成任务:二审材料  **/
+            case self::SUBMIT_DATA:
+                //根据分支完成情况 新建任务 TO 自己
+                $post['js'] = isset($post['js']) ? true : false;
+                $post['tj'] = isset($post['tj']) ? true : false;
+                $post['gz'] = isset($post['gz']) ? true : false;
+                if ($post['js'] == false || $post['tj'] == false || $post['gz'] == false) {
+                    $envd = $this->_sysAddTask(
+                        $this->clents_id,
+                        self::SUBMIT_DATA, $data->wuser_id,
+                        Time::daysAfter(8), $post
+                    );
+                }
+                break;
+        }
+    }
+
+    /**
+     * 窗口一审;二审;拿调令处理失败tag标记失败
+     * @param $data
+     * @param $post
+     */
+    public function wFailed($data, $post)
+    {
+        switch ($this->getData('type')) {
+
+            /** 未完成任务:窗口一审  **/
+            case self::SIGN:
+                //新建任务 回访一审 TO 内勤
+                $envd = $this->_systemTask($task->clents_id, Task::BACK_SIGN, $re_by_id, time(),
+                    ['success' => false], $post);
+                break;
+
+            /** 未完成任务:窗口二审  **/
+            case self::SUBMIT:
+
+                //新建惹怒 二审回访 TO 内勤
+                $envd = $this->_systemTask($task->clents_id, Task::BACK_SUBMIT, $re_by_id, time(),
+                    ['success' => false], $post);
+                break;
+
+            /** 未完成任务:拿调令  **/
+            case self::GET_DIAOLING:
+
+                //新建任务 调令回访 TO 业务员
+                $envd = $this->_systemTask($task->clents_id, Task::GET_DIAOLING, $re_by_id, time(),
+                    ['success' => false], $post);
+                break;
+        }
+    }
+
+    /**
+     * 内勤的任务是:回访一审;回访二审
+     * @param $post      success.html post 数据
+     * @param $task      Task 实例
+     * @param $data      Data 实例
+     */
+    public function nsuccess($data, $post)
+    {
+        switch ($this->getData('type')) {
+            /** 完成任务:回访一审  **/
+            case self::BACK_SIGN:
+                //如果外勤完成时候不是失败的.
+
+                if (!$this->Tag['success']) {
+
+                    //提交到一审状态..
+                    $data->sign();
+
+                    //新建任务 约号 TO 管理员
+                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
+
+                    //新建任务 二审材料 TO 外勤
+                    $envd = $this->_sysAddTask($this->clents_id, self::SUBMIT_DATA, $data->wuser_id, Time::daysAfter(7));
+                } else {
+
+                    //外勤完成失败了 约号 TO 管理员
+                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(3));
+                }
+                break;
+
+            /** 完成任务:回访二审  **/
+            case self::BACK_SUBMIT:
+                if ($this->Tag['success'] != false) {
+
+                    //二审成功 提交二审
+                    $data->submit();
+                } else {
+
+                    //二审失败 新建任务 约号 TO 管理员
+                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(3));
+                }
+                break;
+        }
+    }
+
+    /**
+     * 业务员的任务是:回访拿调令;准迁;落户
+     * @param $post
+     * @param $task_id
+     * @param $data_id
+     */
+    public function ysuccess($data, $post)
+    {
+        switch ($this->getData('type')) {
+
+            /** 完成任务:拿调令  **/
+            case self::BACK_DIAOLIN:
+                //提交为拿调令状态
+                $data->takeDiaol($this->clents_id);
+                //新建任务 打准迁 TO 自己
+                $envd = $this->_sysAddTask($this->clents_id, self::CAN_MOVE, $data->user_id, Time::daysAfter(7));
+                break;
+
+            /** 完成任务:打准迁  **/
+            case self::CAN_MOVE:
+                //新建任务 落户 TO 自己
+                $envd = $this->_sysAddTask($this->clents_id, self::SETTLE, $data->user_id, Time::daysAfter(7));
+                break;
+
+            /** 完成任务:落户  **/
+            case self::SETTLE:
+                break;
+        }
+    }
+
+    private function _sysAddTask($clents_id, $type, $re_by_id, $time, $tag = null, $error_msg = null)
+    {
+        $data = [
+            'clents_id' => $clents_id,
+            'type' => $type,
+            'se_by_id' => 10000,
+            're_by_id' => $re_by_id,
+            'task_time' => $time,
+            'Tag' => $tag,
+            'error' => $error_msg
+        ];
+        $newtask = new self();
+        return $newtask->isUpdate(false)->save($data);
     }
 
     const SIGN = 1;//一审

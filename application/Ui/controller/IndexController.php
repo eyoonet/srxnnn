@@ -94,7 +94,7 @@ class IndexController extends Base
         $PHPWriter = PHPExcel_IOFactory::createWriter($PHPExcel, 'Excel2007');//按照指定格式生成Excel文件，‘Excel2007’表示生成2007版本的xlsx，‘Excel5’表示生成2003版本Excel文件
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');//告诉浏览器输出07Excel文件
         //header('Content-Type:application/vnd.ms-excel');//告诉浏览器将要输出Excel03版本文件
-        header('Content-Disposition: attachment;filename="01simple.xlsx"');//告诉浏览器输出浏览器名称
+        header('Content-Disposition: attachment;filename='.date("Y-m-d H:i").'.xlsx');//告诉浏览器输出浏览器名称
         header('Cache-Control: max-age=0');//禁止缓存
         $PHPWriter->save("php://output");
     }

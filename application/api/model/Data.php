@@ -16,7 +16,8 @@ class Data extends Model
     protected $type = [
         'rcdate' => 'datetime:Y-m-d H:i',
         'I_date' => 'timestamp:Y-m-d H:i',
-        'II_date' => 'timestamp:Y-m-d H:i'
+        'II_date' => 'timestamp:Y-m-d H:i',
+        'speed_time' => 'timestamp:Y-m-d H:i'
     ];
 
     /*public function initialize()
@@ -32,6 +33,91 @@ class Data extends Model
         return $this->belongsTo('User');
     }
 
+    public function setWuserById($id)
+    {
+        $this->wuser_id = $id;
+        return $this->save();
+    }
+
+    /**
+     * 一审
+     * @return bool|false|int
+     */
+    public function sign()
+    {
+        if ($this->getData('id')) {
+            //不是未办状态
+            if ($this->getData('speed') != -1) {
+                $this->error = '当前办理进度信息不符..核实当前进度!';
+                return false;
+            }
+            //应届生直接完成
+            if ($this->getData('mode') == '03') {
+                $this->speed = 3;
+                $this->status = self::GET_DIAOLING;
+            } else {
+                //一审
+                $this->speed = 1;
+                $this->status = self::SIGN;
+            }
+            if ($this->I_date == null)
+                $this->I_date = time();
+            return $this->save() ? true : false;
+        } else {
+            $this->error = '空数据';
+            return false;
+        }
+    }
+
+    /**
+     * 二审
+     * @return bool
+     */
+    public function submit()
+    {
+        if ($this->getData('id')) {
+            //进度不是一审的
+            if ($this->getData('speed') != 1) {
+                $this->error = '当前办理进度信息不符 ! 客户尚未一审.核实当前进度!!';
+                return false;
+            }
+            $this->speed = 2;
+            $this->status = self::SUBMIT;
+            if ($this->II_date == null) {
+                $this->II_date = time();
+            }
+            return $this->save() ? true : false;
+        } else {
+            $this->error = '未知Data';
+            return false;
+        }
+    }
+
+    /**
+     * 那调令
+     * @return bool
+     */
+    public function takeDiaol()
+    {
+        if ($this->getData('id')) {
+            //进度不是二审的
+            if ($this->getData('speed') != 2) {
+                $this->error = '当前办理进度信息不符 ! 客户尚未二审 . 核实当前进度!!';
+                return false;
+            }
+            if ($this->getData('status') == self::GET_DIAOLING) {
+                $this->error = '当前办理进度信息不符!!';
+                return false;
+            } else {
+                $this->status = self::GET_DIAOLING;
+                $this->speed = 3;
+            }
+            return $this->save() ? true : false;
+        } else {
+            $this->error = '空数据';
+            return false;
+        }
+    }
     /**
      * 备份单条DATA数据
      * @param $type
@@ -73,10 +159,10 @@ class Data extends Model
                 $where = ['user_id' => $uid];
                 break;
             case 3: //内勤
-                $where = true;// ['nuser_id' => $uid];
+                $where = "`data`.`nuser_id`=$uid OR `data`.`user_id`=$uid  OR `data`.`status`=" . Data::NEW_CLIENT;
                 break;
             case 4: //外勤
-                $where = true;//['wuser_id' => $uid];
+                $where = "`data`.`wuser_id`=$uid OR `data`.`user_id`=$uid";
                 break;
         }
         return $where;
@@ -90,9 +176,8 @@ class Data extends Model
      * @param $data array 数据
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function getDgList($params, $rule, $fieids, $group_id)
+    public function List($params, $rule, $fieids, $group_id)
     {
-
         $lists = $this->where('order', 1)
             ->view('data', '*,price-deposit surplus')
             ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
@@ -102,12 +187,10 @@ class Data extends Model
             ->where($this->groupWhere($group_id))
             //->fetchSql(true)
             ->select();
-
         $total = $this->where('order', 1)
             ->where($rule, $fieids)
             ->where($this->groupWhere($group_id))
             ->count();
-
         return array(
             'rows' => $lists, 'total' => $total
         );
@@ -118,8 +201,8 @@ class Data extends Model
      * @param $params        分页排序参数          array ['page', 'rows', 'sort', 'order']
      * @param $array         数组条件
      * @param $group_id      用户组
-     * @param bool $excel    是否为EXCEL下载格式
-     * @param string $fieid  规定数据库字段
+     * @param bool $excel 是否为EXCEL下载格式
+     * @param string $fieid 规定数据库字段
      * @return array         返回数组             [ row , total ]
      */
     public function search($params, $array, $group_id, $excel = false, $fieid = '*')

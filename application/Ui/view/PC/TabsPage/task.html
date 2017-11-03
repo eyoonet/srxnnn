@@ -1,30 +1,28 @@
-<table id="task-dg" class="easyui-datagrid" style="width:100%;height:550px"
+<table id="task-dg" class="easyui-datagrid" style="width:100%;height:82%"
        data-options="url:'task/List',
                     fitColumns:false,
                     singleSelect:true,
                     striped:true,
-                    fit:true,
+                    fit:false,
                     pagination:true,
                     rownumbers:true,
                     sortName: 'task_time',
                     sortOrder: 'asc',
                     remoteSort: true,
-          	 	    pageSize:15,
-		            pageList:[15,30,45,60,75],
+          	 	    pageSize:10,
+		            pageList:[10,20,30,40,50],
                     toolbar:'#task-dg-buttions'">
     <thead>
     <tr>
-        <!--<th data-options="field:'id'" style="width: 5%">编码</th>-->
-        <!--<th data-options="field:'type'" style="width: 5%">类型</th>-->
-        <th data-options="field:'task_time',sortable:true" style="width: 11%">计划时间</th>
-        <th data-options="field:'clents_name',formatter:formatter_name" style="width: 11%">客户</th>
-        <th data-options="field:'title'" style="width: 11%">标题</th>
-        <th data-options="field:'se_name'" style="width: 11%">任务发布者</th>
-        <th data-options="field:'re_name'" style="width: 11%">任务接收者</th>
-        <th data-options="field:'finish_type'" style="width: 11%">完成状态</th>
-        <th data-options="field:'create_time',sortable:true" style="width: 11%">创建时间</th>
-        <th data-options="field:'finish_time',sortable:true" style="width: 11%">处理时间</th>
-        <th data-options="field:'action',formatter:task_action" style="width: 18%">操作</th>
+        <th data-options="field:'task_time',sortable:true" style="width: 9%">计划时间</th>
+        <th data-options="field:'clents_name',formatter:formatter_name" style="width: 10%">客户</th>
+        <th data-options="field:'title'" style="width: 10%">标题</th>
+        <th data-options="field:'se_name'" style="width: 8%">任务发布者</th>
+        <th data-options="field:'re_name'" style="width: 8%">任务接收者</th>
+        <th data-options="field:'finish_type'" style="width: 10%">完成状态</th>
+        <th data-options="field:'create_time',sortable:true" style="width: 10%">创建时间</th>
+        <th data-options="field:'finish_time',sortable:true" style="width: 10%">处理时间</th>
+        <th data-options="field:'action',formatter:task_action" style="width: 10%">操作</th>
     </tr>
     </thead>
 </table>
@@ -39,27 +37,105 @@
         <a onclick="ButtonRunDialog(this);" dialog="failed" url="/task/failed" load="true"
            class="easyui-linkbutton" iconCls="icon-no" plain="true">失败</a>
     </div>
+    <hr style="margin-bottom: 5px">
     <div>
-        执行日: <input class="easyui-datebox" style="width:80px">
-        发布日: <input class="easyui-datebox" style="width:80px">
-        类型:
-        <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-            <option value="java">Java</option>
-            <option value="c">C</option>
-            <option value="basic">Basic</option>
-            <option value="perl">Perl</option>
-            <option value="python">Python</option>
-        </select>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+        <form id="task-search">
+            发布者:
+            <select name="se_by_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
+                    data-options="valueField:'value',
+                                textField:'text',
+                                url:'combobox/Userlist'">
+            </select>
+            接收者:
+            <select name="re_by_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
+                    data-options="valueField:'value',
+                                textField:'text',
+                                url:'combobox/Userlist'">
+            </select>
+            执行日:
+            <input id='start_date' name="date[]" style="width:120px" type="text" class="easyui-datebox"
+                   data-options="formatter:myformatter,parser:myparser">
+            TO
+            <input id='end_date' name="date[]" style="width:120px" type="text"
+                   class="easyui-datebox "
+                   data-options="formatter:myformatter,parser:myparser">
+            <a href="javascript:task.search();" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-recover-deleted-items'"
+               onclick="$('#form_search').form('clear')">清空</a>
+        </form>
+
     </div>
+
+</div>
+<div  class="easyui-panel"
+     style="width:100%;height:17%;padding:10px;margin-top:2px;">
+    <p id="p-comments">panel content.</p>
+    <p id="p-error">panel content.</p>
 </div>
 
 <script type="text/javascript">
+    $(function($){
+        $('#task-dg').datagrid({
+            //用户单击
+            onClickRow: function (index, row) {
+                $('#p-comments').html(row.comments);
+                $('#p-error').html(row.error);
+            }
+        })
+    })
+</script>
 
+<script type="text/javascript">
+    var task = function () {};
+    //**************************************************
+    task.success = function (id, url) {
+        var row = $('#task-dg').datagrid('getSelected');
+        if (row == null)return showMsg("错误", '未选取数据!', true, 'error');
+        url = url + '/' + row.id;
+        //隐藏
+        $('.hidden').hide();
+        $("#" + id + "-form").form('clear');            //表单清除
+        $("#" + id).dialog({
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    //做了提交处理
+                    dialogSubmit(id, url);
+                }
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#" + id).dialog('close');
+                }
+            }]
+        });
+        //打开窗口
+        $("#" + id).dialog('open');
+
+        if (row.type == 11) {                           //11是提交材料
+            $('#SUBMIT_DATA').show();
+            document.getElementById('js').checked = row.Tag.js;
+            document.getElementById('tj').checked = row.Tag.tj;
+            document.getElementById('gz').checked = row.Tag.gz;
+        }
+        if (row.type == 5) {                           //一审回访
+            $('#upload').show();
+        }
+    }
+    //*********************************************
+    task.search = function () {
+        var val = $("#task-search").serializeObject();
+        val['type'] = 'sousou';
+        $('#task-dg').datagrid({
+            queryParams: val
+        });
+    }
+    //*************************************************
     function task_action() {
         return '<a href="#" >成功</a>' +
                 '<a href="#" >失败</a>';
     }
+    //*************************************************
     function formatter_name(value, row, index) {
         if (value != null) {
             return '<div dg="task-dg">' +
@@ -69,15 +145,16 @@
                     '</div>';
         }
     }
+    //*************************************************
     function loadRcdate(id) {
         jsonAjax('get', 'data/getRcDate/' + id, null, function (res) {
             $('#rcdate').datetimebox('setValue', res);	// 设置日期输入框的值
         })
     }
+    //**************************************************
     function showtable(id) {
         jsonAjax('get', 'data/getOneData/' + id, null, function (res) {
             loadtable(res);
         })
     }
-
 </script>

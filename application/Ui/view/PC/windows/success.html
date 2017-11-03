@@ -24,40 +24,6 @@
 </div>
 <!-- 备注窗口结束 -->
 <script type="text/javascript">
-    var task = function () {};
-    task.success = function (id, url) {
-        var row = $('#task-dg').datagrid('getSelected');
-        if (row == null)return showMsg("错误", '未选取数据!', true, 'error');
-        url = url + '/' + row.id;
-        //隐藏
-        $('.hidden').hide();
-        $("#" + id + "-form").form('clear');            //表单清除
-        $("#" + id).dialog({
-            buttons: [{
-                text: '提交',
-                handler: function () {
-                    //做了提交处理
-                    dialogSubmit(id, url);
-                }
-            }, {
-                text: '关闭',
-                handler: function () {
-                    $("#" + id).dialog('close');
-                }
-            }]
-        });
-        //打开窗口
-        $("#" + id).dialog('open');
 
-        if (row.type == 11) {                           //11是提交材料
-            $('#SUBMIT_DATA').show();
-            document.getElementById('js').checked = row.Tag.js;
-            document.getElementById('tj').checked = row.Tag.tj;
-            document.getElementById('gz').checked = row.Tag.gz;
-        }
-        if (row.type == 5) {                           //一审回访
-            $('#upload').show();
-        }
-    }
 </script>
 
