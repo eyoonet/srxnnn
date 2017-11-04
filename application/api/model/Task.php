@@ -19,6 +19,32 @@ class Task extends Model
         'Tag' => 'json',
     ];
 
+    // 全局查询范围
+    protected static function base($query)
+    {
+        // 查询状态为1的数据
+        $query->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
+            ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
+            ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
+            ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT');
+    }
+    /**
+     * 时间表达式查询
+     * @param $params  分页参数
+     * @param $rule    条件规则
+     * @param $fieids  绑定数据
+     * @param $time    时间表达式    today今天  yesterday昨天
+     * @return array|\PDOStatement|string|\think\Collection
+     */
+    public function ListByTime($params, $rule,$fieids,$time)
+    {
+        return $this
+            ->order($params['sort'], $params['order'])
+            ->page($params['page'], $params['rows'])
+            ->whereTime('task.task_time', $time)
+            ->where($rule, $fieids)
+            ->select();
+    }
     /**
      * 带分页排序获取任务列表
      * @param $params  分页排序的数组 array(sort,order,page,rows)
@@ -32,10 +58,6 @@ class Task extends Model
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
-            ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
-            ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
-            ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
             //->fetchSql()
             ->select();
     }
@@ -44,7 +66,6 @@ class Task extends Model
     {
         return $this->count();
     }
-
     /**
      * 带分页排序的过期未处理的任务列表.
      * @param $params  分页排序的数组 array(sort,order,page,rows)
@@ -60,14 +81,8 @@ class Task extends Model
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
             ->where('task.task_time', '<= time', $start)
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
-            ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
-            ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
-            ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
-            //->fetchSql()
             ->select();
     }
-
     /**
      * 搜索数据
      * @post @date_type int
@@ -92,7 +107,6 @@ class Task extends Model
             2 => 'II_date',
             3 => 'speed_time'
         ];
-
         if (isset($array['date_type'])) {
             $type = $array['date_type'];// 等于数字
             $datepk = $datekeys[$type];
@@ -113,11 +127,6 @@ class Task extends Model
         return $this->where('order', 1)
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
-            ->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
-            ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
-            ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
-            ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT')
-            //->fetchSql(true)
             ->where($map)
             ->select();
     }

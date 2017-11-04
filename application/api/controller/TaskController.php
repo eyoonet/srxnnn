@@ -6,6 +6,7 @@
  * Time: 0:55
  */
 namespace app\api\controller;
+
 use app\api\model\Task;
 use app\common\controller\Base;
 use app\common\org\Res;
@@ -20,21 +21,21 @@ class TaskController extends Base
      * @param int $id
      * @return \think\response\Json
      */
-    public function Create(Task $m, $id = 0, $type = 0)
+    public function Create(Task $task, $id = 0, $type = 0)
     {
-        $task = $this->request->post();
-        $task['se_by_id'] = $this->uid;
-        $task['clents_id'] = $id;
+        $post = $this->request->post();
+        $post['se_by_id'] = $this->uid;
+        $post['clents_id'] = $id;
 
         if ($type != 0)
-            $task['type'] = $type;
+            $post['type'] = $type;
         //一审 二审 拿调令 添加外勤ID
-        if ($task['type'] == 1 || $task['type'] == 2 || $task['type'] == 3) {
+        if ($post['type'] == 1 || $post['type'] == 2 || $post['type'] == 3) {
             $data = Data::get($id);
-            $data->wuser_id = $task['re_by_id'];
+            $data->wuser_id = $post['re_by_id'];
             $data->save();
         }
-        return $m->save($task) ? Res::Json(200) : Res::Json(400);
+        return $task->save($post) ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -44,22 +45,33 @@ class TaskController extends Base
      */
     public function List(Task $m)
     {
+        //分页参数
         $params = $this->request->only(['page', 'rows', 'sort', 'order'], 'post');
+        //条件规则
         $rule = $this->request->post('rule');
-        $fieids = $this->request->except(['page', 'rows', 'sort', 'order', 'rule', 'type'], 'post');
+        //绑定字段 如果是搜搜就属于表单参数
+        $fieids = $this->request->except(['page', 'rows', 'sort', 'order', 'rule', 'type', 'time'], 'post');
+        //类型参数
         $type = $this->request->post('type');
+        //时间表达式条件
+        $time = $this->request->post('time');
         //替换用户ID
         if (isset($fieids['uid'])) $fieids['uid'] = $this->uid;
-
         switch ($type) {
+            /** 表单条件 **/
             case 'sousou':
                 $lists = $m->search($params, $fieids);
                 break;
+            /** 自定义规则字符串绑定 **/
             case 'list':
                 $lists = $m->List($params, $rule, $fieids);
                 break;
+            /** 逾期查询 */
             case 'overdue':
                 $lists = $m->overdue($params, $rule, $fieids);
+                break;
+            case 'day':
+                $lists = $m->ListByTime($params, $rule, $fieids, $time);
                 break;
             default:
                 if ($rule == null || $fieids == null) {
@@ -68,11 +80,7 @@ class TaskController extends Base
                 }
                 $lists = $m->List($params, $rule, $fieids);
         }
-        return json([
-            'rows' => $lists,
-            'total' => $m->total(),
-            'type' => $type
-        ]);
+        return json(['rows' => $lists, 'total' => $m->total(), 'type' => $type]);
     }
 
     /**
