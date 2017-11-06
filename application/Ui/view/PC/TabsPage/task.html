@@ -67,14 +67,14 @@
     </div>
 
 </div>
-<div  class="easyui-panel"
+<div class="easyui-panel"
      style="width:100%;height:17%;padding:10px;margin-top:2px;">
     <p id="p-comments">panel content.</p>
     <p id="p-error">panel content.</p>
 </div>
 
 <script type="text/javascript">
-    $(function($){
+    $(function ($) {
         $('#task-dg').datagrid({
             //用户单击
             onClickRow: function (index, row) {
@@ -86,7 +86,8 @@
 </script>
 
 <script type="text/javascript">
-    var task = function () {};
+    var task = function () {
+    };
     //**************************************************
     task.success = function (id, url) {
         var row = $('#task-dg').datagrid('getSelected');
@@ -120,6 +121,9 @@
         }
         if (row.type == 5) {                           //一审回访
             $('#upload').show();
+        }
+        if (row.type == 12) {                           //一审回访
+            $('#APPOINTMENT_CLIENT').show();
         }
     }
     //*********************************************

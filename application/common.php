@@ -20,7 +20,7 @@ function res($code = 200,$msg = '操作成功!', $data=array() ){
  * @parem  int $end     结束时间
  */
 function date_month_diff($begin, $end){
-    if(!$begin || $end) return FALSE;
+//    if(!$begin || $end) return FALSE;
     $begin = intval($begin);
     $end= intval($end);
     //计算月份差

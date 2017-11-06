@@ -23,11 +23,12 @@ class Task extends Model
     protected static function base($query)
     {
         // 查询状态为1的数据
-        $query->view('task', 'id,type,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
+        $query->view('task', 'id,type,re_by_id,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
             ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
             ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT');
     }
+
     /**
      * 时间表达式查询
      * @param $params  分页参数
@@ -36,7 +37,7 @@ class Task extends Model
      * @param $time    时间表达式    today今天  yesterday昨天
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function ListByTime($params, $rule,$fieids,$time)
+    public function ListByTime($params, $rule, $fieids, $time)
     {
         return $this
             ->order($params['sort'], $params['order'])
@@ -45,6 +46,7 @@ class Task extends Model
             ->where($rule, $fieids)
             ->select();
     }
+
     /**
      * 带分页排序获取任务列表
      * @param $params  分页排序的数组 array(sort,order,page,rows)
@@ -66,6 +68,7 @@ class Task extends Model
     {
         return $this->count();
     }
+
     /**
      * 带分页排序的过期未处理的任务列表.
      * @param $params  分页排序的数组 array(sort,order,page,rows)
@@ -83,6 +86,7 @@ class Task extends Model
             ->where('task.task_time', '<= time', $start)
             ->select();
     }
+
     /**
      * 搜索数据
      * @post @date_type int
@@ -279,6 +283,17 @@ class Task extends Model
                     $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(3));
                 }
                 break;
+            /** 完成任务:约客户 **/
+            case self::APPOINTMENT_CLIENT:
+                /*if (isset($post['come'])) {
+                    $data->status = 100;
+                    $data->save();
+                }else{
+                    //新建任务 约号 TO 管理员
+                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
+                }*/
+                break;
+
         }
     }
 
@@ -336,7 +351,8 @@ class Task extends Model
     const APPOINTMENT = 8; //约号
     const CAN_MOVE = 9; //准迁
     const SETTLE = 10;//落户
-    const SUBMIT_DATA = 11;
+    const SUBMIT_DATA = 11;//准备二审材料
+    const APPOINTMENT_CLIENT = 12;//约客户
 
     /******************************************************************************************************************/
     public function getTitleAttr($key, $d)

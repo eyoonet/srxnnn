@@ -18,7 +18,6 @@ class Data extends Model
         'I_date' => 'timestamp:Y-m-d H:i',
         'II_date' => 'timestamp:Y-m-d H:i',
         'speed_time' => 'timestamp:Y-m-d H:i',
-        'shebaonum'  =>'timestamp:Y-m-d H:i'
     ];
     // 全局查询范围
     protected static function base($query)
@@ -434,5 +433,12 @@ class Data extends Model
         if (isset($data[$key])) {
             return $data[$key];
         }
+    }
+    public function getShebaoAttr($name)
+    {
+        $value = date_month_diff(strtotime($name),time());
+        //return $name;
+        return isset($value['mon'])?$name.'='.$value['mon']:$name;
+
     }
 }
