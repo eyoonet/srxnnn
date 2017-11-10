@@ -31,10 +31,10 @@ class Data extends Model
             $data->DataImg()->save($data->toArray());
         });
     }*/
-    public function user()
+    /*public function user()
     {
         return $this->belongsTo('User');
-    }
+    }*/
 
     public function setWuserById($id)
     {
@@ -183,7 +183,9 @@ class Data extends Model
     {
         $lists = $this->where('order', 1)
             ->view('data', '*,price-deposit surplus')
-            ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
+            ->view('user u', 'user_name', 'data.user_id=u.id', 'LEFT')
+            ->view('user n', 'user_name nuser_name', 'data.nuser_id=n.id', 'LEFT')
+            ->view('user w', 'user_name wuser_name', 'data.wuser_id=w.id', 'LEFT')
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
@@ -213,7 +215,7 @@ class Data extends Model
         //表达式定义
         $exps = [
             "eq" => [],
-            "like" => ['name', 'tel', 'rdate', 'Tag', 'shebaoname'],
+            "like" => ['name', 'tel', 'rcdate', 'Tag', 'shebaoname'],
             "in" => ['mode', 'speed', 'sbtype', 'service', 'status', 'user_id'],
             "between time" => ['add_time', 'I_date', 'II_date', 'speed_time']
         ];

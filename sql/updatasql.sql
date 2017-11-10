@@ -9,6 +9,8 @@ UPDATE  `oldsrxnnn`.`data` SET  `user` = "5" WHERE  `data`.`user` ="龙艳";
 UPDATE  `oldsrxnnn`.`data` SET  `user` = "6" WHERE  `data`.`user` ="谭艳";
 UPDATE  `oldsrxnnn`.`data` SET  `user` = "7" WHERE  `data`.`user` ="马青丽";
 UPDATE  `oldsrxnnn`.`data` SET  `user` = "12" WHERE  `data`.`user` ="全老师";
+/*设置内勤刘晓娴*/
+UPDATE  `srxnnn`.`data` SET  `nuser_id` = 9
 /*service 
 暂无 -1 外服 101 罗湖 102 龙华 103 龙岗 104 高新区 105  中心区 106
   

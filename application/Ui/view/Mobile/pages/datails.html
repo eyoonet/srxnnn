@@ -7,14 +7,12 @@
     }
 </style>
 <form id="task_load">
-    <input name="id" type="hidden">
-    <input name="clents_id" type="hidden">
     <ul class="m-list datatable">
         <li>
             <div class="list-header">
                 姓名:<input name="clents_name" type="text" readonly="readonly">
         </li>
-        <li>电话:18938923990</li>
+        <!--<li>电话:18938923990</li>-->
         <li>标题:<input name="title" type="text" readonly="readonly"></li>
         <li>内容:<input name="comments" type="text" readonly="readonly"></li>
         <li>发布者:<input name="se_name" type="text" readonly="readonly"></li>
@@ -32,56 +30,104 @@
 </form>
 {include file="Mobile/public/footer" /}
 <script type="text/javascript">
-    /**
-     * 加载客户详情
-     * @param row
-     */
-    function load_data(row = null) {
-        if (row == null) {
-            url = '/data/getOneData/' + $("input[name='clents_id']").val();
-            //data 的 edit 需要获取原始数据,修改器的数据是不行的.
-            $.getJSON(url, function (row) {
-                $('#table_load').form('load', row);
-            })
-        } else {
-            $('#table_load').form('load', row);
-        }
-    }
-    /**
-     * 任务完成
-     */
-    function success() {
-        url = '/task/Finish/' + $("input[name='id']").val();
-        $.getJSON(url, function (row) {
-            if (row.code == 200) {
-                $('#task_load').form('load', row.data);
-                showMsg('服务器', row.msg, true);
-            } else {
-                showMsg('服务器', row.msg, true, 'error');
-            }
-            //$.mobile.back()
+    /** 加载客户详情 */
+    function load_data() {
+        var obj = $('#task_load').data('row');
+        url = '/data/getOneData/' + obj.clents_id;
+        //data 的 edit 需要获取原始数据,修改器的数据是不行的.
+        $.getJSON(url, function (data) {
+            $('#table_load').form('load', data);
+            $("#tel").attr("href", "tel:" + data.tel);
         })
     }
-    /**
-     * 任务失败需要填写原因
-     * @constructor
-     */
+    /** 任务完成 */
+    function success() {
+        var obj = $('#task_load').data('row');
+        $("#success").dialog({
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    //做了提交处理
+                    var url = '/task/Finish/' + obj.id;
+                    var param = $('#success-form').serialize();
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        url:url,
+                        data:param,
+                        dataType:'json',
+                        success:function (row) {
+                            if (row.code == 200) {
+                                alert(row.msg);
+                                $("#success").dialog('close');
+                                $.mobile.go('#page-main');
+                            } else {
+                                alert(row.msg);
+                            }
+                        },
+                        error: function () {
+                            alert('ajax错误');
+                        }
+                    });
+                }
+
+
+
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#success").dialog('close');
+                }
+            }]
+        });
+        $("#success").dialog('open').dialog('center');
+        $('.hidden').hide();
+        if (obj.type == 11) {                           //11是提交材料
+            $('#SUBMIT_DATA').show();
+            document.getElementById('js').checked = obj.Tag.js;
+            document.getElementById('tj').checked = obj.Tag.tj;
+            document.getElementById('gz').checked = obj.Tag.gz;
+        }
+        url = '/data/getOneData/' + obj.clents_id;
+        //data 的 edit 需要获取原始数据,修改器的数据是不行的.
+        $.getJSON(url, function (row) {
+            $('#success-form').form('load', row);
+        })
+    }
+
+
+    /** 任务失败需要填写原因 */
     function Failure() {
+        var obj = $('#task_load').data('row');
+        if (obj.type == 11)
+            return alert('次任务只有结果没有失败!');
         $("#comment").dialog({
             buttons: [{
                 text: '提交',
                 handler: function () {
                     //做了提交处理
-                    var url = '/task/failed/' + $("input[name='id']").val();
-                    jsonAjax('post', url, {error: $("input[name='error']").val()}, function (row) {
-                        if (row.code == 200) {
-                            $('#task_load').form('load', row.data);
-                            showMsg('服务器', row.msg, true);
-                            $("#comment").dialog('close');
-                        } else {
-                            showMsg('服务器', row.msg, true, 'error');
+                    var url = '/task/failed/' + obj.id;
+
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        url:url,
+                        data:{error: $("input[name='error']").val()},
+                        dataType:'json',
+                        success:function (row) {
+                            if (row.code == 200) {
+                                alert(row.msg);
+                                $("#success").dialog('close');
+                                $.mobile.go('#page-main');
+                            } else {
+                                alert(row.msg);
+                            }
+                        },
+                        error: function () {
+                            alert('ajax错误');
                         }
-                    })
+                    });
+
                 }
             }, {
                 text: '关闭',

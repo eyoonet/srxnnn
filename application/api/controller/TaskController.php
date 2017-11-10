@@ -15,6 +15,9 @@ use think\helper\Time;
 
 class TaskController extends Base
 {
+
+
+
     /**
      * 创建一个任务
      * @param Task $m
@@ -32,11 +35,33 @@ class TaskController extends Base
         //一审 二审 拿调令 添加外勤ID
         if ($post['type'] == 1 || $post['type'] == 2 || $post['type'] == 3) {
             $data = Data::get($id);
+
+            if ($post['type'] == Task::SIGN) {
+                if ($data->getData('speed') != -1)
+                    return Res::Json(400,'进度信息不符合.');
+            }
+
+            if ($post['type'] == Task::SUBMIT) {
+                if ($data->getData('speed') != 1)
+                    return Res::Json(400,'进度信息不符合.');
+            }
+
             $data->wuser_id = $post['re_by_id'];
+            $data->status = 100;//派单外勤
             $data->save();
         }
         return $task->save($post) ? Res::Json(200) : Res::Json(400);
     }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 获取任务列表
@@ -83,6 +108,18 @@ class TaskController extends Base
         return json(['rows' => $lists, 'total' => $m->total(), 'type' => $type]);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * _返回任务格式数组
      * @param $clents_id  客户id
@@ -106,6 +143,15 @@ class TaskController extends Base
         return $newtask->isUpdate(false)->save($data);
     }
 
+
+
+
+
+
+
+
+
+
     //任务成功  如果用户组是外勤, 并且任务类型是1审的话就发布任务给内勤
     //如果用户组不是外勤.类型是1审二审,就修改DATA进度
     public function Finish($id)
@@ -118,7 +164,11 @@ class TaskController extends Base
             return Res::Json(400, "需处理用户不是前登录用户");
         $task->finish_type = 2;//成功
         $task->finish_time = time();
+        $task->comments = $post['comments'];
+
         $data = Data::get($task->clents_id);
+        if ($data->nuser_id == null)
+            return Res::Json(400, "错误,未指定内勤!");
         switch ($this->group_id) {
             /** 管理 */
             case self::GROUP_A:
@@ -129,6 +179,15 @@ class TaskController extends Base
                 break;
             /** 内勤 */
             case self::GROUP_N:
+                if ($task->getData('type') == Task::APPOINTMENT_CLIENT) {
+                    if (isset($post['come'])) {
+                        if ($post['come'] == 'true') {
+                            return Res::Json(400, '客户来的话请转发给外勤!');
+                        }
+                    } else {
+                        return Res::Json(400, '错误啦,选择一个结果吧!');
+                    }
+                }
                 $task->nsuccess($data, $post);
                 break;
             /** 外勤 */
@@ -136,8 +195,19 @@ class TaskController extends Base
                 $task->wsuccess($data, $post);
                 break;
         }
-        return $task->save() ? Res::Json(200, '成功') : Res::Json(400);
+        return $task->save() ? Res::Json(200, '成功') : Res::Json(400, '123');
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     //失败
@@ -156,14 +226,33 @@ class TaskController extends Base
         //外勤 外勤失败时候把回访任务备注失败信息.
         if ($this->group_id = 4) {
             $task->wFailed($data, $errormsg);
+        } else {
+            return Res::Json(400, '错误:不可以失败');
         }
         return $task->save() ? Res::Json(200, '提交成功') : Res::Json(400);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //转发 2种方案, 1 直接编辑转发 2 完成当前转发.  还是推荐完成后转发
     public function Forward($id, $clents_id = 0, $type = 0)
     {
         $task = Task::get($id);
+        if ($task->getData('finish_type') != 1)
+            return Res::Json(400, '重复提交');
+        if ($task->getData('re_by_id') != $this->uid)
+            return Res::Json(400, "需处理用户不是前登录用户");
         $task->finish_type = 3;//转发
         $task->finish_time = time();
         $post = $this->request->post();
@@ -171,13 +260,24 @@ class TaskController extends Base
         $post['clents_id'] = $clents_id;
         $data = Data::get($clents_id);
         if ($type != 0) $post['type'] = $type;
-        //修改所属外勤..
-        if ($this->group_id == 4) {
-            if ($post['type'] == Task::SIGN || $post['type'] == Task::SUBMIT ||
-                $post['type'] == Task::GET_DIAOLING || $post['type'] == Task::SUBMIT_DATA
-            ) {
-                $data->setWuserById($post['re_by_id']);
+
+
+        /** 如果是一审二审拿调令就设置接收者未外勤 */
+        if ($post['type'] == Task::SIGN || $post['type'] == Task::SUBMIT || $post['type'] == Task::GET_DIAOLING) {
+            if ($post['type'] == Task::SIGN) {
+                if ($data->getData('speed') != -1)
+                    return Res::Json(400,'进度信息不符合.');
             }
+
+            if ($post['type'] == Task::SUBMIT) {
+                if ($data->getData('speed') != 1)
+                    return Res::Json(400,'进度信息不符合.');
+            }
+
+            //$data->setWuserById($post['re_by_id']);
+            $data->wuser_id = $post['re_by_id'];
+            $data->status = 100;//派单外勤
+            $data->save();
         }
         $newtask = new Task();
         if ($newtask->save($post)) {

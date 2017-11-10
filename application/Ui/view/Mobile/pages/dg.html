@@ -27,7 +27,9 @@
             onClickRow:function(index, row){
                 $.mobile.go('#page-datails');
                 $('#task_load').form('load',row);
+                $('#task_load').data('row',row);
             }
         });
     }
 </script>
+{include file="Mobile/public/footer" /}

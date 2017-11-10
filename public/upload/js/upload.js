@@ -453,7 +453,7 @@
                 case 'finish':
                     stats = uploader.getStats();
                     if (stats.successNum) {
-                        alert('上传成功');
+                        alert('上传成功222');
                     } else {
                         // 没有成功的图片，重设
                         state = 'done';

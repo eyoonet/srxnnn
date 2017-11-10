@@ -34,8 +34,8 @@
            class="easyui-linkbutton" plain="true">编辑任务</a>
         <a onclick="task.success('success','/task/finish');" class="easyui-linkbutton" iconCls="icon-ok"
            plain="true">处理</a>
-        <a onclick="ButtonRunDialog(this);" dialog="failed" url="/task/failed" load="true"
-           class="easyui-linkbutton" iconCls="icon-no" plain="true">失败</a>
+        <!--<a onclick="ButtonRunDialog(this);" dialog="failed" url="/task/failed" load="true"
+           class="easyui-linkbutton" iconCls="icon-no" plain="true">失败</a>-->
     </div>
     <hr style="margin-bottom: 5px">
     <div>
@@ -112,18 +112,21 @@
         });
         //打开窗口
         $("#" + id).dialog('open');
-
-        if (row.type == 11) {                           //11是提交材料
-            $('#SUBMIT_DATA').show();
-            document.getElementById('js').checked = row.Tag.js;
-            document.getElementById('tj').checked = row.Tag.tj;
-            document.getElementById('gz').checked = row.Tag.gz;
-        }
-        if (row.type == 5) {                           //一审回访
-            $('#upload').show();
-        }
-        if (row.type == 12) {                           //一审回访
-            $('#APPOINTMENT_CLIENT').show();
+        switch (row.type){
+            case 11: //11是提交材料
+                $('#SUBMIT_DATA').show();
+                document.getElementById('js').checked = row.Tag.js;
+                document.getElementById('tj').checked = row.Tag.tj;
+                document.getElementById('gz').checked = row.Tag.gz;
+                break;
+            case 5: //一审回访
+                $('#upload').show();
+                break;
+            case 12:
+                $('#APPOINTMENT_CLIENT').show();
+                break;
+            default:
+                $('#DEFAULT').show();
         }
     }
     //*********************************************

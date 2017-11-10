@@ -351,7 +351,7 @@ class DataController extends Base
     public function getAppointmentList(Data $M)
     {
         return json(
-            $M->field('id,card,mode,user_id')
+            $M->field('id,card,mode,user_id,nuser_id')
                 ->where('status', 'in', '5,6')
                 ->where('order', 1)
                 ->select()
@@ -369,6 +369,7 @@ class DataController extends Base
             $M->field('id,card,name,sbtype')
                 ->where('order', 1)
                 ->where('status', Data::SUBMIT)//已二审
+                ->whereOr('status',Data::AUDIT)//审批同意的
                 ->select()
         );
     }
@@ -379,9 +380,9 @@ class DataController extends Base
      * @param Data $M
      * @return mixed
      */
-    public function getRcDate($id, Data $M)
+    public function getRcDate(Data $data,$id)
     {
-        return $M->where('id', $id)->value('rcdate');
+        return $data->where('id', $id)->value('rcdate');
     }
 
     /**
@@ -412,17 +413,20 @@ class DataController extends Base
         ];
         return json(
             $M->field('id,name,card')
-                ->where('status', Data::AUDIT_SUCCESS)
-                ->whereOr($Map)
+                ->where('order', 1)
+                ->where('status',Data::AUDIT_SUCCESS)
+                ->whereOr("`mode`=:mode  AND  `status`=:status",$Map)
+                ->fetchSql()
                 ->select()
         );
     }
 
+
     //设置深圳人保局查询的结果
     public function setSzhrss($id, $code)
     {
-        $M = Data::get($id);
-        $M->status = $code;
+        $data = Data::get($id);
+        $data->status = $code;
         return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 

@@ -1,0 +1,35 @@
+<style>
+    #success-form label {
+        margin-right: 10px;
+    }
+
+    #success-form input {
+        margin-right: 2px;
+    }
+</style>
+<!-- 备注窗口开始 -->
+<div id="success" form="success-form" dg="task-dg" class="easyui-dialog" title="处理"
+     style="width:300px;height:200px;text-align:center;padding-top:15px;"
+     data-options="closed:true,modal:false,resizable:true">
+    <form id="success-form">
+        <input name="comments" type="hidden" value="外勤处理">
+        <div id="SUBMIT_DATA" class="hidden" style="display:none;">
+            <label><input id="tj" type="checkbox" name="tj"> 已体检</label>
+            <label><input id="js" type="checkbox" name="js"> 已做计生 </label>
+            <label><input id="gz" type="checkbox" name="gz"> 已盖章</label>
+        </div>
+        <div id="APPOINTMENT_CLIENT" class="hidden" style="display:none;">
+            <label>客户来?</label>
+            <label><input type="radio" name="come" value="true">是</label>
+            <label><input type="radio" name="come" value="false">否</label>
+        </div>
+
+            <input name="comment" class="easyui-textbox" style="width:100%;height:100px" data-options="multiline:true">
+
+    </form>
+</div>
+<!-- 备注窗口结束 -->
+<script type="text/javascript">
+
+</script>
+

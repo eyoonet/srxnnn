@@ -4,17 +4,24 @@
         <div style="float: left">
             <ul class="my-ul" style="">
                 <li>
-                    <label>价格</label>
+                    <label>总价</label>
                     <input name="price" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'￥'" />
                 </li>
                 <li>
-                    <label>定金</label>
+                    <label>已结</label>
                     <input name="deposit" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'￥'" />
                 </li>
                 <li>
-                    <label>行政费</label>
+                    <label>行政</label>
                     <input name="xzprice" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'￥'" />
                 </li>
+
+
+                <li>
+                    <label>结余</label>
+                    <input name="surplus" readonly="readonly" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'￥'" />
+                </li>
+
             </ul>
         </div>
     </form>

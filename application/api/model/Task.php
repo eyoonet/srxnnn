@@ -18,6 +18,15 @@ class Task extends Model
         'finish_time' => 'timestamp:Y-m-d H:i',
         'Tag' => 'json',
     ];
+    public function objdata()
+    {
+        return $this->belongsTo('Data','clents_id','id');
+    }
+
+    public function template()
+    {
+        return $this->belongsTo('TaskTemplate','type','id');
+    }
 
     // 全局查询范围
     protected static function base($query)
@@ -159,6 +168,22 @@ class Task extends Model
         }
     }
 
+
+
+
+public function test($a,$b){
+    echo "123";
+}
+
+
+
+
+
+
+
+
+
+
     /**
      * 外勤的任务是:去窗口一审;二审;拿调令;监督准备二审材料
      * @param $post
@@ -171,23 +196,26 @@ class Task extends Model
 
             /** 完成任务:窗口一审  **/
             case self::SIGN:
-
+                $data->comment = $post['comment'];
+                $data->save();
                 //新建任务 回访一审 TO 内勤
                 $envd = $this->_sysAddTask($this->clents_id, self::BACK_SIGN, $data->nuser_id, time());
                 break;
 
             /** 完成任务:窗口二审  **/
             case self::SUBMIT:
-
+                $data->comment = $post['comment'];
+                $data->save();
                 //新建惹怒 二审回访 TO 内勤
                 $envd = $this->_sysAddTask($this->clents_id, self::BACK_SUBMIT, $data->nuser_id, time());
                 break;
 
             /** 完成任务:拿调令  **/
             case self::GET_DIAOLING:
-
+                $data->comment = $post['comment'];
+                $data->save();
                 //新建任务 调令回访 TO 业务员
-                $envd = $this->_sysAddTask($this->clents_id, self::GET_DIAOLING, $data->user_id, time());
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_DIAOLIN, $data->user_id, time());
                 break;
 
             /** 完成任务:二审材料  **/
@@ -206,6 +234,22 @@ class Task extends Model
                 break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 窗口一审;二审;拿调令处理失败tag标记失败
@@ -235,11 +279,25 @@ class Task extends Model
             case self::GET_DIAOLING:
 
                 //新建任务 调令回访 TO 业务员
-                $envd = $this->_systemTask($task->clents_id, Task::GET_DIAOLING, $re_by_id, time(),
+                $envd = $this->_systemTask($task->clents_id, Task::BACK_DIAOLIN, $re_by_id, time(),
                     ['success' => false], $post);
                 break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 内勤的任务是:回访一审;回访二审
@@ -273,7 +331,7 @@ class Task extends Model
 
             /** 完成任务:回访二审  **/
             case self::BACK_SUBMIT:
-                if ($this->Tag['success'] != false) {
+                if (!$this->Tag['success']) {
 
                     //二审成功 提交二审
                     $data->submit();
@@ -285,17 +343,27 @@ class Task extends Model
                 break;
             /** 完成任务:约客户 **/
             case self::APPOINTMENT_CLIENT:
-                /*if (isset($post['come'])) {
-                    $data->status = 100;
-                    $data->save();
-                }else{
+
                     //新建任务 约号 TO 管理员
                     $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
-                }*/
                 break;
-
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 业务员的任务是:回访拿调令;准迁;落户
@@ -326,6 +394,18 @@ class Task extends Model
                 break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function _sysAddTask($clents_id, $type, $re_by_id, $time, $tag = null, $error_msg = null)
     {

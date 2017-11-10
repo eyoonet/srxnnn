@@ -7,12 +7,17 @@
  */
 
 namespace app\ui\controller;
+
 use think\Controller;
 
 class LoginController extends Controller
 {
     public function index()
     {
-        return $this->fetch('login/PC');
+        if ($this->request->isMobile()) {
+            return $this->fetch('login/Mobile');
+        } else {
+            return $this->fetch('login/PC');
+        }
     }
 }

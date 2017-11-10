@@ -41,7 +41,7 @@ Route::group('data',[
     'getSubmitList'         =>  'api/data/getSubmitList',           //获取已经二审的列表
     'NuserCallin/:id'       =>  'api/data/NuserCallin',             //内勤调入
     'getAuditSuccessList'   =>  'api/data/getAuditSuccessList',     //获取审批完成的列表
-    'setSzhrss'             =>  'api/data/setSzhrss',               //设置人保局进度
+    'setSzhrss/:id/:code'   =>  'api/data/setSzhrss',               //设置人保局进度
     'upload'                =>  'api/data/uploadByImage',           //图片上传
     'imageList'             =>  'api/data/imageList',               //证件列表
     'back/:id'              =>  'api/data/back'                     //后撤
