@@ -65,6 +65,7 @@ class Data extends Model
             }
             if ($this->I_date == null)
                 $this->I_date = time();
+            $this->rcdate = null;
             return $this->save() ? true : false;
         } else {
             $this->error = '空数据';
@@ -86,6 +87,7 @@ class Data extends Model
             }
             $this->speed = 2;
             $this->status = self::SUBMIT;
+            $this->rcdate = null;
             if ($this->II_date == null) {
                 $this->II_date = time();
             }
@@ -114,6 +116,7 @@ class Data extends Model
             } else {
                 $this->status = self::GET_DIAOLING;
                 $this->speed = 3;
+                $this->rcdate = null;
             }
             return $this->save() ? true : false;
         } else {

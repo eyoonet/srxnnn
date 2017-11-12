@@ -171,9 +171,9 @@ class Task extends Model
 
 
 
-public function test($a,$b){
-    echo "123";
-}
+    public function test($a,$b){
+        echo "123";
+    }
 
 
 
@@ -263,7 +263,7 @@ public function test($a,$b){
             /** 未完成任务:窗口一审  **/
             case self::SIGN:
                 //新建任务 回访一审 TO 内勤
-                $envd = $this->_systemTask($task->clents_id, Task::BACK_SIGN, $re_by_id, time(),
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SIGN, $data->nuser_id, time(),
                     ['success' => false], $post);
                 break;
 
@@ -271,7 +271,7 @@ public function test($a,$b){
             case self::SUBMIT:
 
                 //新建惹怒 二审回访 TO 内勤
-                $envd = $this->_systemTask($task->clents_id, Task::BACK_SUBMIT, $re_by_id, time(),
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SUBMIT, $data->nuser_id, time(),
                     ['success' => false], $post);
                 break;
 
@@ -279,7 +279,7 @@ public function test($a,$b){
             case self::GET_DIAOLING:
 
                 //新建任务 调令回访 TO 业务员
-                $envd = $this->_systemTask($task->clents_id, Task::BACK_DIAOLIN, $re_by_id, time(),
+                $envd = $this->_sysAddTask($this->clents_id, self::BACK_DIAOLIN, $data->user_id, time(),
                     ['success' => false], $post);
                 break;
         }
@@ -344,8 +344,8 @@ public function test($a,$b){
             /** 完成任务:约客户 **/
             case self::APPOINTMENT_CLIENT:
 
-                    //新建任务 约号 TO 管理员
-                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
+                //新建任务 约号 TO 管理员
+                $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
                 break;
         }
     }

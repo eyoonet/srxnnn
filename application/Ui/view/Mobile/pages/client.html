@@ -49,7 +49,8 @@
             //用户单击
             onClickRow: function (index, row) {
                 $.mobile.go('#page-table');
-                load_data(row);
+                $('#table_load').form('load', row);
+                $("#tel").attr("href", "tel:" + row.tel);
             }
         });
     })
