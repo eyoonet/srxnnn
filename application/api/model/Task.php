@@ -18,21 +18,25 @@ class Task extends Model
         'finish_time' => 'timestamp:Y-m-d H:i',
         'Tag' => 'json',
     ];
+
     public function objdata()
     {
-        return $this->belongsTo('Data','clents_id','id');
+         /** 一对一关联data */
+        return $this->hasOne('Data','id','clents_id');
     }
 
     public function template()
     {
-        return $this->belongsTo('TaskTemplate','type','id');
+         /** 一对一关联任务模板 */
+        return $this->hasOne('TaskTemplate','id','type');
     }
+
 
     // 全局查询范围
     protected static function base($query)
     {
         // 查询状态为1的数据
-        $query->view('task', 'id,type,re_by_id,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
+        $query->view('task', 'id,type,se_by_id,re_by_id,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
             ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
             ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT');
@@ -171,9 +175,7 @@ class Task extends Model
 
 
 
-    public function test($a,$b){
-        echo "123";
-    }
+
 
 
 
@@ -461,6 +463,7 @@ class Task extends Model
             2 => '完成',
             3 => '转发',
             0 => '失败',
+            -1=>'撤回',
         ];
         return isset($data[$key]) ? $data[$key] : "";
     }

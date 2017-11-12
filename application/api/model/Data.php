@@ -31,10 +31,21 @@ class Data extends Model
             $data->DataImg()->save($data->toArray());
         });
     }*/
-    /*public function user()
+
+    public function user()
     {
-        return $this->belongsTo('User');
-    }*/
+       /** 一对一关联用户名 */
+        return $this->hasOne('User','id','user_id');
+       // return $this->belongsTo('User');
+    }
+
+    public function task()
+    {
+        /** 一对多关联任务 */
+        return $this->hasMany('Task','clents_id');
+    }
+
+
 
     public function setWuserById($id)
     {

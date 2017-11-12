@@ -17,7 +17,6 @@ class TaskController extends Base
 {
 
 
-
     /**
      * 创建一个任务
      * @param Task $m
@@ -38,14 +37,15 @@ class TaskController extends Base
 
             if ($post['type'] == Task::SIGN) {
                 if ($data->getData('speed') != -1)
-                    return Res::Json(400,'进度信息不符合.');
+                    return Res::Json(400, '进度信息不符合.');
             }
 
             if ($post['type'] == Task::SUBMIT) {
                 if ($data->getData('speed') != 1)
-                    return Res::Json(400,'进度信息不符合.');
+                    return Res::Json(400, '进度信息不符合.');
             }
 
+            $data->rcdate = $post['task_time'];
             $data->wuser_id = $post['re_by_id'];
             $data->status = 100;//派单外勤
             $data->save();
@@ -53,15 +53,18 @@ class TaskController extends Base
         return $task->save($post) ? Res::Json(200) : Res::Json(400);
     }
 
-
-
-
-
-
-
-
-
-
+    /** 撤销任务 */
+    public function revocation($id)
+    {
+        $task = Task::get($id);
+        if ($this->uid != 1) {
+            if ($task->se_by_id != $this->uid) {
+                return Res::Json(400, '不是当前用户发布的任务无法撤回.');
+            }
+        }
+        $task->finish_type = -1;
+        return $task->save() ? Res::Json(200) : Res::Json(400);
+    }
 
     /**
      * 获取任务列表
@@ -107,17 +110,6 @@ class TaskController extends Base
         }
         return json(['rows' => $lists, 'total' => $m->total(), 'type' => $type]);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -199,17 +191,6 @@ class TaskController extends Base
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     //失败
     public function Failed($id)
     {
@@ -233,18 +214,6 @@ class TaskController extends Base
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     //转发 2种方案, 1 直接编辑转发 2 完成当前转发.  还是推荐完成后转发
     public function Forward($id, $clents_id = 0, $type = 0)
     {
@@ -266,12 +235,12 @@ class TaskController extends Base
         if ($post['type'] == Task::SIGN || $post['type'] == Task::SUBMIT || $post['type'] == Task::GET_DIAOLING) {
             if ($post['type'] == Task::SIGN) {
                 if ($data->getData('speed') != -1)
-                    return Res::Json(400,'进度信息不符合.');
+                    return Res::Json(400, '进度信息不符合.');
             }
 
             if ($post['type'] == Task::SUBMIT) {
                 if ($data->getData('speed') != 1)
-                    return Res::Json(400,'进度信息不符合.');
+                    return Res::Json(400, '进度信息不符合.');
             }
 
             //$data->setWuserById($post['re_by_id']);

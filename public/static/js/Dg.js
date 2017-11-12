@@ -33,7 +33,7 @@ $(function ($) {
             {field: 'tel', title: '电话', width: '8%'},
             {field: 'mode', title: '入户方式', align: 'center', width: '5%'},
             {field: 'status', title: '工作流', width: '5%'},
-           // {field:'education',title:'学历',width:'3%'},
+            // {field:'education',title:'学历',width:'3%'},
             {field: 'shebao', title: '社保', align: 'center', width: '4%'},
             {field: 'service', title: '窗口', width: '7%'},
             //{field:'marriage',title:'婚姻',align:'center',width:'4%'},
@@ -56,7 +56,7 @@ $(function ($) {
             //{field:'adderss',title:'迁入地',width:'7%'},
             {field: 'sbtype', title: '申报类型', width: '5%'},
             //{field:'speed_time',title:'进度日期',width:'7%'},
-            //{field:'update_time',title:'修改时间',width:'10%'},
+            {field:'shebaoname',title:'社保公司',width:'15%'},
             //{field:'upuser',title:'修改人',width:'10%'},
             //{field:'wuser',title:'外勤',width:'5%'},
         ]],
@@ -124,9 +124,9 @@ function images(card) {
 
                 '<li>' +
 
-                    '<div>' + data[i] + ' <a href="javascript:"> 删除 </a></div>' +
+                '<div>' + data[i] + ' <a href="javascript:"> 删除 </a></div>' +
 
-                    '<img data-original="' + image + '" src="' + image + '" alt="' + data[i] + '">' +
+                '<img data-original="' + image + '" src="' + image + '" alt="' + data[i] + '">' +
 
 
                 '</li>'
@@ -141,15 +141,15 @@ function images(card) {
             $('#dowebok').viewer({
                 url: 'data-original',
                 shown: function () {
-                   /* top.hide();
-                    bottom.hide();
-                    west.hide();*/
+                    /* top.hide();
+                     bottom.hide();
+                     west.hide();*/
                     //top.css({ z-index: 0 });
                 },
                 hide: function () {
                     /*west.show();
-                    top.show();
-                    bottom.show()*/
+                     top.show();
+                     bottom.show()*/
                 },
             });
         }, 1000);

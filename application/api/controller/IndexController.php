@@ -21,6 +21,13 @@ class IndexController extends Controller
     //测试专用
     public function index()
     {
-         return $this->fetch();
+        $task=Task::get(1);
+        dump($task->objdata->name);
+
+
+
+        //$data= Data::get(8);
+        //dump($data->user->user_name);
+        // return $this->fetch();
     }
 }
