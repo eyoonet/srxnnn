@@ -47,10 +47,10 @@ Route::group('data',[
     'back/:id'              =>  'api/data/back'                     //后撤
 ]);
 Route::group('task',[
-    'create/[:id]/[:type]'          => 'api/Task/Create',           //任务创建
-    'taskForward/:id/[:clents_id]/[:type]'          => 'api/Task/Forward',           //任务转发
+    'create/:id/[:type]'          => 'api/Task/Create',           //任务创建
+    'Forward/:id/[:data_id]/[:type]'          => 'api/Task/Forward',           //任务转发
     'List'                  => 'api/Task/List',            //任务列表
-    'Finish/:id'            => 'api/Task/Finish',           //任务成功
+    'dispose/:id'            => 'api/Task/dispose',        //任务成功
     'failed/:id'            => 'api/Task/Failed',           //任务失败
     'revocation/:id'        => 'api/Task/revocation'
 ]);

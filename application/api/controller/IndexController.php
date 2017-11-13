@@ -15,19 +15,15 @@ class IndexController extends Controller
 {
 
    public function test($a,$b){
-       echo "123";
+       echo "123".$a.$b;
    }
 
     //测试专用
     public function index()
     {
-        $task=Task::get(1);
-        dump($task->objdata->name);
-
-
-
         //$data= Data::get(8);
         //dump($data->user->user_name);
         // return $this->fetch();
     }
+
 }

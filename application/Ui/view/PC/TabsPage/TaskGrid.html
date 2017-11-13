@@ -15,28 +15,24 @@
     <thead>
     <tr>
         <th data-options="field:'task_time',sortable:true" style="width: 9%">计划时间</th>
-        <th data-options="field:'clents_name',formatter:formatter_name" style="width: 10%">客户</th>
+        <th data-options="field:'clents_name',formatter:formatterTaskName" style="width: 10%">客户</th>
         <th data-options="field:'title'" style="width: 10%">标题</th>
         <th data-options="field:'se_name'" style="width: 8%">任务发布者</th>
         <th data-options="field:'re_name'" style="width: 8%">任务接收者</th>
-        <th data-options="field:'finish_type'" style="width: 10%">完成状态</th>
+        <th data-options="field:'status'" style="width: 10%">任务状态</th>
         <th data-options="field:'create_time',sortable:true" style="width: 10%">创建时间</th>
         <th data-options="field:'finish_time',sortable:true" style="width: 10%">处理时间</th>
-        <th data-options="field:'action',formatter:task_action" style="width: 10%">操作</th>
+        <th data-options="field:'action',formatter:formatterTaskAction" style="width: 10%">操作</th>
     </tr>
     </thead>
 </table>
 <div id="task-dg-buttions" style="padding:5px;height:auto">
     <div style="margin-bottom:5px" dg="task-dg">
-        <!--<a onclick="ButtonRunDialog(this);" dialog="task" url="task/create" iconCls="icon-add" class="easyui-linkbutton"
-           plain="true">添加任务</a>-->
         <a onclick="ButtonRunDialog(this);" dialog="task" url="task" load="true" iconCls="icon-edit"
            class="easyui-linkbutton" plain="true">编辑任务</a>
-        <a onclick="task.success('success','/task/finish');" class="easyui-linkbutton" iconCls="icon-ok"
+        <a onclick="Task.onDispose();" class="easyui-linkbutton" iconCls="icon-ok"
            plain="true">处理</a>
         <a onclick="run(this)" url="/task/revocation" class="easyui-linkbutton" plain="true">撤回</a>
-        <!--<a onclick="ButtonRunDialog(this);" dialog="failed" url="/task/failed" load="true"
-           class="easyui-linkbutton" iconCls="icon-no" plain="true">失败</a>-->
     </div>
     <hr style="margin-bottom: 5px">
     <div>
@@ -60,7 +56,7 @@
             <input id='end_date' name="date[]" style="width:120px" type="text"
                    class="easyui-datebox "
                    data-options="formatter:myformatter,parser:myparser">
-            <a href="javascript:task.search();" class="easyui-linkbutton" iconCls="icon-search">Search</a>
+            <a href="javascript:Task.search();" class="easyui-linkbutton" iconCls="icon-search">Search</a>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-recover-deleted-items'"
                onclick="$('#form_search').form('clear')">清空</a>
         </form>
@@ -87,82 +83,105 @@
 </script>
 
 <script type="text/javascript">
-    var task = function () {
-    };
     //**************************************************
-    task.success = function (id, url) {
+    Task.onDispose = function () {
         var row = $('#task-dg').datagrid('getSelected');
+        Task.dispose(row);
+    }
+    /** 撤回 */
+    Task.revocation = function (id) {
+        showConfirm("您好", "执行命令为: [ 撤回当前任务 ] 是否确认 ? ", function () {
+            $.getJSON('/task/revocation/' + id, function (res) {
+                if (res.code == Success) {
+                    showMsg("完成", "撤回成功", false);
+                    $('#task-dg').datagrid('reload');
+                    $('#TaskList-dg').datagrid('reload');
+                } else {
+                    showMsg("撤回失败", res.msg, true, "error");
+                }
+            })
+        });
+    }
+    /**处理**/
+    Task.dispose = function (row) {
+        var dialog_id = 'dispose';
+        var formid = 'dispose-form';
         if (row == null)return showMsg("错误", '未选取数据!', true, 'error');
-        url = url + '/' + row.id;
-        //隐藏
-        $('.hidden').hide();
-        $("#" + id + "-form").form('clear');            //表单清除
-        $("#" + id).dialog({
+        url = '/task/dispose/' + row.id;
+        //$("#" + id + "-form").form('clear');
+        $("#" + dialog_id).dialog({
             buttons: [{
                 text: '提交',
                 handler: function () {
-                    //做了提交处理
-                    dialogSubmit(id, url);
+                    // 序列化表单数据
+                    var formParam = $('#' + formid).serialize();
+                    //开始提交任务 带验证表单
+                    if ($('#' + formid).form('validate')) {
+                        showConfirm("系统", "执行命令是否确认 ? ", function () {
+                            jsonAjax('post', url, formParam, function (ret) {
+                                if (ret.code == Success) {
+                                    showMsg("完成", "成功", false);
+                                    closeDialog(dialog_id);
+                                    $('#task-dg').datagrid('reload');
+                                    $('#TaskList-dg').datagrid('reload');
+                                } else {
+                                    showMsg("错误", ret.msg, true, 'error');
+                                }
+                            })
+                        });
+                    } else {
+                        showMsg("错误", '数据验证失败! 请检查数据规则.,', true, 'error');
+                    }
                 }
             }, {
                 text: '关闭',
                 handler: function () {
-                    $("#" + id).dialog('close');
+                    $("#" + dialog_id).dialog('close');
                 }
             }]
         });
         //打开窗口
-        $("#" + id).dialog('open');
-        switch (row.type){
-            case 11: //11是提交材料
-                $('#SUBMIT_DATA').show();
-                document.getElementById('js').checked = row.Tag.js;
-                document.getElementById('tj').checked = row.Tag.tj;
-                document.getElementById('gz').checked = row.Tag.gz;
-                break;
-            case 5: //一审回访
-                $('#upload').show();
-                break;
-            case 12:
-                $('#APPOINTMENT_CLIENT').show();
-                break;
-            default:
-                $('#DEFAULT').show();
-        }
+        $("#" + dialog_id).dialog('open');
+        $("#" + formid).form('load', row);
+        document.getElementById('r-success').checked = true;
     }
+
     //*********************************************
-    task.search = function () {
+    Task.search = function () {
         var val = $("#task-search").serializeObject();
         val['type'] = 'sousou';
         $('#task-dg').datagrid({
             queryParams: val
         });
     }
+
     //*************************************************
-    function task_action() {
-        return '<a href="#" >成功</a>' +
-                '<a href="#" >失败</a>';
+
+    function formatterTaskAction(value, row, inde) {
+        return '<a class="button-default" href="javascript:Task.onDispose()" >处理</a> ' +
+                '<a class="button-danger" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
     }
-    //*************************************************
-    function formatter_name(value, row, index) {
+
+    function formatterTaskName(value, row, index) {
         if (value != null) {
             return '<div dg="task-dg">' +
-                    '<a class="button-default" href="javascript:showtable(' + row.clents_id + ')">详情</a> ' +
-                    '<a class="button-danger" onclick="loadRcdate(' + row.clents_id + ');ButtonRunDialog(this);"  dialog="task"  url="task/taskForward' + '/' + row.id + '/' + row.clents_id + '">转发</a>' +
+                    '<a class="button-default" href="javascript:showtable(' + row.data_id + ')">详情</a> ' +
+                    '<a class="button-danger" onclick="loadRcdate(' + row.data_id + ');ButtonRunDialog(this);"  dialog="task"  url="task/Forward' + '/' + row.id + '/' + row.data_id + '">转发</a>' +
                     '<span>【' + value + '】</span>' +
                     '</div>';
         }
     }
+
     //*************************************************
     function loadRcdate(id) {
-        jsonAjax('get', 'data/getRcDate/' + id, null, function (res) {
-            $('#rcdate').datetimebox('setValue', res);	// 设置日期输入框的值
+        $.getJSON('/data/getRcDate/' + id, function (res) {
+            $('#rcdate').datetimebox('setValue', res);
         })
     }
     //**************************************************
     function showtable(id) {
-        jsonAjax('get', 'data/getOneData/' + id, null, function (res) {
-            loadtable(res);
+        $.getJSON('/data/getOneData/' + id, function (res) {
+            Data.loadtable(res);
             images(res.card);
         })
     }

@@ -369,7 +369,7 @@ class DataController extends Base
             $M->field('id,card,name,sbtype')
                 ->where('order', 1)
                 ->where('status', Data::SUBMIT)//已二审
-                ->whereOr('status',Data::AUDIT)//审批同意的
+                ->whereOr('status', Data::AUDIT)//审批同意的
                 ->select()
         );
     }
@@ -380,7 +380,7 @@ class DataController extends Base
      * @param Data $M
      * @return mixed
      */
-    public function getRcDate(Data $data,$id)
+    public function getRcDate(Data $data, $id)
     {
         return $data->where('id', $id)->value('rcdate');
     }
@@ -414,8 +414,8 @@ class DataController extends Base
         return json(
             $M->field('id,name,card')
                 ->where('order', 1)
-                ->where('status',Data::AUDIT_SUCCESS)
-                ->whereOr("`mode`=:mode  AND  `status`=:status",$Map)
+                ->where('status', Data::AUDIT_SUCCESS)
+                ->whereOr("`mode`=:mode  AND  `status`=:status", $Map)
                 ->fetchSql()
                 ->select()
         );
@@ -436,9 +436,9 @@ class DataController extends Base
      * @param Data $M
      * @return static
      */
-    public function getOneData($id, Data $M)
+    public function getOneData($id)
     {
-        return $M->get($id);
+        return Data::OneData($id);
     }
 
     //上传资料

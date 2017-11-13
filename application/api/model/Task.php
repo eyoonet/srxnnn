@@ -12,36 +12,40 @@ use think\helper\Time;
 
 class Task extends Model
 {
+    public $error;
     protected $autoWriteTimestamp = true;
     protected $type = [
         'task_time' => 'timestamp:Y-m-d H:i',
         'finish_time' => 'timestamp:Y-m-d H:i',
-        'Tag' => 'json',
     ];
 
+    /** **********************************************模型关联开始******************************************* */
     public function objdata()
     {
-         /** 一对一关联data */
-        return $this->hasOne('Data','id','clents_id');
+        /** 一对一关联data */
+        return $this->hasOne('Data', 'id', 'data_id');
     }
 
     public function template()
     {
-         /** 一对一关联任务模板 */
-        return $this->hasOne('TaskTemplate','id','type');
+        /** 一对一关联任务模板 */
+        return $this->hasOne('TaskTemplate', 'id', 'template_id');
     }
 
+    /** **********************************************模型关联结束******************************************* */
 
     // 全局查询范围
     protected static function base($query)
     {
         // 查询状态为1的数据
-        $query->view('task', 'id,type,se_by_id,re_by_id,title,comments,create_time,task_time,finish_time,finish_type,clents_id,error,Tag')
-            ->view('user A', 'user_name as se_name', 'task.se_by_id = A.id', 'LEFT')
-            ->view('user B', 'user_name as re_name', 'task.re_by_id = B.id', 'LEFT')
-            ->view('data', 'name as clents_name', 'task.clents_id=data.id', 'LEFT');
+        $query->view('task', 'id,template_id,status,se_id,re_id,contnet,reply_text,reply_image,create_time,task_time,finish_time,finish,data_id')
+            ->view('task_template temp', 'title', 'task.template_id = temp.id')
+            ->view('user A', 'user_name as se_name', 'task.se_id = A.id', 'LEFT')
+            ->view('user B', 'user_name as re_name', 'task.re_id = B.id', 'LEFT')
+            ->view('data', 'name as clents_name', 'task.data_id=data.id', 'LEFT');
     }
 
+    /** **********************************************查询开始******************************************* */
     /**
      * 时间表达式查询
      * @param $params  分页参数
@@ -52,12 +56,19 @@ class Task extends Model
      */
     public function ListByTime($params, $rule, $fieids, $time)
     {
-        return $this
+        $lists = $this
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->whereTime('task.task_time', $time)
             ->where($rule, $fieids)
             ->select();
+        $total = $this
+            ->whereTime('task.task_time', $time)
+            ->where($rule, $fieids)
+            ->count();
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
     }
 
     /**
@@ -69,17 +80,17 @@ class Task extends Model
      */
     public function List($params, $rule, $fieids)
     {
-        return $this
+        $lists = $this
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
-            //->fetchSql()
             ->select();
-    }
-
-    public function total()
-    {
-        return $this->count();
+        $total = $this
+            ->where($rule, $fieids)
+            ->count();
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
     }
 
     /**
@@ -92,13 +103,21 @@ class Task extends Model
     public function overdue($params, $rule, $fieids)
     {
         list($start, $end) = Time::today();// 今日开始和结束的时间戳
-        return $this
+        $lists = $this
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
             ->where('task.task_time', '<= time', $start)
             ->select();
+        $total = $this
+            ->where($rule, $fieids)
+            ->where('task.task_time', '<= time', $start)
+            ->count();
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
     }
+
 
     /**
      * 搜索数据
@@ -111,19 +130,10 @@ class Task extends Model
     public function search($params, $array)
     {
         //表达式定义
-        $exps = [
-            "eq" => [],
-            "like" => [],
-            "in" => [],
-            "between time" => [],
+        $exps = ["eq" => [], "like" => [], "in" => [], "between time" => [],
         ];
         //日期字段,对应html type 的 value
-        $datekeys = [
-            0 => 'add_time',
-            1 => 'I_date',
-            2 => 'II_date',
-            3 => 'speed_time'
-        ];
+        $datekeys = [0 => 'add_time', 1 => 'I_date', 2 => 'II_date', 3 => 'speed_time'];
         if (isset($array['date_type'])) {
             $type = $array['date_type'];// 等于数字
             $datepk = $datekeys[$type];
@@ -141,13 +151,193 @@ class Task extends Model
             $map[] = ['task.' . $key, $exp, $value];
             next($array);
         }
-        return $this->where('order', 1)
+        $lists = $this->where('order', 1)
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($map)
             ->select();
+        $total = $this
+            ->where($map)
+            ->count();
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
+    }
+    /** **********************************************查询结束******************************************* */
+
+
+    /** **********************************************业务逻辑开始**************************************** */
+
+
+    /**
+     * 创建任务
+     * @param INT $uid 用户ID
+     * @param INT $data_id 客户ID
+     * @param Array $post
+     * @return bool
+     */
+    public function add($uid, $data_id, $post)
+    {
+        $post['se_id'] = $uid;
+        $post['data_id'] = $data_id;
+
+        $data = $this->objdata()->get($data_id);
+        if ($post['template_id'] == self::SIGN || $post['template_id'] == self::SUBMIT || $post['template_id'] == self::GET_DIAOLING) {
+            switch ($post['template_id']) {
+                case self::SIGN:
+                    if ($data->getData('speed') != -1) {
+                        $this->error = '当前任务与客户进度不符合';
+                        return false;
+                    }
+                    break;
+                case self::SUBMIT:
+                    if ($data->getData('speed') != 1) {
+                        $this->error = '当前任务与客户进度不符合';
+                        return false;
+                    }
+                    break;
+            }
+            $data->rcdate = $post['task_time'];
+            $data->wuser_id = $post['re_id'];
+            $data->status = 100;//派单外勤
+            if (!$data->save()) {
+                $this->error = '派单出错!..DATA更新失败..';
+                return false;
+            }
+        }
+
+        return $this->save($post) ? true : false;
     }
 
+
+    /** 任务处理逻辑 */
+    public function dispose($post)
+    {
+        $newobj = new Task();
+        $newds = $this->getnews();
+        //checked
+        if ($post['finish'] == 'success') {
+
+            $this->finish = true;
+            if ($this->template->success_evnet_id != null) {
+                //执行成功的事件
+                $newobj->saveAll($newds['success']);
+            }
+            if ($this->template->success_ext_evnet != null) {
+                //执行成功扩展函数
+                $fun = $this->template->success_ext_evnet;
+                $this->objdata->$fun();
+            }
+
+        } else {
+
+            $this->finish = false;
+            if ($this->template->failed_evnet_id != null) {
+                //执行失败事件
+                $newobj->saveAll($newds['failed']);
+            }
+            if ($this->template->failed_ext_evnet != null) {
+                //执行失败扩展函数
+                $fun = $this->template->failed_ext_evnet;
+                $this->objdata->$fun();
+            }
+        }
+        $this->status = 2;//处理
+        $this->finish_time = time();
+        return $this->save();
+    }
+
+    /** 任务处理的数据验证 */
+    public function dispose_validate($post, $uid)
+    {
+        /*if ($this->getData('status') != 1) {
+            $this->error = '当前任务已经处理,请勿重复提交!';
+            return false;
+        }*/
+        if ($uid != 1) {
+            if ($this->re_id != $uid) {
+                $this->error = '当前任务执行者不符!';
+                return false;
+            }
+        }
+        if ($this->getData('reply_text') == 'checked') {
+            if (empty($post['reply_text'])) {
+                $this->error = '发布者需要您写点文字反馈';
+                return false;
+            } else {
+                //老任务回馈需要写入.
+                $this->reply_text = $post['reply_text'];
+            }
+        }
+
+        if ($this->getData('reply_image') == 'checked') {
+            if (empty($post['reply_image'])) {
+                $this->error = '发布者需要您上传图片回馈';
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public function getnews()
+    {
+        $success_evnets = $this->template()
+            ->where('id', 'in', $this->template->success_evnet_id)
+            ->field('id,re_group,time,reply_text,reply_image')
+            ->select();
+        $failed_evnets = $this->template()
+            ->where('id', 'in', $this->template->failed_evnet_id)
+            ->field('id,re_group,time,reply_text,reply_image')
+            ->select();
+        $this->FormatTask($success_evnets);
+        $this->FormatTask($failed_evnets);
+        $res = ['success' => $success_evnets, 'failed' => $failed_evnets];
+
+        return $res;
+    }
+
+
+    private function FormatTask(&$evnets)
+    {
+        $temp = array();
+        foreach ($evnets as &$itme) {
+            switch ($itme->re_group) {
+                case 1:
+                    $itme->re_id = 1;
+                    break;
+                case 2:
+                    $itme->re_id = $this->objdata->user_id;
+                    break;
+                case 3:
+                    $itme->re_id = $this->objdata->nuser_id;
+                    break;
+                case 4:
+                    $itme->re_id = $this->objdata->wuser_id;
+                    break;
+            }
+            $itme->data_id = $this->objdata->id;
+            $itme->se_id = 10000;
+            $itme->template_id = $itme->id;
+            if ($itme->time == null) {
+                $time = time();
+            } else {
+                $time = Time::daysAfter($itme->time);
+            }
+            $itme->task_time = $time;
+            unset($itme->re_group);
+            unset($itme->id);
+            unset($itme->time);
+            $temp[] = $itme->getData();
+        }
+        $evnets = $temp;
+    }
+
+
+    /** **********************************************业务逻辑结束**************************************** */
+
+
+    /** **********************************************辅助开始******************************************* */
     /**
      * 就是返回数组格式为 不知道相同值会不会有问题
      * [
@@ -173,257 +363,10 @@ class Task extends Model
     }
 
 
+    /** **********************************************辅助结束******************************************* */
 
 
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 外勤的任务是:去窗口一审;二审;拿调令;监督准备二审材料
-     * @param $post
-     * @param $task
-     * @param $data
-     */
-    public function wsuccess($data, $post)
-    {
-        switch ($this->getData('type')) {
-
-            /** 完成任务:窗口一审  **/
-            case self::SIGN:
-                $data->comment = $post['comment'];
-                $data->save();
-                //新建任务 回访一审 TO 内勤
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SIGN, $data->nuser_id, time());
-                break;
-
-            /** 完成任务:窗口二审  **/
-            case self::SUBMIT:
-                $data->comment = $post['comment'];
-                $data->save();
-                //新建惹怒 二审回访 TO 内勤
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SUBMIT, $data->nuser_id, time());
-                break;
-
-            /** 完成任务:拿调令  **/
-            case self::GET_DIAOLING:
-                $data->comment = $post['comment'];
-                $data->save();
-                //新建任务 调令回访 TO 业务员
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_DIAOLIN, $data->user_id, time());
-                break;
-
-            /** 完成任务:二审材料  **/
-            case self::SUBMIT_DATA:
-                //根据分支完成情况 新建任务 TO 自己
-                $post['js'] = isset($post['js']) ? true : false;
-                $post['tj'] = isset($post['tj']) ? true : false;
-                $post['gz'] = isset($post['gz']) ? true : false;
-                if ($post['js'] == false || $post['tj'] == false || $post['gz'] == false) {
-                    $envd = $this->_sysAddTask(
-                        $this->clents_id,
-                        self::SUBMIT_DATA, $data->wuser_id,
-                        Time::daysAfter(8), $post
-                    );
-                }
-                break;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 窗口一审;二审;拿调令处理失败tag标记失败
-     * @param $data
-     * @param $post
-     */
-    public function wFailed($data, $post)
-    {
-        switch ($this->getData('type')) {
-
-            /** 未完成任务:窗口一审  **/
-            case self::SIGN:
-                //新建任务 回访一审 TO 内勤
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SIGN, $data->nuser_id, time(),
-                    ['success' => false], $post);
-                break;
-
-            /** 未完成任务:窗口二审  **/
-            case self::SUBMIT:
-
-                //新建惹怒 二审回访 TO 内勤
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_SUBMIT, $data->nuser_id, time(),
-                    ['success' => false], $post);
-                break;
-
-            /** 未完成任务:拿调令  **/
-            case self::GET_DIAOLING:
-
-                //新建任务 调令回访 TO 业务员
-                $envd = $this->_sysAddTask($this->clents_id, self::BACK_DIAOLIN, $data->user_id, time(),
-                    ['success' => false], $post);
-                break;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 内勤的任务是:回访一审;回访二审
-     * @param $post      success.html post 数据
-     * @param $task      Task 实例
-     * @param $data      Data 实例
-     */
-    public function nsuccess($data, $post)
-    {
-        switch ($this->getData('type')) {
-            /** 完成任务:回访一审  **/
-            case self::BACK_SIGN:
-                //如果外勤完成时候不是失败的.
-
-                if (!$this->Tag['success']) {
-
-                    //提交到一审状态..
-                    $data->sign();
-
-                    //新建任务 约号 TO 管理员
-                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
-
-                    //新建任务 二审材料 TO 外勤
-                    $envd = $this->_sysAddTask($this->clents_id, self::SUBMIT_DATA, $data->wuser_id, Time::daysAfter(7));
-                } else {
-
-                    //外勤完成失败了 约号 TO 管理员
-                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(3));
-                }
-                break;
-
-            /** 完成任务:回访二审  **/
-            case self::BACK_SUBMIT:
-                if (!$this->Tag['success']) {
-
-                    //二审成功 提交二审
-                    $data->submit();
-                } else {
-
-                    //二审失败 新建任务 约号 TO 管理员
-                    $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(3));
-                }
-                break;
-            /** 完成任务:约客户 **/
-            case self::APPOINTMENT_CLIENT:
-
-                //新建任务 约号 TO 管理员
-                $envd = $this->_sysAddTask($this->clents_id, self::APPOINTMENT, 1, Time::daysAfter(1));
-                break;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 业务员的任务是:回访拿调令;准迁;落户
-     * @param $post
-     * @param $task_id
-     * @param $data_id
-     */
-    public function ysuccess($data, $post)
-    {
-        switch ($this->getData('type')) {
-
-            /** 完成任务:拿调令  **/
-            case self::BACK_DIAOLIN:
-                //提交为拿调令状态
-                $data->takeDiaol($this->clents_id);
-                //新建任务 打准迁 TO 自己
-                $envd = $this->_sysAddTask($this->clents_id, self::CAN_MOVE, $data->user_id, Time::daysAfter(7));
-                break;
-
-            /** 完成任务:打准迁  **/
-            case self::CAN_MOVE:
-                //新建任务 落户 TO 自己
-                $envd = $this->_sysAddTask($this->clents_id, self::SETTLE, $data->user_id, Time::daysAfter(7));
-                break;
-
-            /** 完成任务:落户  **/
-            case self::SETTLE:
-                break;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private function _sysAddTask($clents_id, $type, $re_by_id, $time, $tag = null, $error_msg = null)
-    {
-        $data = [
-            'clents_id' => $clents_id,
-            'type' => $type,
-            'se_by_id' => 10000,
-            're_by_id' => $re_by_id,
-            'task_time' => $time,
-            'Tag' => $tag,
-            'error' => $error_msg
-        ];
-        $newtask = new self();
-        return $newtask->isUpdate(false)->save($data);
-    }
-
+    /** **********************************************模型常量定义开始******************************************* */
     const SIGN = 1;//一审
     const SUBMIT = 2;//已二审
     const GET_DIAOLING = 3;//拿调令
@@ -435,37 +378,26 @@ class Task extends Model
     const SETTLE = 10;//落户
     const SUBMIT_DATA = 11;//准备二审材料
     const APPOINTMENT_CLIENT = 12;//约客户
+    /** **********************************************模型常量结束******************************************* */
 
-    /******************************************************************************************************************/
-    public function getTitleAttr($key, $d)
-    {
-        $data = [
-            1 => '签协议',
-            2 => '提交材料',
-            3 => '拿调令',
-            4 => '其他',
-            5 => '一审回访',
-            6 => '二审回访',
-            7 => '拿调令回访',
-            8 => '约号',
-            9 => '打准迁',
-            10 => '办落户',
-            11 => '备二审材料',
-            12 => '出号约客户'
-        ];
-        return isset($data[$d['type']]) ? $data[$d['type']] : '';
-    }
 
-    public function getFinishTypeAttr($key)
+    /** **********************************************获取器开始******************************************* */
+
+    public function getStatusAttr($key)
     {
         $data = [
             1 => '进行中',
-            2 => '完成',
+            2 => '已处理',
             3 => '转发',
-            0 => '失败',
-            -1=>'撤回',
+            -1 => '撤回',
         ];
-        return isset($data[$key]) ? $data[$key] : "";
+        return isset($data[$key]) ? $data[$key] : "未知";
     }
 
+
+    public function getReplyTextAttr($name)
+    {
+        return $name == 'checked' ? '' : $name;
+    }
+    /** **********************************************获取器结束******************************************* */
 }

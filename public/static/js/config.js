@@ -5,7 +5,7 @@ config = {};
 //获取
 config.GetData = "/query";
 //创建
-config.create  = "/create";
+config.create = "/create";
 //修改
 config.edit = "/edit/id/";
 //保存
@@ -17,7 +17,7 @@ config.sign = "/sign/id/";
 //申报人社
 config.submit = "/submit/id/";
 //删除
-config.del ="/delete/id/";
+config.del = "/delete/id/";
 //待录人保
 config.etcinput = "/etcinput/id/"
 //退款
@@ -37,7 +37,7 @@ config.fileCheck = "/filecheck/id/";
 //可以二审
 config.soreSubmit = "/soresubmit/id/";
 //拿调令
-config.takeDiaol  = "/takediaol/id/";
+config.takeDiaol = "/takediaol/id/";
 //完结
 config.success = "/success/id/";
 //派单
@@ -65,7 +65,11 @@ config.delmenu = "/menu/delete/id/";
  */
 //静态变量
 const Success = 200;
-const Error   = 400;
+const Error = 400;
 //{"code":"0","message:"信息","data":{}}
 var obj = {};
 obj.row = null;
+//任务类
+var Task = function () {};
+//客户类
+var Data = function () {};

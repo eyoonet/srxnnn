@@ -209,7 +209,6 @@ function dialogSubmit(dialogid, url = null) {
     }
     // 序列化表单数据
     var formParam = $('#' + formid).serialize();
-
     //开始提交任务 带验证表单
     if ( $('#' + formid).form('validate') ) {
         showConfirm("系统", "执行命令是否确认 ? ", function () {
@@ -218,9 +217,7 @@ function dialogSubmit(dialogid, url = null) {
                     showMsg("完成", "成功", false);
                     closeDialog(dialogid);
                     //存在DG属性就刷新
-                    //$('#' + dgid).datagrid('reload');
                     if (dgid != undefined || dgid != "") {
-                       // $('#' + dgid).treegrid('reload');
                         $('#' + dgid).datagrid('reload');
                     }
                 } else {

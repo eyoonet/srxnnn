@@ -1,0 +1,72 @@
+<!-- 任务添加窗口开始 -->
+<div id="task" form="task-form" dg="task-dg" class="easyui-dialog " title="任务添加"
+     style="width:300px;height:auto;text-align:center;padding:2px"
+     data-options="closed:true,modal:true,resizable:true">
+    <form id="task-form">
+        <div style="margin-top: 5px">
+            <input name="template_id" class="easyui-combobox combobox-f combo-f textbox-f" label="任务"
+                   style="width:49%;"
+                   data-options=" ultivalue:false,
+                             required:true,
+                             panelHeight:'auto',
+                             url:'/Combobox/Get/TASK_TITLE',
+                             valueField:'value',
+                             textField:'text',
+                             editable:false"/>
+
+            <input name="re_id" class="easyui-combobox  combobox-f combo-f textbox-f" label="用户" style="width:49%;"
+                   data-options="valueField:'value',
+                                required:true,
+                                textField:'text',
+                                url:'/combobox/Userlist',
+                                editable:false,
+                                "/>
+        </div>
+        <div style="margin-top: 5px">
+            <input name="contnet" class="easyui-textbox textbox-f" style="width: 99%; height: 150px; display: none;"
+                   data-options="multiline:true">
+        </div>
+
+        <div class="alert" style="margin:5px 2px 5px;text-align:center;width:259px">
+            <label style="margin-right: 50px">
+                <input name="reply_text" value="checked" type="checkbox" checked="checked">回馈文字
+            </label>
+            <label>
+                <input name="reply_image" value="checked" type="checkbox">回馈图片
+            </label>
+        </div>
+
+
+        <div style="margin-bottom: 5px">
+            <input id="task_time" name='task_time' class="easyui-datetimebox combo-f textbox-f datetimebox-f"
+                   style="width:99%"
+                   label="执行时间"
+                   data-options="required:true,formatter:my2formatter,parser:my2parser">
+        </div>
+    </form>
+</div>
+
+<!-- 任务添加窗口结束 -->
+<script type="text/javascript">
+
+    Task.add = function (data_id) {
+        dialog_id = 'task';
+        $("#" + dialog_id).dialog({
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    //做了提交处理
+                    dialogSubmit('task', '/task/create/' + data_id);
+                }
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#" + dialog_id).dialog('close');
+                }
+            }]
+        });
+        //打开窗口
+        $("#" + dialog_id).dialog('open');
+    }
+
+</script>

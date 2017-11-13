@@ -1,0 +1,68 @@
+<div id="TaskList" class="easyui-dialog" title="任务查看" dg="dg"
+     data-options="closed:true,
+                    toolbar:'#TaskList-toolbar',
+                    cache:false,
+                    height:550,
+                    width:1000,
+                    modal:true">
+
+    <table id="TaskList-dg" class="easyui-datagrid" style="width:100%;height:82%"
+           data-options="url:'/task/List',
+                    fitColumns:false,
+                    singleSelect:true,
+                    striped:true,
+                    fit:false,
+                    pagination:true,
+                    rownumbers:true,
+                    sortName: 'task_time',
+                    sortOrder: 'asc',
+                    remoteSort: true,
+          	 	    pageSize:10,
+		            pageList:[10,20,30,40,50],">
+        <thead>
+        <tr>
+            <th data-options="field:'task_time',sortable:true" style="width: 12%">计划时间</th>
+            <th data-options="field:'clents_name'" style="width: 5%">客户</th>
+            <th data-options="field:'title'" style="width: 10%">标题</th>
+            <th data-options="field:'se_name'" style="width: 6%">发布者</th>
+            <th data-options="field:'re_name'" style="width: 6%">接收者</th>
+            <th data-options="field:'status'" style="width: 6%">任务状态</th>
+            <th data-options="field:'create_time',sortable:true" style="width: 14%">创建时间</th>
+            <th data-options="field:'finish_time',sortable:true" style="width: 14%">处理时间</th>
+            <th data-options="field:'action',formatter:formatterTaskListAction" style="width: 10%">操作</th>
+        </tr>
+        </thead>
+    </table>
+
+
+    <div class="easyui-panel"
+         style="width:100%;height:17%;padding:10px;margin-top:2px;">
+        <p id="TaskList-contnet">panel content.</p>
+        <p id="TaskList-reply_text">panel content.</p>
+    </div>
+
+</div>
+
+<div id="TaskList-toolbar-">
+    <a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imageup">上传证件</a>
+</div>
+
+<script type="text/javascript">
+    function formatterTaskListAction(value, row, inde) {
+        return '<a class="button-default" href="javascript:Task.onDisposeTaskList()" >处理</a> ' +
+                '<a class="button-danger" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
+    }
+    Task.onDisposeTaskList = function () {
+        var row = $('#TaskList-dg').datagrid('getSelected');
+        Task.dispose(row);
+    }
+    $(function ($) {
+        $('#TaskList-dg').datagrid({
+            //用户单击
+            onClickRow: function (index, row) {
+                $('#TaskList-contnet').html(row.se_name + ' 说 ： ' + row.contnet);
+                $('#TaskList-reply_text').html(row.re_name + ' 回复 ： ' + row.reply_text);
+            }
+        })
+    })
+</script>

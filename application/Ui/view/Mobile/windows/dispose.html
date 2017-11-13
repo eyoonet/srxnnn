@@ -1,0 +1,40 @@
+<!-- 任务处理窗口开始 -->
+<div id="dispose" form="dispose-form" dg="task-dg" class="easyui-dialog " title="任务处理"
+     style="width:300px;height:auto;text-align:center;padding:5px"
+     data-options="closed:true,modal:false,resizable:true">
+    <form id="dispose-form">
+        <div class="alert" style="text-align:center;width:256px">
+            <label style="margin-right: 50px">
+                <input name="finish" value="success" id="r-success" type="radio" checked="checked">处理成功
+            </label>
+            <label>
+                <input name="finish" type="radio">处理失败
+            </label>
+        </div>
+        <div style="margin-top: 5px">
+            <div>
+                <input name="contnet" class="easyui-textbox textbox-f" style="width: 100%; height: 90px; display: none;"
+                       readonly="readonly" data-options="multiline:true">
+            </div>
+            <div style="margin-top: 5px">
+                <input name="reply_text" class="easyui-textbox textbox-f" style="width: 100%; height: 70px; display: none;"
+                       data-options="multiline:true">
+            </div>
+        </div>
+        <div style="margin-top: 5px">
+            <input name="reply_image" class="easyui-filebox filebox-f textbox-f" style="width: 100%; display: none;"
+                   data-options="buttonIcon:'icon-folder-search',buttonText:'',label:'上传凭证'">
+        </div>
+    </form>
+    <script type="text/javascript">
+
+        $(function () {
+
+        })
+    </script>
+</div>
+<!-- 任务处理窗口结束 -->
+<script type="text/javascript">
+
+</script>
+

@@ -19,7 +19,7 @@
         switch (where) {
             case "re_110":
                 param = {
-                    "rule":"re_by_id = :uid AND finish_type = :value",
+                    "rule":"re_id = :uid AND task.status = :value",
                     "uid":"0",
                     "value":"1",
                     "type":"day",
@@ -28,7 +28,7 @@
                 break;
             case "re_120":
                 param = {
-                    "rule":"re_by_id = :uid AND finish_type = :value",
+                    "rule":"re_id = :uid AND task.status = :value",
                     "uid":"0",
                     "value":"1",
                     "type":"day",
@@ -38,7 +38,7 @@
             //待办
             case "re_100":
                 param = {
-                    "rule": "re_by_id = :uid AND finish_type = :value",
+                    "rule": "re_id = :uid AND task.status = :value",
                     "uid": "0",
                     "value": "1"
                 };
@@ -46,7 +46,7 @@
             //逾期
             case "re_300":
                 param = {
-                    "rule": "re_by_id = :uid AND finish_type = :value",
+                    "rule": "re_id = :uid AND task.status = :value",
                     "uid": "0",
                     "value": "1",
                     "type": "overdue"
@@ -55,7 +55,7 @@
             //处理成功
             case "re_200":
                 param = {
-                    "rule": "re_by_id = :uid  AND finish_type = :value",
+                    "rule": "re_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "2"
                 }
@@ -63,7 +63,7 @@
             //处理睡吧
             case "re_400":
                 param = {
-                    "rule": "re_by_id = :uid  AND finish_type = :value",
+                    "rule": "re_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "0"
                 }
@@ -71,14 +71,14 @@
             //我发布的
             case "我发布的":
                 param = {
-                    "rule": "se_by_id = :uid",
+                    "rule": "se_id = :uid",
                     "uid": "0"
                 };
                 break;
             //发布的过期未处理
             case "se_300":
                 param = {
-                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "rule": "se_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "1",
                     "type": "overdue"
@@ -87,7 +87,7 @@
             //发布的处理成功
             case "se_200":
                 param = {
-                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "rule": "se_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "2"
                 };
@@ -95,7 +95,7 @@
             //发布的处理失败
             case "se_400":
                 param = {
-                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "rule": "se_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "0"
                 };
@@ -103,7 +103,7 @@
             //发布的进行中
             case "se_100":
                 param = {
-                    "rule": "se_by_id = :uid  AND finish_type = :value",
+                    "rule": "se_id = :uid  AND task.status = :value",
                     "uid": "0",
                     "value": "1"
                 };

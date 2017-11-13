@@ -24,8 +24,7 @@
             </div>
         </li>
         <li><a href="javascript:void(0)" onclick="$.mobile.go('#page-table');load_data()">客户详情</a></li>
-        <p><a href="javascript:success()" class="easyui-linkbutton c1" style="width:100%">成功</a></p>
-        <p><a href="javascript:Failure()" class="easyui-linkbutton c2" style="width:100%">失败</a></p>
+        <p><a href="javascript:Task.onDispose()" class="easyui-linkbutton c1" style="width:100%">处理</a></p>
     </ul>
 </form>
 {include file="Mobile/public/footer" /}
@@ -33,111 +32,59 @@
     /** 加载客户详情 */
     function load_data() {
         var obj = $('#task_load').data('row');
-        url = '/data/getOneData/' + obj.clents_id;
+        url = '/data/getOneData/' + obj.data_id;
         //data 的 edit 需要获取原始数据,修改器的数据是不行的.
         $.getJSON(url, function (data) {
             $('#table_load').form('load', data);
             $("#tel").attr("href", "tel:" + data.tel);
         })
     }
-    /** 任务完成 */
-    function success() {
+    Task = function(){};
+    Task.onDispose = function () {
         var obj = $('#task_load').data('row');
-        $("#success").dialog({
-            buttons: [{
-                text: '提交',
-                handler: function () {
-                    //做了提交处理
-                    var url = '/task/Finish/' + obj.id;
-                    var param = $('#success-form').serialize();
-                    $.ajax({
-                        type:'post',
-                        async:true,
-                        url:url,
-                        data:param,
-                        dataType:'json',
-                        success:function (row) {
-                            if (row.code == 200) {
-                                alert(row.msg);
-                                $("#success").dialog('close');
-                                $.mobile.go('#page-main');
-                            } else {
-                                alert(row.msg);
-                            }
-                        },
-                        error: function () {
-                            alert('ajax错误');
-                        }
-                    });
-                }
-
-
-
-            }, {
-                text: '关闭',
-                handler: function () {
-                    $("#success").dialog('close');
-                }
-            }]
-        });
-        $("#success").dialog('open').dialog('center');
-        $('.hidden').hide();
-        if (obj.type == 11) {                           //11是提交材料
-            $('#SUBMIT_DATA').show();
-            document.getElementById('js').checked = obj.Tag.js;
-            document.getElementById('tj').checked = obj.Tag.tj;
-            document.getElementById('gz').checked = obj.Tag.gz;
-        }
-        url = '/data/getOneData/' + obj.clents_id;
-        //data 的 edit 需要获取原始数据,修改器的数据是不行的.
-        $.getJSON(url, function (row) {
-            $('#success-form').form('load', row);
-        })
+        Task.dispose(obj);
     }
 
+    /**处理**/
+    Task.dispose = function (row) {
+        var dialog_id = 'dispose';
+        var formid = 'dispose-form';
+        if (row == null)return alert('未选取数据!');
+        url = '/task/dispose/' + row.id;
 
-    /** 任务失败需要填写原因 */
-    function Failure() {
-        var obj = $('#task_load').data('row');
-        if (obj.type == 11)
-            return alert('次任务只有结果没有失败!');
-        $("#comment").dialog({
+        $("#" + dialog_id).dialog({
             buttons: [{
                 text: '提交',
                 handler: function () {
-                    //做了提交处理
-                    var url = '/task/failed/' + obj.id;
-
-                    $.ajax({
-                        type:'post',
-                        async:true,
-                        url:url,
-                        data:{error: $("input[name='error']").val()},
-                        dataType:'json',
-                        success:function (row) {
-                            if (row.code == 200) {
-                                alert(row.msg);
-                                $("#success").dialog('close');
-                                $.mobile.go('#page-main');
-                            } else {
-                                alert(row.msg);
-                            }
-                        },
-                        error: function () {
-                            alert('ajax错误');
-                        }
-                    });
-
+                    // 序列化表单数据
+                    var formParam = $('#' + formid).serialize();
+                    //开始提交任务 带验证表单
+                    if ($('#' + formid).form('validate')) {
+                        //showConfirm("系统", "执行命令是否确认 ? ", function () {
+                            jsonAjax('post', url, formParam, function (ret) {
+                                if (ret.code == 200) {
+                                    alert("完成");
+                                    closeDialog(dialog_id);
+                                    $.mobile.go('#page-main')
+                                } else {
+                                    alert(ret.msg);
+                                }
+                            })
+                        //});
+                    } else {
+                        alert('数据验证失败! 请检查数据规则.');
+                    }
                 }
             }, {
                 text: '关闭',
                 handler: function () {
-                    $("#comment").dialog('close');
+                    $("#" + dialog_id).dialog('close');
                 }
             }]
         });
-        //var comment = $("input[name='comment']").val();
-        //$('#comment').textbox('setValue',comment);
-        $("#comment").dialog('open').dialog('center');
+        //打开窗口
+        $("#" + dialog_id).dialog('open');
+        $("#" + formid).form('load', row);
+        document.getElementById('r-success').checked = true;
     }
 </script>

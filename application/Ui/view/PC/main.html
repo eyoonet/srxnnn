@@ -11,17 +11,14 @@
 	</div>
 	<!-- 查询页结束 -->
 
-
 	<!-- 任务页开始 -->
 	<div title="任务" style="width:'100%';padding:5px;display:none;">
-		{include file="PC/TabsPage/task" /}
+		{include file="PC/TabsPage/TaskGrid" /}
 	</div>
 	<!-- 任务页结束 -->
 
-
 	<!-- 意向客户开始 -->
 	<!--<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px">
-
 	</div>-->
 	<!-- 意向客户结束 -->		
 	
@@ -32,7 +29,6 @@
 		</script>			
 	</div> 	
 	<!-- 统计页结束 -->
-
 
 	<!-- 人才网开始
 	<div title="人才网" style="padding:20px;display:none;">
@@ -45,7 +41,7 @@
 
 </div>
 <!--tabs end-->
- <!-- 右键菜单开始 -->
+ <!-- 右键菜单 -->
 <div id="mm" class="easyui-menu" style="width:120px;">   
     <div>没有社保</div>
     <div>问题打回</div>
@@ -54,14 +50,23 @@
 	<div>可以二审</div>	
 	<div>已约号</div>	
 </div>  
-<!-- 右键菜单结束 -->
-{include file="PC/windows/add" /}
+<!-- 数据添加 -->
+{include file="PC/windows/AddData" /}
+<!--备注窗口-->
 {include file="PC/windows/comment" /}
-{include file="PC/windows/success" /}
-{include file="PC/windows/task" /}
+<!--任务处理-->
+{include file="PC/windows/dispose" /}
+<!--添加任务-->
+{include file="PC/windows/AddTask" /}
+<!--标记-->
 {include file="PC/windows/tag" /}
-{include file="PC/windows/commit" /}
-{include file="PC/windows/error" /}
+<!--提交-->
+{include file="PC/windows/commit"/}
+<!--详情窗-->
 {include file="PC/windows/table" /}
-{include file="PC/windows/failed" /}
-{include file="PC/windows/upprice" /}
+<!--财务窗-->
+{include file="PC/windows/MoneyUp" /}
+<!--问题打回窗口-->
+{include file="PC/windows/error" /}
+<!--任务列表-->
+{include file="PC/windows/TaskList" /}

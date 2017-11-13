@@ -1,19 +1,24 @@
 <!-- 详情页开始 -->
 <style>
-    #datatable input,textarea{
-        width: 98%;height:100%;border:0px;
+    #datatable input, textarea {
+        width: 98%;
+        height: 100%;
+        border: 0px;
     }
-    #datatable th,td {
+
+    #datatable th, td {
         padding-left: 6px;
     }
+
     table.gridtable {
-        font-family: verdana,arial,sans-serif;
-        font-size:11px;
-        color:#333333;
+        font-family: verdana, arial, sans-serif;
+        font-size: 11px;
+        color: #333333;
         border-width: 1px;
         border-color: #666666;
         border-collapse: collapse;
     }
+
     table.gridtable th {
         border-width: 1px;
         padding: 3px;
@@ -21,6 +26,7 @@
         border-color: #666666;
         background-color: #e5e5e5;
     }
+
     table.gridtable td {
         border-width: 1px;
         padding: 3px;
@@ -31,9 +37,9 @@
 </style>
 <div id="table" form="error-form" dg="dg" class="easyui-dialog dialog-form-style" title="客户详情"
      style="width:1024px;height:580px;text-align:center;padding:2px 2px 2px 2px"
-     data-options="closed:true,modal:false,resizable:true,buttons:'#table-buttons'">
+     data-options="closed:true,modal:false,resizable:true,toolbar:'#table-buttons'">
 
-    <div class="easyui-layout"  data-options="fit:true">
+    <div class="easyui-layout" data-options="fit:true">
         <div data-options="region:'east',title:'图片',collapsed:true" style="width:180px;height: 100%">
             <!--图片容器-->
             <ul id="dowebok" style="padding-left: 0px;"></ul>
@@ -42,7 +48,7 @@
 
         <div data-options="region:'center'" style="padding:0px;height: 100%">
             <form id="datatable">
-                <table class="gridtable"  width="100%" >
+                <table class="gridtable" width="100%">
                     <tr>
                         <th height="40" colspan="2" align="center" scope="row">基本信息</th>
                         <th colspan="4" align="center">订单信息</th>
@@ -223,26 +229,70 @@
     </div>
 </div>
 <div id="table-buttons">
-    <a  class="easyui-linkbutton">取消预约</a>
-    <a  class="easyui-linkbutton">人才网约号</a>
-    <a  class="easyui-linkbutton" onclick="tasklist();">计划列表</a>
-    <a  class="easyui-linkbutton" onclick="$('#table').dialog('close');">关闭</a>
+    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Data.onSeTask()">发任务</a>
+    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Task.list();">计划列表</a>
+    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Data.onEdit();">修改</a>
+    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="$('#table').dialog('close');">关闭</a>
 </div>
 <!-- 详情页结束 -->
+
 <script type="text/javascript">
-    function tasklist(){
-        $('#tabs').tabs('select','任务');//选中
+    Data.onEdit = function () {
+        Data.edit($("[name='id']").val());
+    }
+
+    Data.onSeTask = function () {
+        Task.add($("[name='id']").val());
+    }
+
+    Data.loadtable = function (row) {
+        $('#datatable').form('clear');
+        $('#datatable').form('load', row);
+        $('#table').dialog('open');
+    }
+
+    Data.edit = function (data_id) {
+        var dialog_id = 'add';
+        $("#" + dialog_id).dialog({
+            modal:true,
+            title:'修改客户数据',
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    //做了提交处理
+                    dialogSubmit('add', '/data/Edit/' + data_id);
+                }
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#" + dialog_id).dialog('close');
+                }
+            }]
+        });
+        $("#" + dialog_id).dialog('open');
+        $.getJSON("/data/EditOne/" + data_id, function (row) {
+            $("#" + dialog_id + "-form").form('load', row);
+            $('#card').textbox('readonly', true);
+        })
+    }
+
+    Task.list = function () {
+        /*$('#tabs').tabs('select', '任务');//选中
         $('#table').dialog('close');
         var fields = {};
-        fields.rule  = "clents_id = :cid";
-        fields.cid = 	$("[name='id']").val();
+        fields.rule = "data_id = :cid";
+        fields.cid = $("[name='id']").val();
         $('#task-dg').datagrid({
             queryParams: fields
+        });*/
+        $("#TaskList").dialog('open');
+        var fields = {};
+        fields.rule = "data_id = :cid";
+        fields.cid = $("[name='id']").val();
+        $('#TaskList-dg').datagrid({
+            queryParams: fields
         });
-    }
-    function loadtable(row) {
-        $('#datatable').form('clear');
-        $('#datatable').form('load',row);
-        $('#table').dialog('open');
+        $('#TaskList-contnet').html('');
+        $('#TaskList-reply_text').html('');
     }
 </script>

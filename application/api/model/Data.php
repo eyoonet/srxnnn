@@ -19,6 +19,7 @@ class Data extends Model
         'II_date' => 'timestamp:Y-m-d H:i',
         'speed_time' => 'timestamp:Y-m-d H:i',
     ];
+
     // 全局查询范围
     protected static function base($query)
     {
@@ -32,31 +33,23 @@ class Data extends Model
         });
     }*/
 
+    /** ************************************模型关联开始*************************************************** */
     public function user()
     {
-       /** 一对一关联用户名 */
-        return $this->hasOne('User','id','user_id');
-       // return $this->belongsTo('User');
+        /** 一对一关联用户名 */
+        return $this->hasOne('User', 'id', 'user_id');
     }
 
     public function task()
     {
         /** 一对多关联任务 */
-        return $this->hasMany('Task','clents_id');
+        return $this->hasMany('Task', 'data_id');
     }
 
+    /** ************************************模型关联结束*************************************************** */
 
 
-    public function setWuserById($id)
-    {
-        $this->wuser_id = $id;
-        return $this->save();
-    }
-
-    /**
-     * 一审
-     * @return bool|false|int
-     */
+    /** 一审 */
     public function sign()
     {
         if ($this->getData('id')) {
@@ -84,10 +77,7 @@ class Data extends Model
         }
     }
 
-    /**
-     * 二审
-     * @return bool
-     */
+    /** 二审 */
     public function submit()
     {
         if ($this->getData('id')) {
@@ -109,10 +99,7 @@ class Data extends Model
         }
     }
 
-    /**
-     * 那调令
-     * @return bool
-     */
+    /** 拿调令 */
     public function takeDiaol()
     {
         if ($this->getData('id')) {
@@ -135,6 +122,7 @@ class Data extends Model
             return false;
         }
     }
+
     /**
      * 备份单条DATA数据
      * @param $type
@@ -185,6 +173,16 @@ class Data extends Model
         return $where;
     }
 
+    /** 取一条数据 */
+    public static function OneData($id)
+    {
+        return self::view('data', '*,price-deposit surplus')
+            ->view('user u', 'user_name', 'data.user_id=u.id', 'LEFT')
+            ->view('user n', 'user_name nuser_name', 'data.nuser_id=n.id', 'LEFT')
+            ->view('user w', 'user_name wuser_name', 'data.wuser_id=w.id', 'LEFT')
+            ->find($id);
+    }
+
     /**
      * 菜单获取表格格式数据
      * 'id > :id AND name LIKE :name ', ['id' => 0, 'name' => 'thinkphp%']
@@ -195,18 +193,19 @@ class Data extends Model
      */
     public function List($params, $rule, $fieids, $group_id)
     {
-        $lists = $this->where('order', 1)
+        $lists = $this
             ->view('data', '*,price-deposit surplus')
             ->view('user u', 'user_name', 'data.user_id=u.id', 'LEFT')
             ->view('user n', 'user_name nuser_name', 'data.nuser_id=n.id', 'LEFT')
             ->view('user w', 'user_name wuser_name', 'data.wuser_id=w.id', 'LEFT')
+            ->where('order', 1)
             ->order($params['sort'], $params['order'])
             ->page($params['page'], $params['rows'])
             ->where($rule, $fieids)
             ->where($this->groupWhere($group_id))
-            //->fetchSql(true)
             ->select();
-        $total = $this->where('order', 1)
+        $total = $this
+            ->where('order', 1)
             ->where($rule, $fieids)
             ->where($this->groupWhere($group_id))
             ->count();
@@ -254,32 +253,34 @@ class Data extends Model
         }
         //Excel 是不能分页的
         if ($excel) {
-            return $this->where('order', 1)
-                ->order($params['sort'], $params['order'])
+            return $this
                 ->view('data', $fieid)
-                ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
-                //->fetchSql(true)
+                ->view('user u', 'user_name', 'data.user_id=u.id', 'LEFT')
+                ->view('user n', 'user_name nuser_name', 'data.nuser_id=n.id', 'LEFT')
+                ->view('user w', 'user_name wuser_name', 'data.wuser_id=w.id', 'LEFT')
+                ->where('order', 1)
+                ->order($params['sort'], $params['order'])
                 ->where($this->groupWhere($group_id))
                 ->where($map)
                 ->select();
         } else {
             //返回带分页的
-
-            $lists = $this->where('order', 1)
+            $lists = $this
+                ->view('data', '*,price-deposit surplus')
+                ->view('user u', 'user_name', 'data.user_id=u.id', 'LEFT')
+                ->view('user n', 'user_name nuser_name', 'data.nuser_id=n.id', 'LEFT')
+                ->view('user w', 'user_name wuser_name', 'data.wuser_id=w.id', 'LEFT')
+                ->where('order', 1)
                 ->order($params['sort'], $params['order'])
                 ->page($params['page'], $params['rows'])
-                ->view('data', '*,price-deposit surplus')
-                ->view('user', 'user_name', 'data.user_id=user.id', 'LEFT')
-                //->fetchSql(true)
                 ->where($this->groupWhere($group_id))
                 ->where($map)
                 ->select();
-
-            $total = $this->where('order', 1)
+            $total = $this
+                ->where('order', 1)
                 ->where($this->groupWhere($group_id))
                 ->where($map)
                 ->count();
-
             return array(
                 'rows' => $lists, 'total' => $total
             );
@@ -295,6 +296,7 @@ class Data extends Model
     {
         return $this->save(['order' => 0], ['id' => $id]);
     }
+
 
     /**
      * 就是返回数组格式为 不知道相同值会不会有问题
@@ -320,10 +322,21 @@ class Data extends Model
         }
     }
 
-    /***********************************************************************************
-     * **********************************修改器******************************************
-     ***********************************************************************************/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /** **********************************************模型常量开始******************************************* */
     const NEW_CLIENT = -1;//新进客户
     const NOT_SHEBAO = 1;//没有社保
     const REFURN = 2;//问题打回
@@ -343,10 +356,19 @@ class Data extends Model
     const OUT_DIAOLING = 16;//出调令
     const GET_DIAOLING = 17;//拿调令
     const FINISH = 18;//完结
+    /** **********************************************模型常量结束******************************************* */
 
-    /***********************************************************************************
-     ************************************获取器******************************************
-     ***********************************************************************************/
+
+
+
+
+
+
+
+
+
+
+    /** **********************************************获取器开始******************************************* */
     public function getStatusAttr($key)
     {
         $data = [
@@ -450,11 +472,14 @@ class Data extends Model
             return $data[$key];
         }
     }
+
     public function getShebaoAttr($name)
     {
-        $value = date_month_diff(strtotime($name),time());
+        $value = date_month_diff(strtotime($name), time());
         //return $name;
-        return isset($value['mon'])?$name.'='.$value['mon']:$name;
+        return isset($value['mon']) ? $name . '=' . $value['mon'] : $name;
 
     }
+    /** **********************************************获取器结束******************************************* */
+
 }

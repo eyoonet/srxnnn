@@ -34,17 +34,17 @@ class IndexController extends Base
 
     public function Settings()
     {
-        return response($this->fetch("/PC/TabsJson/settings"));
+        return response($this->fetch("/PC/Ajax/settings"));
     }
 
     public function Log()
     {
-        return response($this->fetch("/PC/TabsJson/log"));
+        return response($this->fetch("/PC/Ajax/log"));
     }
 
     public function Task()
     {
-        return response($this->fetch('/PC/TabsJson/task'));
+        return response($this->fetch('/PC/Ajax/task'));
     }
 
     public function Mobile()
@@ -55,7 +55,7 @@ class IndexController extends Base
     public function Upload()
     {
         //$this->assign('idcard');
-        return response($this->fetch('/PC/windows/upload'));
+        return response($this->fetch('/PC/Ajax/upload'));
     }
 
     public function downExcel(Data $M)

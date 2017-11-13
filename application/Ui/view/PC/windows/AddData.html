@@ -2,15 +2,18 @@
     .my-ul {
         list-style-type: none;
     }
+
     .my-ul li {
         margin: 5px 5px 5px 5px;
     }
+
     .my-ul li label {
         float: left;
         width: 70px;
         line-height: 25px;
     }
-    .my-ul li input, select{
+
+    .my-ul li input, select {
         width: 148px;
     }
 </style>
@@ -41,15 +44,15 @@
                 </li>
                 <li>
                     <label>旺旺号</label>
-                    <input name="wangwang" class="easyui-textbox" />
+                    <input name="wangwang" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>人保账号</label>
-                    <input name="renbao_user" class="easyui-textbox" />
+                    <input name="renbao_user" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>人保密码</label>
-                    <input name="renbao_password" class="easyui-textbox" />
+                    <input name="renbao_password" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>学历</label>
@@ -63,11 +66,11 @@
                 </li>
                 <li>
                     <label>毕业学校</label>
-                    <input name="schoolName" class="easyui-textbox" />
+                    <input name="schoolName" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>专业</label>
-                    <input name="major" class="easyui-textbox" />
+                    <input name="major" class="easyui-textbox"/>
                 </li>
                 <li>
                     <label>毕业日期</label>
@@ -140,7 +143,7 @@
                 </li>
                 <li>
                     <label>社保数</label>
-                    <input  name="shebao"   class="easyui-textbox">
+                    <input name="shebao" class="easyui-textbox">
                     <!--<select name="shebao" class="easyui-combobox" data-options="panelHeight:'auto',editable:false">
                         <option value="0">未缴社保</option>
                         <option value="2017-01">17-1月起缴</option>
@@ -186,11 +189,11 @@
                 </li>
                 <li>
                     <label>价格</label>
-                    <input name="price" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
+                    <input name="price" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'"/>
                 </li>
                 <li>
                     <label>定金</label>
-                    <input name="deposit" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'" />
+                    <input name="deposit" class="easyui-numberbox" data-options="min:0,precision:2,prefix:'$'"/>
                 </li>
                 <li>
                     <label>来源</label>
@@ -221,7 +224,7 @@
         <div style="float: left">
             <ul class="my-ul" style="">
                 {foreach $extadds as $itm }
-                     {:htmlspecialchars_decode($itm.html)}
+                {:htmlspecialchars_decode($itm.html)}
                 {/foreach}
                 <li>
                     <label>服务窗口</label>
@@ -257,12 +260,12 @@
                 </li>
                 <li>
                     <label>保管地</label>
-                    <input name="danan_ads" class="easyui-textbox" />
+                    <input name="danan_ads" class="easyui-textbox"/>
                 </li>
 
                 <li>
                     <label>标签</label>
-                    <input name="Tag" class="easyui-textbox" />
+                    <input name="Tag" class="easyui-textbox"/>
                 </li>
                 <li>
                     <input name="comment" class="easyui-textbox" style="width:218px;height:105px;"
@@ -277,7 +280,7 @@
 </div>
 
 <div id="add-toolbar">
-    <a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imageup" >上传证件</a>
+    <a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imageup">上传证件</a>
     <!--<a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imagedel">清空图片</a>-->
 </div>
 <div id="upLoadByImage" class="easyui-dialog" title="图片上传" style="width:695px;height:555px;"
@@ -289,15 +292,17 @@
 </div>
 <!-- 添加数据结束 -->
 <script type="text/javascript">
+
+
     $('#add-buttons-imageup').linkbutton({
-        onClick: function(){
+        onClick: function () {
             var card = $("#card").val();
-            if (card == ""){
+            if (card == "") {
                 return showMsg("错误", '身份证有误不能上传!', true, 'error');
-            }else{
+            } else {
                 $('#upLoadByImage').dialog('open').dialog('refresh');
-                //$('#upLoadByImage').panel('refresh');
             }
         },
     });
+
 </script>

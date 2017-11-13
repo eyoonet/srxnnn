@@ -22,12 +22,12 @@ $(function ($) {
         pageList: [15, 30, 45, 60, 75],
         toolbar: "#Dg-toobar",
         columns: [[
-            {
+            /*{
                 field: 'id', title: '操作', width: 65, formatter: function (value, row, index) {
                 return '<a class="button-default" href="#">约号</a> ' +
                     '<a class="button-danger" href="#">取消</a>';
             }
-            },
+            },*/
             {field: 'name', title: '姓名', width: "5%"},
             {field: 'card', title: '身份证号', width: '12%'},
             {field: 'tel', title: '电话', width: '8%'},
@@ -56,7 +56,7 @@ $(function ($) {
             //{field:'adderss',title:'迁入地',width:'7%'},
             {field: 'sbtype', title: '申报类型', width: '5%'},
             //{field:'speed_time',title:'进度日期',width:'7%'},
-            {field:'shebaoname',title:'社保公司',width:'15%'},
+            {field: 'shebaoname', title: '社保公司', width: '15%'},
             //{field:'upuser',title:'修改人',width:'10%'},
             //{field:'wuser',title:'外勤',width:'5%'},
         ]],
@@ -106,53 +106,40 @@ $(function ($) {
         onDblClickRow: function (index, obj) {
             if (click) return;//解决冲突
             //$('#tabs').tabs('select','详情页');
-            loadtable(obj);
-            images(obj.card);
+            Data.loadtable(obj);
+            Data.loadImages(obj.card);
         }
     });
 })
 
-function images(card) {
+Data.loadImages = function (card) {
     //必须释放图片给下一次使用
     $('#dowebok').viewer('destroy');
     $("#dowebok").empty();//清空图片箱子
     $.getJSON("/data/imageList?idcard=" + card, function (data) {
-        console.log(data);
-        for (var i = 0; i < data.length; i++) {
-            var image = '/upload/idcards/' + card + '/' + data[i];
-            var img =
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                var image = '/upload/idcards/' + card + '/' + data[i];
+                var img =
 
-                '<li>' +
+                    '<li>' +
 
-                '<div>' + data[i] + ' <a href="javascript:"> 删除 </a></div>' +
+                    '<div>' + data[i] + ' <a href="javascript:"> 删除 </a></div>' +
 
-                '<img data-original="' + image + '" src="' + image + '" alt="' + data[i] + '">' +
+                    '<img data-original="' + image + '" src="' + image + '" alt="' + data[i] + '">' +
 
+                    '</li>'
 
-                '</li>'
-
-            $("#dowebok").append(img);
-        }
-        setTimeout(function () {
-            //需要隐藏遮挡物
-            var top = $('.layout-panel-north')
-            var bottom = $('.layout-panel-south')
-            var west = $('.layout-panel-west')
+                $("#dowebok").append(img);
+            }
             $('#dowebok').viewer({
                 url: 'data-original',
                 shown: function () {
-                    /* top.hide();
-                     bottom.hide();
-                     west.hide();*/
-                    //top.css({ z-index: 0 });
                 },
                 hide: function () {
-                    /*west.show();
-                     top.show();
-                     bottom.show()*/
                 },
             });
-        }, 1000);
+        }
     });
 }
 
