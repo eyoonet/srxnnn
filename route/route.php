@@ -61,6 +61,7 @@ Route::group('ui',[
     'log'       =>  'ui/index/Log',
     'task'      =>  'ui/index/Task',
     'upload'    =>  'ui/index/Upload',
+    'evidence'  =>  'ui/index/evidence',
     'mobile'    =>  'ui/index/Mobile',
     'downExcel' =>  'ui/index/downExcel'                    //下载excel表格
 ]);

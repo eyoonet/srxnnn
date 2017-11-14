@@ -230,7 +230,7 @@
 </div>
 <div id="table-buttons">
     <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Data.onSeTask()">发任务</a>
-    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Task.list();">计划列表</a>
+    <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Data.onTaskList();">计划列表</a>
     <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="Data.onEdit();">修改</a>
     <a class="easyui-linkbutton button-xs l-btn l-btn-small" onclick="$('#table').dialog('close');">关闭</a>
 </div>
@@ -243,6 +243,12 @@
 
     Data.onSeTask = function () {
         Task.add($("[name='id']").val());
+        loadRcdate($("[name='id']").val())
+    }
+
+    Data.onTaskList = function () {
+        var data_id = $("[name='id']").val();
+        Task.list(data_id);
     }
 
     Data.loadtable = function (row) {
@@ -254,8 +260,8 @@
     Data.edit = function (data_id) {
         var dialog_id = 'add';
         $("#" + dialog_id).dialog({
-            modal:true,
-            title:'修改客户数据',
+            modal: true,
+            title: '修改客户数据',
             buttons: [{
                 text: '提交',
                 handler: function () {
@@ -276,23 +282,16 @@
         })
     }
 
-    Task.list = function () {
-        /*$('#tabs').tabs('select', '任务');//选中
-        $('#table').dialog('close');
-        var fields = {};
-        fields.rule = "data_id = :cid";
-        fields.cid = $("[name='id']").val();
-        $('#task-dg').datagrid({
-            queryParams: fields
-        });*/
+    Task.list = function (data_id) {
         $("#TaskList").dialog('open');
         var fields = {};
         fields.rule = "data_id = :cid";
-        fields.cid = $("[name='id']").val();
+        fields.cid = data_id;
         $('#TaskList-dg').datagrid({
             queryParams: fields
         });
         $('#TaskList-contnet').html('');
         $('#TaskList-reply_text').html('');
+        $('#TaskList').data('data_id',data_id);
     }
 </script>

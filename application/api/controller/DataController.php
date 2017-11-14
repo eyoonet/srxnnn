@@ -155,6 +155,7 @@ class DataController extends Base
         $M->speed_time = time();
         $M->service = $this->request->param('service');
         $M->comment = $this->request->param('comment');
+        $M->rcdate = null;
         return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -340,6 +341,7 @@ class DataController extends Base
         } else if ($M->getData('speed') == 1) {
             $M->status = Data::APPOINTMENT_II;//已约号2
         }
+        $M->rcdate = null;
         return $M->save() ? Res::Json(200) : Res::Json(400);
     }
 
@@ -416,7 +418,6 @@ class DataController extends Base
                 ->where('order', 1)
                 ->where('status', Data::AUDIT_SUCCESS)
                 ->whereOr("`mode`=:mode  AND  `status`=:status", $Map)
-                ->fetchSql()
                 ->select()
         );
     }

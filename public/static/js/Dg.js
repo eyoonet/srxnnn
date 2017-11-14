@@ -22,12 +22,11 @@ $(function ($) {
         pageList: [15, 30, 45, 60, 75],
         toolbar: "#Dg-toobar",
         columns: [[
-            /*{
-                field: 'id', title: '操作', width: 65, formatter: function (value, row, index) {
-                return '<a class="button-default" href="#">约号</a> ' +
-                    '<a class="button-danger" href="#">取消</a>';
+            {
+                field: 'id', title: '操作', width: 35, formatter: function (value, row, index) {
+                return '<a class="button-info button-xs l-btn l-btn-small" href="javascript:Task.list(' + row.id + ')" >任务</a> ';
             }
-            },*/
+            },
             {field: 'name', title: '姓名', width: "5%"},
             {field: 'card', title: '身份证号', width: '12%'},
             {field: 'tel', title: '电话', width: '8%'},

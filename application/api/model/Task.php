@@ -38,7 +38,8 @@ class Task extends Model
     protected static function base($query)
     {
         // 查询状态为1的数据
-        $query->view('task', 'id,template_id,status,se_id,re_id,contnet,reply_text,reply_image,create_time,task_time,finish_time,finish,data_id')
+        $query
+            ->view('task', 'id,template_id,status,se_id,re_id,contnet,reply_text,reply_image,create_time,task_time,finish_time,finish,data_id')
             ->view('task_template temp', 'title', 'task.template_id = temp.id')
             ->view('user A', 'user_name as se_name', 'task.se_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_id = B.id', 'LEFT')
@@ -197,11 +198,19 @@ class Task extends Model
                     }
                     break;
             }
+            //设置人才网时间
             $data->rcdate = $post['task_time'];
+            //设置外勤ID
             $data->wuser_id = $post['re_id'];
-            $data->status = 100;//派单外勤
+            //判断是不是已经拍单
+            if ($data->getData('status') != 100) {
+                $data->status = 100;//派单外勤
+            } else {
+                $this->error = '出错啦,检查一下是不是已经派过单给外勤没执行完成,或者执行失败了?';
+                return false;
+            }
             if (!$data->save()) {
-                $this->error = '派单出错!..DATA更新失败..';
+                $this->error = '未知错误!!代码 1110';
                 return false;
             }
         }
@@ -250,10 +259,10 @@ class Task extends Model
     /** 任务处理的数据验证 */
     public function dispose_validate($post, $uid)
     {
-        /*if ($this->getData('status') != 1) {
+        if ($this->getData('status') != 1) {
             $this->error = '当前任务已经处理,请勿重复提交!';
             return false;
-        }*/
+        }
         if ($uid != 1) {
             if ($this->re_id != $uid) {
                 $this->error = '当前任务执行者不符!';
@@ -392,6 +401,16 @@ class Task extends Model
             -1 => '撤回',
         ];
         return isset($data[$key]) ? $data[$key] : "未知";
+    }
+
+    public function getFinishAttr($key)
+    {
+        $data = [0 => '失败', 1 => '成功'];
+        if ($key == null) {
+            return '未知';
+        } else {
+            return isset($data[$key]) ? '成功' : '失败';
+        }
     }
 
 

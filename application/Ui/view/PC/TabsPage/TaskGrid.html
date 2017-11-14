@@ -14,15 +14,16 @@
                     toolbar:'#task-dg-buttions'">
     <thead>
     <tr>
+        <th data-options="field:'action',formatter:formatterTaskAction" style="width: 90px">操作</th>
         <th data-options="field:'task_time',sortable:true" style="width: 9%">计划时间</th>
-        <th data-options="field:'clents_name',formatter:formatterTaskName" style="width: 10%">客户</th>
-        <th data-options="field:'title'" style="width: 10%">标题</th>
-        <th data-options="field:'se_name'" style="width: 8%">任务发布者</th>
-        <th data-options="field:'re_name'" style="width: 8%">任务接收者</th>
-        <th data-options="field:'status'" style="width: 10%">任务状态</th>
-        <th data-options="field:'create_time',sortable:true" style="width: 10%">创建时间</th>
-        <th data-options="field:'finish_time',sortable:true" style="width: 10%">处理时间</th>
-        <th data-options="field:'action',formatter:formatterTaskAction" style="width: 10%">操作</th>
+        <th data-options="field:'clents_name',formatter:formatterTaskName" style="width: 5%">客户</th>
+        <th data-options="field:'title',sortable:true" style="width: 10%">标题</th>
+        <th data-options="field:'se_name',sortable:true" style="width: 5%">发布者</th>
+        <th data-options="field:'re_name',sortable:true" style="width: 5%">接收者</th>
+        <th data-options="field:'status',sortable:true" style="width: 4%">状态</th>
+        <th data-options="field:'finish',sortable:true" style="width: 4%">结果</th>
+        <th data-options="field:'create_time',sortable:true" style="width: 14%">创建时间</th>
+        <th data-options="field:'finish_time',sortable:true" style="width: 14%">处理时间</th>
     </tr>
     </thead>
 </table>
@@ -38,13 +39,13 @@
     <div>
         <form id="task-search">
             发布者:
-            <select name="se_by_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
+            <select name="se_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
                     data-options="valueField:'value',
                                 textField:'text',
                                 url:'combobox/Userlist'">
             </select>
             接收者:
-            <select name="re_by_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
+            <select name="re_id" class="easyui-combobox" panelHeight="auto" style="width:100px"
                     data-options="valueField:'value',
                                 textField:'text',
                                 url:'combobox/Userlist'">
@@ -75,8 +76,8 @@
         $('#task-dg').datagrid({
             //用户单击
             onClickRow: function (index, row) {
-                $('#p-comments').html(row.comments);
-                $('#p-error').html(row.error);
+                $('#p-comments').html(row.se_name + ' 说 ： ' + row.contnet);
+                $('#p-error').html(row.re_name + ' 回复 ： ' + row.reply_text);
             }
         })
     })
@@ -84,10 +85,13 @@
 
 <script type="text/javascript">
     //**************************************************
+
+    /** 处理按钮 */
     Task.onDispose = function () {
         var row = $('#task-dg').datagrid('getSelected');
         Task.dispose(row);
     }
+
     /** 撤回 */
     Task.revocation = function (id) {
         showConfirm("您好", "执行命令为: [ 撤回当前任务 ] 是否确认 ? ", function () {
@@ -102,6 +106,53 @@
             })
         });
     }
+
+    /** 转发 */
+    Task.forward = function (task_id, data_id) {
+        var dialog_id = 'task';
+        var formid = 'task-form';
+        var url = '/task/Forward' + '/' + task_id + '/' + data_id
+        $("#" + dialog_id).dialog({
+            buttons: [{
+                text: '提交',
+                handler: function () {
+                    // 序列化表单数据
+                    var formParam = $('#' + formid).serialize();
+                    //开始提交任务 带验证表单
+                    if ($('#' + formid).form('validate')) {
+                        showConfirm("系统", "执行命令是否确认 ? ", function () {
+                            jsonAjax('post', url, formParam, function (ret) {
+                                if (ret.code == Success) {
+                                    showMsg("完成", "成功", false);
+                                    closeDialog(dialog_id);
+                                    $('#task-dg').datagrid('reload');
+                                    $('#TaskList-dg').datagrid('reload');
+                                    $('#dg').datagrid('reload');
+                                } else {
+                                    showMsg("错误", ret.msg, true, 'error');
+                                }
+                            })
+                        });
+                    } else {
+                        showMsg("错误", '数据验证失败! 请检查数据规则.,', true, 'error');
+                    }
+                }
+            }, {
+                text: '关闭',
+                handler: function () {
+                    $("#" + dialog_id).dialog('close');
+                }
+            }]
+        });
+        //打开窗口
+        $("#" + dialog_id).dialog('open');
+        //获取人才网时间
+        $.getJSON('/data/getRcDate/' + data_id, function (res) {
+            $('#rcdate').datetimebox('setValue', res);
+        })
+    }
+
+
     /**处理**/
     Task.dispose = function (row) {
         var dialog_id = 'dispose';
@@ -146,6 +197,8 @@
         document.getElementById('r-success').checked = true;
     }
 
+
+
     //*********************************************
     Task.search = function () {
         var val = $("#task-search").serializeObject();
@@ -158,26 +211,17 @@
     //*************************************************
 
     function formatterTaskAction(value, row, inde) {
-        return '<a class="button-default" href="javascript:Task.onDispose()" >处理</a> ' +
-                '<a class="button-danger" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
+        return '<a class="button-default button-xs l-btn l-btn-small" href="javascript:Task.onDispose()" >处理</a> ' +
+                '<a class="button-success button-xs l-btn l-btn-small" href="javascript:Task.forward(' + row.id + ','+row.data_id+')" >转发</a> ' +
+                '<a class="button-danger button-xs l-btn l-btn-small" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
     }
 
     function formatterTaskName(value, row, index) {
         if (value != null) {
-            return '<div dg="task-dg">' +
-                    '<a class="button-default" href="javascript:showtable(' + row.data_id + ')">详情</a> ' +
-                    '<a class="button-danger" onclick="loadRcdate(' + row.data_id + ');ButtonRunDialog(this);"  dialog="task"  url="task/Forward' + '/' + row.id + '/' + row.data_id + '">转发</a>' +
-                    '<span>【' + value + '】</span>' +
-                    '</div>';
+            return '<a class="button-primary button-xs l-btn l-btn-small" href="javascript:showtable(' + row.data_id + ')">' + value + '</a>';
         }
     }
 
-    //*************************************************
-    function loadRcdate(id) {
-        $.getJSON('/data/getRcDate/' + id, function (res) {
-            $('#rcdate').datetimebox('setValue', res);
-        })
-    }
     //**************************************************
     function showtable(id) {
         $.getJSON('/data/getOneData/' + id, function (res) {
@@ -185,4 +229,5 @@
             images(res.card);
         })
     }
+
 </script>

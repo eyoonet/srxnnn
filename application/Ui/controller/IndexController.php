@@ -57,7 +57,11 @@ class IndexController extends Base
         //$this->assign('idcard');
         return response($this->fetch('/PC/Ajax/upload'));
     }
-
+    public function evidence()
+    {
+        //$this->assign('idcard');
+        return response($this->fetch('/PC/Ajax/evidence'));
+    }
     public function downExcel(Data $M)
     {
         $fieids = $this->request->except(['/ui/downExcel'], 'get');

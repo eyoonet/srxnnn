@@ -17,22 +17,31 @@
                        readonly="readonly" data-options="multiline:true">
             </div>
             <div style="margin-top: 5px">
-                <input name="reply_text" class="easyui-textbox textbox-f" style="width: 100%; height: 70px; display: none;"
+                <input name="reply_text" class="easyui-textbox textbox-f"
+                       style="width: 100%; height: 70px; display: none;"
                        data-options="multiline:true">
             </div>
         </div>
         <div style="margin-top: 5px">
-            <input name="reply_image" class="easyui-filebox filebox-f textbox-f" style="width: 100%; display: none;"
-                   data-options="buttonIcon:'icon-folder-search',buttonText:'',label:'上传凭证'">
+            <!--<input name="reply_image" class="easyui-filebox filebox-f textbox-f" style="width: 100%; display: none;"
+                   data-options="buttonIcon:'icon-folder-search',buttonText:'',label:'上传凭证'">-->
+            <a class="easyui-linkbutton" onclick="$('#evidence').dialog('open').dialog('refresh');">上传凭证</a>
         </div>
     </form>
     <script type="text/javascript">
 
-        $(function () {
-
-        })
     </script>
 </div>
+
+<div id="evidence" class="easyui-dialog " title="上传凭证"
+     style="width:400px;height:300px;text-align:center;padding:5px"
+     data-options="closed:true,
+     href:'/ui/evidence',
+     modal:false,
+     resizable:true">
+</div>
+
+
 <!-- 任务处理窗口结束 -->
 <script type="text/javascript">
 

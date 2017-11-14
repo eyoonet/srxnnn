@@ -21,15 +21,16 @@
 		            pageList:[10,20,30,40,50],">
         <thead>
         <tr>
+            <th data-options="field:'action',formatter:formatterTaskListAction" style="60px">操作</th>
             <th data-options="field:'task_time',sortable:true" style="width: 12%">计划时间</th>
             <th data-options="field:'clents_name'" style="width: 5%">客户</th>
-            <th data-options="field:'title'" style="width: 10%">标题</th>
-            <th data-options="field:'se_name'" style="width: 6%">发布者</th>
-            <th data-options="field:'re_name'" style="width: 6%">接收者</th>
-            <th data-options="field:'status'" style="width: 6%">任务状态</th>
-            <th data-options="field:'create_time',sortable:true" style="width: 14%">创建时间</th>
-            <th data-options="field:'finish_time',sortable:true" style="width: 14%">处理时间</th>
-            <th data-options="field:'action',formatter:formatterTaskListAction" style="width: 10%">操作</th>
+            <th data-options="field:'title',sortable:true" style="width: 10%">标题</th>
+            <th data-options="field:'se_name',sortable:true" style="width: 6%">发布者</th>
+            <th data-options="field:'re_name',sortable:true" style="width: 6%">接收者</th>
+            <th data-options="field:'status',sortable:true" style="width: 6%">状态</th>
+            <th data-options="field:'finish',sortable:true" style="width: 4%">结果</th>
+            <th data-options="field:'finish_time',sortable:true" style="width: 13%">处理时间</th>
+            <th data-options="field:'create_time',sortable:true" style="width: 13%">创建时间</th>
         </tr>
         </thead>
     </table>
@@ -43,19 +44,28 @@
 
 </div>
 
-<div id="TaskList-toolbar-">
-    <a class="easyui-linkbuttion button-xs l-btn l-btn-small" id="add-buttons-imageup">上传证件</a>
+<div id="TaskList-toolbar">
+    <a  class="easyui-linkbuttion button-xs l-btn l-btn-small" onclick="Task.onAdd()">添加</a>
 </div>
 
 <script type="text/javascript">
+
     function formatterTaskListAction(value, row, inde) {
-        return '<a class="button-default" href="javascript:Task.onDisposeTaskList()" >处理</a> ' +
-                '<a class="button-danger" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
+        return '<a class="button-default button-xs l-btn l-btn-small" href="javascript:Task.onDisposeTaskList()" >处理</a> ' +
+                '<a class="button-danger button-xs l-btn l-btn-small" href="javascript:Task.revocation(' + row.id + ')" >撤回</a>'
     }
+
+
     Task.onDisposeTaskList = function () {
         var row = $('#TaskList-dg').datagrid('getSelected');
         Task.dispose(row);
     }
+
+    Task.onAdd = function () {
+        var data_id = $('#TaskList').data('data_id');
+        Task.add(data_id);
+    }
+
     $(function ($) {
         $('#TaskList-dg').datagrid({
             //用户单击

@@ -1,55 +1,67 @@
 {layout name="PC/layout" /}
 <!-- tabs start -->
-<script type="text/javascript">
+<div id="tabs" class="easyui-tabs" data-options="fit:true">
 
-</script>
-<div id="tabs" class="easyui-tabs" data-options="fit:true" >
+    <!-- 查询页开始 -->
+    <div title="查询页" data-option="fit:true" style="width:'100%';padding:5px;display:none;">
+        {include file="PC/TabsPage/DataGrid" /}
+    </div>
+    <!-- 查询页结束 -->
 
-	<!-- 查询页开始 -->
-	<div title="查询页" data-option="fit:true" style="width:'100%';padding:5px;display:none;">
-		{include file="PC/TabsPage/DataGrid" /}
-	</div>
-	<!-- 查询页结束 -->
+    <!-- 任务页开始 -->
+    <div title="任务" style="width:'100%';padding:5px;display:none;">
+        {include file="PC/TabsPage/TaskGrid" /}
+    </div>
+    <!-- 任务页结束 -->
 
-	<!-- 任务页开始 -->
-	<div title="任务" style="width:'100%';padding:5px;display:none;">
-		{include file="PC/TabsPage/TaskGrid" /}
-	</div>
-	<!-- 任务页结束 -->
+    <!-- 意向客户开始 -->
+    <!--<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px">
+    </div>-->
+    <!-- 意向客户结束 -->
 
-	<!-- 意向客户开始 -->
-	<!--<div title="意向客户通讯录" data-options="href:'/ui/comsrx',closable:false" style="padding:10px">
-	</div>-->
-	<!-- 意向客户结束 -->		
-	
-	<!-- 统计页开始 -->
-	<div title="统计" style="padding:20px;display:none;">
-		<script type="text/javascript">
+    <!-- 统计页开始 -->
+    <div title="统计" style="padding:20px;display:none;">
+        <script type="text/javascript">
 
-		</script>			
-	</div> 	
-	<!-- 统计页结束 -->
+        </script>
+    </div>
+    <!-- 统计页结束 -->
 
-	<!-- 人才网开始
-	<div title="人才网" style="padding:20px;display:none;">
-	    <iframe src='http://aux.szhr.com/pasr/login-person.jsp'  width='32%' height=520></iframe>
-		<iframe src='http://info.szhr.com:9001/public/docRcvQuery.jsp'  width='32%' height=520></iframe>
-		<iframe src='http://info.szhr.com:9001/public/agentProgQuery.jsp'  width='32%' height=520></iframe>    
-		<script type="text/javascript"></script>
-	</div> 	
-	人才网结束 -->
+    <!-- 人才网开始 -->
+    <div title="人才网" style="padding:20px;display:none;">
+        <iframe src='http://aux.szhr.com/pasr/login-person.jsp' width='32%' height=520></iframe>
+        <iframe src='http://info.szhr.com:9001/public/docRcvQuery.jsp' width='32%' height=520></iframe>
+        <iframe src='http://info.szhr.com:9001/public/agentProgQuery.jsp' width='32%' height=520></iframe>
+        <script type="text/javascript"></script>
+    </div>
+    <!-- 人才网结束 -->
 
 </div>
 <!--tabs end-->
- <!-- 右键菜单 -->
-<div id="mm" class="easyui-menu" style="width:120px;">   
+<!-- 右键菜单 -->
+<div id="mm" class="easyui-menu" style="width:120px;">
     <div>没有社保</div>
     <div>问题打回</div>
     <div>待录人保</div>
-	<div>提交人保</div>	
-	<div>可以二审</div>	
-	<div>已约号</div>	
-</div>  
+    <div>提交人保</div>
+    <div>可以二审</div>
+    <div>已约号</div>
+</div>
+
+<script type="text/javascript">
+   $(function(){
+       $('#tabs').tabs({
+           onSelect: function (title, index) {
+               if (index == 0) {
+                   $('#aa').accordion('select', 0);
+               } else if (index == 1) {
+                   $('#aa').accordion('select', 1);
+               }
+           }
+       });
+   })
+</script>
+
 <!-- 数据添加 -->
 {include file="PC/windows/AddData" /}
 <!--备注窗口-->
