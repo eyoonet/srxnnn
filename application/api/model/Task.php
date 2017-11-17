@@ -43,7 +43,8 @@ class Task extends Model
             ->view('task_template temp', 'title', 'task.template_id = temp.id')
             ->view('user A', 'user_name as se_name', 'task.se_id = A.id', 'LEFT')
             ->view('user B', 'user_name as re_name', 'task.re_id = B.id', 'LEFT')
-            ->view('data', 'name as clents_name', 'task.data_id=data.id', 'LEFT');
+            ->view('data', 'name as clents_name', 'task.data_id=data.id', 'LEFT')
+            ->where('task.status <> -1');
     }
 
     /** **********************************************查询开始******************************************* */
@@ -119,6 +120,30 @@ class Task extends Model
         );
     }
 
+    /**
+     * @param $params array   分页参数
+     * @param $rule   string  规则
+     * @param $fieids array   规则绑定
+     * @param $times  array   时间
+     * @return array
+     */
+    public function ListByTimeBettween($params, $rule, $fieids, $times)
+    {
+        //date("Y-m-d")
+        $lists = $this
+            ->order($params['sort'], $params['order'])
+            ->page($params['page'], $params['rows'])
+            ->where('task.task_time', 'between time', $times)
+            ->where($rule, $fieids)
+            ->select();
+        $total = $this
+            ->where('task.task_time', 'between time', $times)
+            ->where($rule, $fieids)
+            ->count();
+        return array(
+            'rows' => $lists, 'total' => $total
+        );
+    }
 
     /**
      * 搜索数据
@@ -128,29 +153,24 @@ class Task extends Model
      * @param $array
      * @return array|\PDOStatement|string|\think\Collection
      */
-    public function search($params, $array)
+    public function search($params, $post)
     {
         //表达式定义
-        $exps = ["eq" => [], "like" => [], "in" => [], "between time" => [],
+        $exps = ["eq" => [], "like" => [], "in" => [], "between time" => ['task_time'],
         ];
-        //日期字段,对应html type 的 value
-        $datekeys = [0 => 'add_time', 1 => 'I_date', 2 => 'II_date', 3 => 'speed_time'];
-        if (isset($array['date_type'])) {
-            $type = $array['date_type'];// 等于数字
-            $datepk = $datekeys[$type];
-            $array[$datepk] = $array['date'];
-            unset($array['date_type']);
-            unset($array['date']);
+        //执行日的处理
+        if (isset($post['task_time'])) {
+            $post['task_time'] = [$post['task_time'] . ' 00:00:00', $post['task_time'] . '24:00:00'];
         }
         //map条件组装.
         $map = array();
-        while ($value = current($array)) {
-            $key = key($array);
+        while ($value = current($post)) {
+            $key = key($post);
             $exp = $this->exp($exps, $key);
             if ($exp == null) $exp = "=";
             if ($exp == "like") $value = "%" . $value . "%";
             $map[] = ['task.' . $key, $exp, $value];
-            next($array);
+            next($post);
         }
         $lists = $this->where('order', 1)
             ->order($params['sort'], $params['order'])
@@ -227,7 +247,7 @@ class Task extends Model
         //checked
         if ($post['finish'] == 'success') {
 
-            $this->finish = true;
+            $this->finish = 1;//完成
             if ($this->template->success_evnet_id != null) {
                 //执行成功的事件
                 $newobj->saveAll($newds['success']);
@@ -240,7 +260,7 @@ class Task extends Model
 
         } else {
 
-            $this->finish = false;
+            $this->finish = -1;//未完成
             if ($this->template->failed_evnet_id != null) {
                 //执行失败事件
                 $newobj->saveAll($newds['failed']);
@@ -251,6 +271,7 @@ class Task extends Model
                 $this->objdata->$fun();
             }
         }
+        $this->reply_text = $post['reply_text'];
         $this->status = 2;//处理
         $this->finish_time = time();
         return $this->save();
@@ -293,11 +314,11 @@ class Task extends Model
     {
         $success_evnets = $this->template()
             ->where('id', 'in', $this->template->success_evnet_id)
-            ->field('id,re_group,time,reply_text,reply_image')
+            ->field('id,re_group,time,reply_text,reply_image,contnet')
             ->select();
         $failed_evnets = $this->template()
             ->where('id', 'in', $this->template->failed_evnet_id)
-            ->field('id,re_group,time,reply_text,reply_image')
+            ->field('id,re_group,time,reply_text,reply_image,contnet')
             ->select();
         $this->FormatTask($success_evnets);
         $this->FormatTask($failed_evnets);
@@ -334,10 +355,18 @@ class Task extends Model
                 $time = Time::daysAfter($itme->time);
             }
             $itme->task_time = $time;
+            $id = $itme->id;
             unset($itme->re_group);
-            unset($itme->id);
             unset($itme->time);
-            $temp[] = $itme->getData();
+            unset($itme->id);
+           //应届生过滤掉 备二审材料和约号.
+            if ($this->objdata->getData('mode') == '03') {
+                if($id != 8 && $id != 11 ){
+                    $temp[] = $itme->getData();
+                }
+            } else {
+                $temp[] = $itme->getData();
+            }
         }
         $evnets = $temp;
     }
@@ -406,6 +435,7 @@ class Task extends Model
     public function getFinishAttr($key)
     {
         $data = [0 => '失败', 1 => '成功'];
+
         if ($key == null) {
             return '未知';
         } else {

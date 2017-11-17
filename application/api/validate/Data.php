@@ -14,6 +14,8 @@ class Data extends Validate
     protected $rule =   [
         'name'  => 'require|max:25',
         'card'  => 'require|idCard|unique:data',// 表示验证card字段的值是否在data表（不包含前缀）中唯一
+        'price' => 'number', //单击
+        'deposit'=>'number', //定金
     ];
     protected $message  =   [
         'name.require' => '姓名必须填写',
@@ -22,5 +24,7 @@ class Data extends Validate
     ];
     protected $scene = [
         'edit'  =>  ['name','tel'],
+        'add'   =>  ['name','card'],
+        'accounts'=> ['price','deposit'],
     ];
 }

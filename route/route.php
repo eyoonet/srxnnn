@@ -44,7 +44,8 @@ Route::group('data',[
     'setSzhrss/:id/:code'   =>  'api/data/setSzhrss',               //设置人保局进度
     'upload'                =>  'api/data/uploadByImage',           //图片上传
     'imageList'             =>  'api/data/imageList',               //证件列表
-    'back/:id'              =>  'api/data/back'                     //后撤
+    'back/:id'              =>  'api/data/back',                    //后撤
+    'accounts/:id'           => 'api/data/accounts',                //账目
 ]);
 Route::group('task',[
     'create/:id/[:type]'          => 'api/Task/Create',           //任务创建

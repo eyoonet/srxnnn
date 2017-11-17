@@ -164,7 +164,7 @@ class Data extends Model
                 $where = ['user_id' => $uid];
                 break;
             case 3: //内勤
-                $where = "`data`.`nuser_id`=$uid OR `data`.`user_id`=$uid  OR `data`.`status`=" . Data::NEW_CLIENT;
+                $where = true;//"`data`.`nuser_id`=$uid OR `data`.`user_id`=$uid  OR `data`.`status`=" . Data::NEW_CLIENT;
                 break;
             case 4: //外勤
                 $where = "`data`.`wuser_id`=$uid OR `data`.`user_id`=$uid";
@@ -390,7 +390,7 @@ class Data extends Model
 
             300 => '单位(自己)', 301 => '单位(邦芒)', 302 => '单位(一牛)', 303 => ' 单位(永安)', 304 => '单位(神鹰)',
         ];
-        return isset($data[$key]) ? $data[$key] : '暂无';
+        return isset($data[$key]) ? $data[$key] : $key;
     }
 
     //  `marriage` tinyint(1) unsigned DEFAULT NULL COMMENT '01未婚 02已婚 03离异 04丧偶',

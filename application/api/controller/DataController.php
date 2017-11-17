@@ -54,12 +54,12 @@ class DataController extends Base
      */
     public function edit($id)
     {
-        $data = $this->request->post();
+        $post = $this->request->post();
         $validate = new \app\api\validate\Data();
-        if ($validate->scene('edit')->check($data)) {
-            $M = Data::get($id);
-            $M->bak(0);
-            if ($M->readonly(['price', 'deposit'])->save($data)) {
+        if ($validate->scene('edit')->check($post)) {
+            $data = Data::get($id);
+            $data->bak(0);
+            if ($data->readonly(['price', 'deposit'])->save($post)) {
                 return Res::Json(200);
             } else {
                 return Res::Json(400);
@@ -84,12 +84,12 @@ class DataController extends Base
      */
     public function shebao($id)
     {
-        $M = Data::get($id);
-        $M->status = Data::NOT_SHEBAO;
-        $M->area = null;
-        $M->shebao = null;
-        $M->shebaoname = null;
-        if ($M->save()) {
+        $data = Data::get($id);
+        $data->status = Data::NOT_SHEBAO;
+        $data->area = null;
+        $data->shebao = null;
+        $data->shebaoname = null;
+        if ($data->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -103,10 +103,10 @@ class DataController extends Base
      */
     public function refund($id)
     {
-        $M = Data::get($id);
-        $M->comment = $this->request->param('comment');
-        $M->order = -1;//退款
-        if ($M->save()) {
+        $data = Data::get($id);
+        $data->comment = $this->request->param('comment');
+        $data->order = -1;//退款
+        if ($data->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -120,11 +120,12 @@ class DataController extends Base
      */
     public function refurn($id)
     {
-        $M = Data::get($id);
-        $M->comment = $this->request->param('comment');
-        $M->Tag = $this->request->param('Tag');
-        $M->status = Data::REFURN;
-        if ($M->save()) {
+        $data = Data::get($id);
+        $data->comment = $this->request->param('comment');
+        $data->Tag = $this->request->param('Tag');
+        $data->status = Data::REFURN;
+        $data->rcdate = null;
+        if ($data->save()) {
             return Res::Json(200);
         } else {
             return Res::Json(400);
@@ -138,9 +139,9 @@ class DataController extends Base
      */
     public function etcinput($id)
     {
-        $M = Data::get($id);
-        $M->status = Data::ETCINPUT;
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $data = Data::get($id);
+        $data->status = Data::ETCINPUT;
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -150,15 +151,17 @@ class DataController extends Base
      */
     public function commit($id)
     {
-        $M = Data::get($id);
-        $M->status = Data::COMMIT;
-        $M->speed_time = time();
-        $M->service = $this->request->param('service');
-        $M->comment = $this->request->param('comment');
-        $M->rcdate = null;
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $service = $this->request->param('service');
+        /*if($service == -1)
+            return Res::Json(400,'需要选择提交窗口');*/
+        $data = Data::get($id);
+        $data->status = Data::COMMIT;
+        $data->speed_time = time();
+        $data->service = $service;
+        $data->comment = $this->request->param('comment');
+        $data->rcdate = null;
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
-
     /**
      * 一审
      * @param $id
@@ -177,12 +180,12 @@ class DataController extends Base
      */
     public function prepareSubmit($id)
     {
-        $M = Data::get($id);
+        $data = Data::get($id);
         //不是一审
-        if ($M->getData('speed') != 1)
+        if ($data->getData('speed') != 1)
             return Res::Json(400, '当前办理进度信息不符..核实当前进度!!');
-        $M->status = Data::PREPARE_SUBMIT;
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $data->status = Data::PREPARE_SUBMIT;
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -214,13 +217,15 @@ class DataController extends Base
      */
     public function finish($id)
     {
-        $M = Data::get($id);
-        //进度不是二审的
-        if ($M->getData('speed') != 2)
+        $data = Data::get($id);
+        //进度不是二审的或拿调令的
+        if ($data->getData('speed') == 2 || $data->getData('speed') == 3 ){
+            $data->speed = 3;
+            $data->status = Data::FINISH;
+            return $data->save() ? Res::Json(200) : Res::Json(400);
+        }else{
             return Res::Json(400, '当前办理进度信息不符!核实当前进度!!');
-        $M->speed = 3;
-        $M->status = Data::FINISH;
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        }
     }
 
     /**
@@ -230,28 +235,28 @@ class DataController extends Base
      */
     public function back($id)
     {
-        $M = Data::get($id);
+        $data = Data::get($id);
 
-        if ($M->getData('speed') == 1) {
-            $M->speed = -1;
-            $M->status = Data::COMMIT;
-            $M->I_data = null;
-        } else if ($M->getData('speed') == 2) {
-            $M->speed = 1;
-            $M->status = Data::SIGN;
-            $M->II_data = null;
-        } else if ($M->getData('speed') == 3) {
+        if ($data->getData('speed') == 1) {
+            $data->speed = -1;
+            $data->status = Data::COMMIT;
+            $data->I_data = null;
+        } else if ($data->getData('speed') == 2) {
+            $data->speed = 1;
+            $data->status = Data::SIGN;
+            $data->II_data = null;
+        } else if ($data->getData('speed') == 3) {
             //应届生
-            if ($M->getData('mode') == '03') {
-                $M->speed = -1;
-                $M->status = Data::COMMIT;
-                $M->I_data = null;
+            if ($data->getData('mode') == '03') {
+                $data->speed = -1;
+                $data->status = Data::COMMIT;
+                $data->I_data = null;
             }
-            $M->speed = 2;
-            $M->status = Data::SUBMIT;
+            $data->speed = 2;
+            $data->status = Data::SUBMIT;
         }
 
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -261,9 +266,9 @@ class DataController extends Base
      */
     public function comment($id)
     {
-        $M = Data::get($id);
-        $M->comment = $this->request->param('comment');
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $data = Data::get($id);
+        $data->comment = $this->request->param('comment');
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -273,10 +278,10 @@ class DataController extends Base
      */
     public function tag($id)
     {
-        $M = Data::get($id);
-        $M->Tag = $this->request->param('tag');
-        $M->comment = $this->request->param('comment');
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $data = Data::get($id);
+        $data->Tag = $this->request->param('tag');
+        $data->comment = $this->request->param('comment');
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
@@ -288,7 +293,7 @@ class DataController extends Base
      *  $type    列表或搜索             string  sousou OR null
      * @return \think\response\Json  {rows:{},total:xx,type:xx}
      */
-    public function List(Data $sqldata)
+    public function List(Data $data)
     {
         //请求说明 $params为排序分页 $rule 是查询规则 $fieids 是绑定参数
         $params = $this->request->only(['page', 'rows', 'sort', 'order'], 'post');
@@ -296,13 +301,13 @@ class DataController extends Base
         $fieids = $this->request->except(['page', 'rows', 'sort', 'order', 'rule', 'type'], 'post');
         $type = $this->request->post('type');
         if ($type == 'sousou') {
-            $lists = $sqldata->search($params, $fieids, $this->group_id);
+            $lists = $data->search($params, $fieids, $this->group_id);
         } else {
             if ($rule == null || $fieids == null) { // 没有条件显示所有
                 $rule = "1 = :id";
                 $fieids = ['id' => 1];
             }
-            $lists = $sqldata->List($params, $rule, $fieids, $this->group_id);
+            $lists = $data->List($params, $rule, $fieids, $this->group_id);
         }
         $lists['type'] = $type;
         return json($lists);
@@ -329,31 +334,48 @@ class DataController extends Base
     }
 
     /**
+     * 客户账目修改
+     * @param $id
+     * @return \think\response\Json
+     */
+    public function accounts($id){
+        $post = $this->request->post();
+        $validate = new \app\api\validate\Data();
+        if ($validate->scene('accounts')->check($post)) {
+            $data = Data::get($id);
+            $data->price = $post['price'];
+            $data->deposit = $post['deposit'];
+            return $data->save() ? Res::Json(200) : Res::Json(400);
+        }else{
+            return Res::json(400, $validate->getError());
+        }
+    }
+    /**
      * SET已约号
      * @param $id
      * @return \think\response\Json
      */
     public function setAppointment($id)
     {
-        $M = Data::get($id);
-        if ($M->getData('speed') == -1) {
-            $M->status = Data::APPOINTMENT_I;//已约号1
-        } else if ($M->getData('speed') == 1) {
-            $M->status = Data::APPOINTMENT_II;//已约号2
+        $data = Data::get($id);
+        if ($data->getData('speed') == -1) {
+            $data->status = Data::APPOINTMENT_I;//已约号1
+        } else if ($data->getData('speed') == 1) {
+            $data->status = Data::APPOINTMENT_II;//已约号2
         }
-        $M->rcdate = null;
-        return $M->save() ? Res::Json(200) : Res::Json(400);
+        $data->rcdate = null;
+        return $data->save() ? Res::Json(200) : Res::Json(400);
     }
 
     /**
      * 获取已约号列表EXE调用
-     * @param Data $M
+     * @param Data $data
      * @return \think\response\Json
      */
-    public function getAppointmentList(Data $M)
+    public function getAppointmentList(Data $data)
     {
         return json(
-            $M->field('id,card,mode,user_id,nuser_id')
+            $data->field('id,card,mode,user_id,nuser_id')
                 ->where('status', 'in', '5,6')
                 ->where('order', 1)
                 ->select()
@@ -362,13 +384,13 @@ class DataController extends Base
 
     /**
      * 获取已二审列表EXE调用用于查询人社进度
-     * @param Data $M
+     * @param Data $data
      * @return \think\response\Json
      */
-    public function getSubmitList(Data $M)
+    public function getSubmitList(Data $data)
     {
         return json(
-            $M->field('id,card,name,sbtype')
+            $data->field('id,card,name,sbtype')
                 ->where('order', 1)
                 ->where('status', Data::SUBMIT)//已二审
                 ->whereOr('status', Data::AUDIT)//审批同意的
@@ -379,7 +401,7 @@ class DataController extends Base
     /**
      * 获取人才网时间
      * @param $id
-     * @param Data $M
+     * @param Data $data
      * @return mixed
      */
     public function getRcDate(Data $data, $id)
@@ -407,17 +429,17 @@ class DataController extends Base
     }
 
     //获取审批同意的
-    public function getAuditSuccessList(Data $M)
+    public function getAuditSuccessList(Data $data)
     {
-        $Map = [
+        $dataap = [
             'mode' => '05',
             'status' => Data::SUBMIT
         ];
         return json(
-            $M->field('id,name,card')
+            $data->field('id,name,card')
                 ->where('order', 1)
                 ->where('status', Data::AUDIT_SUCCESS)
-                ->whereOr("`mode`=:mode  AND  `status`=:status", $Map)
+                ->whereOr("`mode`=:mode  AND  `status`=:status", $dataap)
                 ->select()
         );
     }
@@ -434,7 +456,7 @@ class DataController extends Base
     /**
      * 获取一行DATA数据
      * @param $id
-     * @param Data $M
+     * @param Data $data
      * @return static
      */
     public function getOneData($id)

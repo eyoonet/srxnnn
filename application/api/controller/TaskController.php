@@ -121,6 +121,12 @@ class TaskController extends Base
             case 'day':
                 $lists = $m->ListByTime($params, $rule, $fieids, $time);
                 break;
+            case 'tomorrow':
+                ////date("Y-m-d",Time::daysAfter(1))
+                //Time::daysAfter(1)
+                $tomorrow = date("Y-m-d", Time::daysAfter(1));//明天
+                $lists = $m->ListByTimeBettween($params, $rule, $fieids, [$tomorrow . ' 00:00:00', $tomorrow . ' 23:59:59']);
+                break;
             default:
                 if ($rule == null || $fieids == null) {
                     $rule = "1 = :id";
