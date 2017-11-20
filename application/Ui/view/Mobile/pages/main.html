@@ -2,9 +2,10 @@
 <div class="easyui-navpanel">
     <ul class="m-list">
         <li><a href="javascript:void(0)" onclick="openit('re_110')">今日待办</a></li>
+        <li><a href="javascript:void(0)" onclick="openit('re_111')">明日待办</a></li>
         <li><a href="javascript:void(0)" onclick="openit('re_120')">昨日遗留</a></li>
-        <li><a href="javascript:void(0)" onclick="openit('re_100')">我的待办</a></li>
         <li><a href="javascript:void(0)" onclick="openit('re_300')">逾期未办</a></li>
+        <li><a href="javascript:void(0)" onclick="openit('re_100')">我的待办</a></li>
     </ul>
 </div>
 <script type="text/javascript">
@@ -17,6 +18,14 @@
     function List(where) {
         var param = {};
         switch (where) {
+            case "re_111":
+                param = {
+                    "rule":"re_id = :uid AND task.status = :value",
+                    "uid":"0",
+                    "value":"1",
+                    "type":"tomorrow"
+                }
+                break;
             case "re_110":
                 param = {
                     "rule":"re_id = :uid AND task.status = :value",

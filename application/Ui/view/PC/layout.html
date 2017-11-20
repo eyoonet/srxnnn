@@ -1,50 +1,78 @@
 <!DOCTYPE html>
 <html>
-	{include file="PC/public/header" /}
+{include file="PC/public/header" /}
 <body id="cc" class="easyui-layout">
-	<div  data-options="region:'north',border:false,bodyCls:'color-blue'" style="height:80px;padding:10px">
-		<input id="token" type="hidden" name="token" value="{$token}">
-		<script type="text/javascript">
-		  console.info("用户TOKGEN:"+$('#token').val());
-		</script>
-		<h2 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h2>
-		<p class="f-r" style="color:#FFF3F3;margin-top: 30px;
-                                            margin-right: 90px;">当前用户 
-			<span id="username" style="color:#CFD22C">{$info.user_name}</span>
-			<a style="color:#00E7FF" href="user/logout">退出</a>
-			<a style="color:#00E7FF" href="/ui/mobile">手机</a>
-		</p>
-	</div>
-	<div data-options="region:'west',split:true" style="width:150px;padding:0px;">
-		<div id="aa" class="easyui-accordion" style="height:100%;">
-			<div title="客户管理" data-options="iconCls:'icon-man',selected:true" style="overflow:auto;padding:0px;">
-				<ul id="clents-menu"></ul>
-				<script type="text/javascript">
-					onClickMenu("clents-menu","menu/Get/CLENTS");
-				</script>
-			</div>
-			<div title="任务系统" data-options="iconCls:'icon-man'" style="padding:0px;">
-				<ul id="task-menu"></ul>
-				<script>
-					onClickMenu("task-menu","menu/Get/TASK");
-				</script>
-			</div>
-			<div title="系统设置">
-				<ul id="sys-menu"></ul>
-				<script>
-					onClickMenu("sys-menu","menu/Get/SYS");
-				</script>
-			</div>
-			<!--<div title="日志查询">
-				content3
-			</div>-->
-		</div>
-	</div>
-	<div data-options="region:'center'">
-		{__CONTENT__}
-	</div>
-	<!--<div data-options="region:'south',border:false,bodyCls:'color-blue'" style="height:50px;padding:10px;">
-        {include file="PC/public/footer" /}
-	</div>-->
+<div data-options="region:'north',border:false,bodyCls:'color-blue'" style="height:80px;padding:10px">
+    <input id="uid" type="hidden" name="uid" value="{$uid}">
+    <script type="text/javascript">
+        var uid = $('#uid').val();
+        $(function () {
+            // 连接服务端
+            var socket = io('http://' + document.domain + ':2120');
+            // 连接后登录
+            socket.on('connect', function () {
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function (json_str) {
+                var obj = $.parseJSON(json_str);
+                $('#today').html(obj.today);
+                $('#tomorrow').html(obj.tomorrow);
+                $('#overdue').html(obj.overdue);
+            });
+            // 后端推送来在线数据时
+            socket.on('update_online_count', function (online_stat) {
+               //  $('#temp').html(online_stat);
+            });
+        });
+    </script>
+    <h2 class="f-l" style="color:#FFF3F3">三人行客户信息管理系统</h2>
+    <!--<div id="mm3" class="theme-navigate-menu-panel" style="width:180px;">
+        <div>产品消息<span class="badge color-success">5</span></div>
+        <div>安全消息<span class="badge color-important">10</span></div>
+        <div>服务消息</div>
+        <div class="menu-sep"></div>
+        <div>查看历史消息</div>
+        <div class="menu-sep"></div>
+        <div>清除消息提示</div>
+    </div>-->
+    <p class="f-r" style="color:#FFF3F3;margin-top: 30px;
+                                            margin-right: 90px;">当前用户
+        <span id="username" style="color:#CFD22C">{$info.user_name}</span>
+        <a style="color:#00E7FF" href="user/logout">退出</a>
+        <a style="color:#00E7FF" href="/ui/mobile">手机</a>
+    </p>
+</div>
+<div data-options="region:'west',split:true" style="width:150px;padding:0px;">
+    <div id="aa" class="easyui-accordion" style="height:100%;">
+        <div title="客户管理" data-options="iconCls:'icon-man',selected:true" style="overflow:auto;padding:0px;">
+            <ul id="clents-menu"></ul>
+            <script type="text/javascript">
+                onClickMenu("clents-menu", "menu/Get/CLENTS");
+            </script>
+        </div>
+        <div title="任务系统" data-options="iconCls:'icon-man'" style="padding:0px;">
+            <ul id="task-menu"></ul>
+            <script>
+                onClickMenu("task-menu", "menu/Get/TASK");
+            </script>
+        </div>
+        <div title="系统设置">
+            <ul id="sys-menu"></ul>
+            <script>
+                onClickMenu("sys-menu", "menu/Get/SYS");
+            </script>
+        </div>
+        <!--<div title="日志查询">
+            content3
+        </div>-->
+    </div>
+</div>
+<div data-options="region:'center'">
+    {__CONTENT__}
+</div>
+<!--<div data-options="region:'south',border:false,bodyCls:'color-blue'" style="height:50px;padding:10px;">
+    {include file="PC/public/footer" /}
+</div>-->
 </body>
 </html>

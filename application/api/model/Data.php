@@ -297,6 +297,19 @@ class Data extends Model
         return $this->save(['order' => 0], ['id' => $id]);
     }
 
+    public function getSzhrReg($card)
+    {
+        $this->field('name,card,tel,education,mode,marriage,marrDate,schoolName,major,graduateDate,txadderss,zdtype')
+            ->where('card', $card)
+            ->getData();// ['01' => '未婚', '02' => '已婚', '03' => '离异', '04' => '复婚', '05' => '再婚0', '06' => '丧偶']
+        foreach ($ret as &$value) {
+            if ($value['mode'] == '11') $value['mode'] = "12";
+            if ($value['marriage'] == '04') $value['marriage'] = "02";
+            if ($value['marriage'] == '05') $value['marriage'] = "02";
+            echo implode(".", $value->toArray()) . "|";
+        }
+        return;
+    }
 
     /**
      * 就是返回数组格式为 不知道相同值会不会有问题
@@ -323,19 +336,6 @@ class Data extends Model
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     /** **********************************************模型常量开始******************************************* */
     const NEW_CLIENT = -1;//新进客户
     const NOT_SHEBAO = 1;//没有社保
@@ -359,15 +359,6 @@ class Data extends Model
     /** **********************************************模型常量结束******************************************* */
 
 
-
-
-
-
-
-
-
-
-
     /** **********************************************获取器开始******************************************* */
     public function getStatusAttr($key)
     {
@@ -379,6 +370,17 @@ class Data extends Model
             16 => '出调令', 17 => '已拿调令', 18 => '完结', 100 => '派单外勤', 101 => '拿到身份证', 102 => '外处理'
         ];
         return isset($data[$key]) ? $data[$key] : '';
+    }
+
+    public function getChildAttr($name)
+    {
+        $itm = null;
+        $data = [-1 => '无', 1 => '一孩', 2 => '二孩', 3 => '怀孕', 4 => '随迁'];
+        $lists = explode(",", $name);
+        foreach ($lists as $key) {
+            $itm .=$data[$key].';';
+        }
+        return $itm;
     }
 
     public function getServiceAttr($key)

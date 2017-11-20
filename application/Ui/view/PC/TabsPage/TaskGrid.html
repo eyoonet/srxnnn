@@ -29,11 +29,14 @@
 </table>
 <div id="task-dg-buttions" style="padding:5px;height:auto">
     <div style="margin-bottom:5px" dg="task-dg">
-        <a onclick="ButtonRunDialog(this);" dialog="task" url="task" load="true" iconCls="icon-edit"
-           class="easyui-linkbutton" plain="true">编辑任务</a>
+       <!-- <a onclick="ButtonRunDialog(this);" dialog="task" url="task" load="true" iconCls="icon-edit"
+           class="easyui-linkbutton" plain="true">编辑任务</a>-->
         <a onclick="Task.onDispose();" class="easyui-linkbutton" iconCls="icon-ok"
            plain="true">处理</a>
-        <a onclick="run(this)" url="/task/revocation" class="easyui-linkbutton" plain="true">撤回</a>
+        <a onclick="run(this)" url="/task/revocation" class="easyui-linkbutton" iconCls="icon-undo" plain="true">撤回</a>
+        <a class="easyui-linkbutton" plain="true">今日待办<i id="today" class="badge color-teal">0</i></a>
+        <a class="easyui-linkbutton" plain="true">明日待办<i id="tomorrow" class="badge color-blue">0</i></a>
+        <a class="easyui-linkbutton" plain="true">逾期未办<i id="overdue" class="badge color-important">0</i></a>
     </div>
     <hr style="margin-bottom: 5px">
     <div>

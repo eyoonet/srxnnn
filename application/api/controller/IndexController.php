@@ -5,6 +5,7 @@ use app\api\model\Log;
 use app\api\model\Task;
 use app\api\model\User;
 use app\common\controller\Base;
+use app\common\lib\Curl;
 use app\common\lib\LibFile;
 use app\common\org\Res;
 use think\Collection;
@@ -21,9 +22,9 @@ class IndexController extends Controller
     //测试专用
     public function index()
     {
-        //$data= Data::get(8);
-        //dump($data->user->user_name);
-        // return $this->fetch();
+        $task = new Task();
+        echo $task->getTotals();
+        return $this->fetch();
     }
 
 }

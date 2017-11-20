@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="/upload/css/webuploader.css"/>
     <link rel="stylesheet" type="text/css" href="/upload/css/style.css"/>
 
+    <script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
     <script type="text/javascript" src="__STATIC__/framework/jquery.min.js"></script>
     <script type="text/javascript" src="__STATIC__/framework/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="__STATIC__/themes/insdep/jquery.insdep-extend.min.js"></script>
@@ -22,17 +23,48 @@
     <script type="text/javascript" src="__STATIC__/js/config.js"></script>
     <script type="text/javascript" src="__STATIC__/js/Dg.js"></script>
     <script type="text/javascript" src="__STATIC__/js/extend.js"></script>
-    <script type="text/javascript" src="__STATIC__/js/load.js"></script>
+    <!--<script type="text/javascript" src="__STATIC__/js/load.js"></script>-->
     <script type="text/javascript" src="__STATIC__/js/function.js"></script>
 
     <script type="text/javascript" src="/upload/js/webuploader.js"></script>
 </head>
 <body>
 
+<button  onclick="init()">init</button>
+<button onclick="send()">send</button>
+<div id="content">
+
+</div>
+<div id="uid">
+
+</div>
+
+<script type="text/javascript">
+    var uid = Date.parse(new Date());
+    $('#uid').html(uid);
+    $(document).ready(function () {
+        // 连接服务端
+        var socket = io('http://'+document.domain+':2120');
+        // 连接后登录
+        socket.on('connect', function(){
+            socket.emit('login', uid);
+        });
+        // 后端推送来消息时
+        socket.on('new_msg', function(msg){
+            $('#content').html('收到消息：'+msg);
+           // $('.notification.sticky').notify();
+        });
+        // 后端推送来在线数据时
+        socket.on('update_online_count', function(online_stat){
+           // $('#online_box').html(online_stat);
+        });
+    });
+</script>
+
 
 <div id="task" form="task-form" dg="task-dg" class="easyui-dialog " title="查看处理结果"
      style="width:300px;height:auto;text-align:center;padding:2px 2px 2px 2px"
-     data-options="closed:false,modal:false,resizable:true">
+     data-options="closed:true,modal:false,resizable:true">
     <form id="task-form">
         <div style="margin: 5px 2px 0px;width: 291px">
             <div class="alert">
@@ -51,12 +83,12 @@
             </div>
             <div style="margin-top: 5px">
                 <input name="reply" class="easyui-textbox textbox-f" style="width: 99%; height: 70px; display: none;"
-                      readonly="readonly" data-options="multiline:true">
+                       readonly="readonly" data-options="multiline:true">
             </div>
             <div style="margin-top: 5px;padding-bottom: 5px">
                 <a href="#" class="easyui-linkbutton l-btn l-btn-small easyui-fluid"
                    style="width: 99%; height: 30px;">
-                     <span class="l-btn-text">查看回馈图片</span>
+                    <span class="l-btn-text">查看回馈图片</span>
                 </a>
                 <!-- <img src="\static\images\login1.jpg" style="width: 99%">-->
             </div>
@@ -64,90 +96,6 @@
     </form>
 </div>
 
-
-<div id="task" form="task-form" dg="task-dg" class="easyui-dialog " title="任务处理"
-     style="width:300px;height:auto;text-align:center;padding:5px"
-     data-options="closed:false,modal:false,resizable:true">
-    <form id="task-form">
-        <div class="alert-green" style="text-align:center;width:256px">
-            <label style="margin-right: 50px">
-                <input id="r-success" name="q" type="radio" checked="checked">处理成功
-            </label>
-            <label>
-                <input name="q" type="radio">处理失败
-            </label>
-        </div>
-        <div style="margin-top: 5px">
-            <div>
-                <input name="content" class="easyui-textbox textbox-f" style="width: 100%; height: 90px; display: none;"
-                       readonly="readonly" data-options="multiline:true">
-            </div>
-            <div style="margin-top: 5px">
-                <input name="reply" class="easyui-textbox textbox-f" style="width: 100%; height: 70px; display: none;"
-                       data-options="multiline:true">
-            </div>
-        </div>
-        <div style="margin-top: 5px">
-            <input name="file" class="easyui-filebox filebox-f textbox-f" style="width: 100%; display: none;"
-                   data-options="buttonIcon:'icon-folder-search',buttonText:'',label:'上传凭证'">
-        </div>
-    </form>
-    <script type="text/javascript">
-        $(function(){
-           // document.getElementById('r-success').checked = true;
-        })
-    </script>
-</div>
-
-
-<div id="task" form="task-form" dg="task-dg" class="easyui-dialog " title="任务添加"
-     style="width:300px;height:auto;text-align:center;padding:2px"
-     data-options="closed:false,modal:false,resizable:true">
-    <form id="task-form">
-        <div style="margin-top: 5px">
-            <input name="type" class="easyui-combobox combobox-f combo-f textbox-f" label="任务"
-                   style="width:49%;"
-                   data-options=" ultivalue:false,
-                             required:true,
-                             panelHeight:'auto',
-                             url:'/Combobox/Get/TASK_TITLE',
-                             valueField:'value',
-                             textField:'text',
-                             editable:false"/>
-
-            <input name="re_by_id" class="easyui-combobox  combobox-f combo-f textbox-f" label="用户" style="width:49%;"
-                   data-options="valueField:'value',
-                                required:true,
-                                textField:'text',
-                                url:'/combobox/Userlist',
-                                editable:false,
-                                "/>
-        </div>
-        <div style="margin-top: 5px">
-            <input name="content" class="easyui-textbox textbox-f" style="width: 99%; height: 150px; display: none;"
-                   data-options="multiline:true">
-        </div>
-
-        <div class="alert" style="margin:5px 2px 5px;text-align:center;width:259px">
-            <label style="margin-right: 50px">
-                <input name="reply_text" type="checkbox" checked="checked">回馈文字
-            </label>
-            <label>
-                <input name="reply_image" type="checkbox">回馈图片
-            </label>
-        </div>
-
-
-        <div style="margin-bottom: 5px">
-            <input id="rcdate" name='task_time' class="easyui-datetimebox combo-f textbox-f datetimebox-f"
-                   style="width:99%"
-                   label="执行时间"
-                   data-options="required:true,formatter:my2formatter,parser:my2parser">
-        </div>
-    </form>
-</div>
-<!--<iframe src="about:blank" name="blankFrame" id="blankFrame" style="display: none;"></iframe>
-<form target="blankFrame" action="...."></form>-->
 
 </body>
 </html>

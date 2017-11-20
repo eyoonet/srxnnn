@@ -4,6 +4,8 @@
         width: 98%;
         height: 100%;
         border: 0px;
+        outline:none;
+        resize:none;
     }
 
     #datatable th, td {
@@ -36,7 +38,7 @@
     }
 </style>
 <div id="table" form="error-form" dg="dg" class="easyui-dialog dialog-form-style" title="客户详情"
-     style="width:1024px;height:580px;text-align:center;padding:2px 2px 2px 2px"
+     style="width:1024px;height:588px;text-align:center;padding:2px 2px 2px 2px"
      data-options="closed:true,modal:false,resizable:true,toolbar:'#table-buttons'">
 
     <div class="easyui-layout" data-options="fit:true">
@@ -204,26 +206,41 @@
                             <input name="status" type="text" readonly="readonly">
                         </td>
                     </tr>
+                    <tr>
+                        <th align="left" scope="row">公司</th>
+                        <td colspan="2">
+                            <input style="width: 70%;border: 0px;height: 100%" name="shebaoname" type="text"
+                                   readonly="readonly">
+                            <input style="float: right;width: 30%;border: 0px;height: 100%" name="area" type="text"
+                                   readonly="readonly">                        </td>
+                        <th>窗口</th>
+                        <td height="25">
+                            <input name="service" type="text" readonly="readonly">
+                        </td>
+                        <td height="25">
+                            <input name="Tag" type="text" readonly="readonly">
+                        </td>
+                    </tr>
                 </table>
-
                 <!--<table class="gridtable" width="100%">
                     <tr>
-                        <th id="t-Tag" height="32" colspan="4" scope="col">工作经历</th>
-                    </tr>
-                    <tr>
-                        <th width="13%" scope="col">夫/妻</th>
-                        <th width="23%" scope="col">起始时间</th>
-                        <th width="23%" scope="col">结束时间</th>
-                        <th width="41%" scope="col">单位或学校名称</th>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <th height="20">窗口</th>
+                        <td width="94">
+                            <input name="service" type="text" readonly="readonly">
+                        </td>
+                        <th>公司名称</th>
+                        <td>
+                            <input style="width: 50%;border: 0px;height: 100%" name="shebaoname" type="text"
+                                   readonly="readonly">
+                            <input style="float: right;width: 30%;border: 0px;height: 100%" name="area" type="text"
+                                   readonly="readonly">
+                        </td>
+                        <th>标记</th>
+                        <td>
+                            <input name="Tag" type="text" readonly="readonly">
+                        </td>
                     </tr>
                 </table>-->
-
             </form>
         </div>
     </div>
@@ -292,6 +309,6 @@
         });
         $('#TaskList-contnet').html('');
         $('#TaskList-reply_text').html('');
-        $('#TaskList').data('data_id',data_id);
+        $('#TaskList').data('data_id', data_id);
     }
 </script>

@@ -9,6 +9,7 @@ namespace app\api\controller;
 
 use app\api\model\Task;
 use app\common\controller\Base;
+use app\common\lib\Curl;
 use app\common\org\Res;
 use app\api\model\Data;
 use think\helper\Time;
@@ -93,6 +94,9 @@ class TaskController extends Base
      */
     public function List(Task $m)
     {
+        $conent = $m->getTotals();
+        $curl = new Curl();
+        $res = $curl->Get("http://localhost:2121/?type=publish&content=$conent&to=$this->uid");
         //分页参数
         $params = $this->request->only(['page', 'rows', 'sort', 'order'], 'post');
         //条件规则
